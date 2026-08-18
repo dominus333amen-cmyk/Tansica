@@ -211,7 +211,6 @@ input,textarea{font:inherit;color:var(--text)}
       <button class="btn soft" data-action="export">导出 JSON</button>
       <button class="btn soft" data-action="import">导入 JSON</button>
     </div>
-    <div class="card warn">若需换浏览器或传给别人，点"保存并生成新文件"——新文件内含全部数据，打开它即可，数据随文件走。</div>
   </section>
 
 </div>
@@ -481,13 +480,20 @@ function handleImportText(txt){
     Toast(`已导入 ${added} 个词汇${dup?`（跳过重复 ${dup}）`:''}`);
   });
 }
+/* ===== 批量导入：兼容 逗号(全/半角) 斜杠 空格 Tab 竖线 分号 ===== */
 function parseCSV(text){
   const rows=[];let skip=0;const seen=new Set();
   text.split(/\r?\n/).forEach(l=>{
     l=l.trim();if(!l)return;
-    const p=l.split(/[,，\t|;；]/).map(s=>s.trim()).filter(s=>s!=='');
-    if(p.length<2){skip++;return;}
-    const raw=p[0],pos=p.length>=3?p[1]:'',meaning=p.length>=3?p.slice(2).join(','):p[1];
+    let parts;
+    if(/[,，\t|;；]/.test(l))parts=l.split(/[,，\t|;；]/);
+    else if(l.includes('/'))parts=l.split('/');
+    else parts=l.split(/\s+/);
+    parts=parts.map(s=>s.trim()).filter(s=>s!=='');
+    if(parts.length<2){skip++;return;}
+    const raw=parts[0];
+    const pos=parts.length>=3?parts[1]:'';
+    const meaning=parts.length>=3?parts.slice(2).join(' '):parts[1];
     const k=raw.toLowerCase();
     if(!/^[A-Za-z]/.test(raw)||seen.has(k)){skip++;return;}
     seen.add(k);rows.push({raw,pos,meaning});
@@ -754,7 +760,7 @@ const Actions={
   'word-add':()=>WordSheet.open(),
   'word-save':()=>WordSheet.save(),
   'csv-open':()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">批量导入</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <label class="f-label" style="margin-top:4px">每行：原词, 词性, 释义（两列时按 原词, 释义）</label>
+    <label class="f-label" style="margin-top:4px">每行一个：原词, 词性, 释义（也支持 / 或空格分隔）</label>
     <textarea id="csvBox"></textarea>
     <button class="btn primary big" data-action="csv-save">导入</button>`),
   'csv-save':()=>{
@@ -770,7 +776,6 @@ const Actions={
   'dlg-ok':()=>Modal.ok(),'dlg-cancel':()=>Modal.cancel(),
   'doc-import':()=>$('#gFile').click(),
   'doc-paste':()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">粘贴文本</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <label class="f-label" style="margin-top:4px">自动识别：无标点行 → 词汇；半角标点行 → 句子</label>
     <textarea id="pasteBox"></textarea>
     <button class="btn primary big" data-action="paste-import">识别并导入</button>`),
   'paste-import':()=>{const v=$('#pasteBox').value.trim();if(!v){Toast('请先粘贴内容');return;}Modal.close();handleImportText(v);},
@@ -858,7 +863,6 @@ document.addEventListener('change',e=>{
     Persist.check();
     await Store.load();
     Router.go('words');
-    /* PWA：仅在 http(s) 环境注册离线服务 */
     if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
       window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
     }
@@ -866,4 +870,4 @@ document.addEventListener('change',e=>{
 })();
 </script>
 </body>
-      </html>
+</html>
