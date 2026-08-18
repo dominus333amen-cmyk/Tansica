@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1c1c1e">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>人造语言学习助手</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg1:#f6f6f4;--bg2:#ebebe9;--card:#fff;--card2:#f1f1ef;--tabbg:rgba(255,255,255,.92);--line:rgba(0,0,0,.09);
+  --text:#1c1c1e;--text2:#6e6e73;--text3:#a8a8ad;
+  --btnbg:#1c1c1e;--btnfg:#fff;--prisoft:#ececea;--ring:rgba(0,0,0,.1);
+  --accent:#8a6b4f;
+  --danger:#b3261e;--dangersoft:#f6e7e5;
+  --sh1:0 1px 8px rgba(0,0,0,.05);--sh2:0 10px 30px rgba(0,0,0,.14);
+  --r:16px;--rs:10px;
+  --tabh:46px;
+}
+[data-theme="dark"]{
+  --bg1:#141416;--bg2:#0c0c0e;--card:#1c1c1f;--card2:#242427;--tabbg:rgba(16,16,18,.92);--line:rgba(255,255,255,.1);
+  --text:#f2f2f4;--text2:#9a9aa0;--text3:#5f5f64;
+  --btnbg:#f2f2f4;--btnfg:#141416;--prisoft:#2a2a2e;--ring:rgba(255,255,255,.14);
+  --accent:#c8a97e;
+  --danger:#ff8a80;--dangersoft:#3a2626;
+  --sh1:0 1px 8px rgba(0,0,0,.4);--sh2:0 10px 30px rgba(0,0,0,.6);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));background-attachment:fixed;min-height:100vh;font-size:13px}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea{font:inherit;color:var(--text)}
+#app{max-width:520px;margin:0 auto;padding:calc(var(--tabh) + env(safe-area-inset-top) + 14px) 16px 30px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.page{display:none}.page.active{display:block;animation:fadeUp .3s ease}
+.page-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:2px 0 14px}
+.page-head h1{font-size:19px;font-weight:700;letter-spacing:.5px;white-space:nowrap}
+.head-l{display:flex;align-items:center;gap:8px}
+.back2{font-size:17px;color:var(--text2);padding:2px 8px}
+.badge{background:var(--btnbg);color:var(--btnfg);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap;flex:none}
+.count-chip{background:var(--prisoft);color:var(--accent);border-radius:999px;font-size:11px;font-weight:700;padding:3px 10px;flex:none}
+.card{background:var(--card);border-radius:var(--r);padding:14px;margin:10px 0;box-shadow:var(--sh1);border:1px solid var(--line)}
+.card.warn{border:1px dashed var(--text3);background:transparent;color:var(--text2);box-shadow:none;font-size:12px;line-height:1.7}
+.card.tap{cursor:pointer;transition:transform .15s}
+.card.tap:active{transform:scale(.98)}
+.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:6px 6px 6px 16px;box-shadow:var(--sh1);border:1px solid var(--line);margin-bottom:4px}
+.search-wrap input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:13px}
+.s-go{flex:none;border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;background:var(--btnbg);color:var(--btnfg);transition:transform .15s}
+.s-go:active{transform:scale(.94)}
+.btn{display:block;width:100%;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;margin-top:8px;transition:transform .15s,opacity .15s}
+.btn:active{transform:scale(.97);opacity:.85}
+.btn.primary{background:var(--btnbg);color:var(--btnfg)}
+.btn.soft{background:var(--card);border:1px solid var(--line);color:var(--text);box-shadow:var(--sh1)}
+.btn.flat{background:var(--card2);color:var(--text2)}
+.btn.big{padding:13px;border-radius:14px;font-size:14px;margin-top:14px}
+.btn-row.two{display:flex;gap:8px}.btn-row.two .btn{flex:1;margin-top:10px}
+.seg{display:flex;background:var(--card2);border-radius:12px;padding:3px;margin-bottom:6px}
+.seg-item{flex:1;text-align:center;padding:9px 0;border-radius:9px;color:var(--text2);font-size:12.5px;transition:.2s}
+.seg-item.on{background:var(--btnbg);color:var(--btnfg);font-weight:700}
+.qnav{position:sticky;top:calc(var(--tabh) + env(safe-area-inset-top));z-index:6;display:flex;gap:6px;overflow-x:auto;padding:8px 2px;
+  background:linear-gradient(var(--bg1) 78%,transparent);scrollbar-width:none}
+.qnav::-webkit-scrollbar{display:none}
+.qn{flex:none;border-radius:999px;padding:6px 13px;font-size:11px;font-weight:700;background:var(--card);border:1px solid var(--line);color:var(--text2);transition:.15s}
+.qn:active{transform:scale(.93);color:var(--text)}
+.stat-row{display:flex}
+.stat{flex:1;text-align:center}
+.stat b{display:block;font-size:18px;color:var(--text);margin-bottom:3px}
+.stat span{font-size:11px;color:var(--text2)}
+.w-name{font-size:17px;font-weight:800;color:var(--text)}
+.w-name.act{cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.w-pho{margin-top:6px;color:var(--text3);font-size:13px}
+.w-sub{display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap}
+.w-mean-i{color:var(--text2);font-size:13px}
+.w-tag{background:var(--prisoft);color:var(--accent);border-radius:8px;padding:2px 10px;font-size:11px;font-weight:700}
+.w-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.ex-head{font-size:12px;font-weight:800;color:var(--text2);margin:14px 2px 2px}
+.ex-list{padding:4px 14px}
+.ex-item{display:flex;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.ex-item:last-child{border-bottom:none}
+.ex-n{flex:none;color:var(--text3);font-weight:700}
+.ex-src{font-size:13.5px;font-weight:600;color:var(--text)}
+.ex-tr{margin-top:4px;font-size:12.5px;color:var(--text3)}
+.hint-line{font-size:11px;color:var(--text3);margin:0 2px 6px;text-align:center}
+.chip{border-radius:10px;padding:6px 13px;font-size:11.5px;font-weight:600;transition:transform .15s}
+.chip:active{transform:scale(.95)}
+.chip.edit{background:var(--card2);color:var(--text2);border:1px solid var(--line)}
+.chip.del{background:var(--dangersoft);color:var(--danger)}
+.d-group{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:2px;margin:16px 2px 6px;cursor:pointer}
+.d-group .cnt{color:var(--text3);font-size:11px;font-weight:600;letter-spacing:0}
+.d-group .fold{margin-left:auto;color:var(--text3);font-size:10px;letter-spacing:0}
+.pos-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pos-item{border-radius:999px;padding:8px 15px;font-size:12px;font-weight:600;background:var(--card2);color:var(--text2);transition:.15s}
+.pos-item:active{transform:scale(.95)}
+.pos-item.on{background:var(--btnbg);color:var(--btnfg)}
+.f-label{display:block;font-size:12px;color:var(--text2);margin:12px 0 5px}
+.f-label i{color:var(--danger);font-style:normal}
+.sheet input,.sheet textarea{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:var(--rs);padding:10px 12px;font-size:13px;outline:none;transition:.2s}
+.sheet input:focus,.sheet textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+.sheet textarea{min-height:100px;resize:vertical}
+#tabbar{position:fixed;top:0;left:0;right:0;max-width:520px;margin:0 auto;display:flex;z-index:20;
+  background:var(--tabbg);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+#tabbar .tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:var(--tabh);color:var(--text3);font-size:11px;font-weight:600}
+#tabbar .ico{font-size:15px;filter:grayscale(1);opacity:.8}
+#tabbar .tab.on{color:var(--text)}
+#tabbar .tab.on .ico{opacity:1}
+#toast{position:fixed;top:calc(var(--tabh) + env(safe-area-inset-top) + 8px);left:50%;transform:translate(-50%,-220%);opacity:0;
+  background:rgba(24,24,26,.92);color:#fff;padding:8px 18px;border-radius:999px;font-size:12px;
+  transition:transform .35s cubic-bezier(.2,.9,.3,1.2),opacity .3s;z-index:99;max-width:80%;pointer-events:none}
+#toast.show{transform:translate(-50%,0);opacity:1}
+.sheet{position:fixed;inset:0;z-index:50}
+.sheet .mask{position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--card);
+  border-radius:22px 22px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));max-height:86vh;overflow:auto;animation:slideUp .3s cubic-bezier(.2,.9,.3,1)}
+.sheet.center{display:flex;align-items:center;justify-content:center}
+.dialog{position:relative;background:var(--card);border-radius:18px;padding:20px;width:82%;max-width:320px;box-shadow:var(--sh2);animation:scaleIn .2s ease}
+.d-title{font-size:15px;font-weight:700;margin-bottom:6px;text-align:center}
+.d-content{font-size:12.5px;color:var(--text2);line-height:1.6;white-space:pre-wrap}
+.d-btns{display:flex;gap:8px;margin-top:16px}
+.d-btns .btn{margin-top:0;flex:1;padding:9px}
+.btn.danger{background:var(--danger);color:#fff}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.sh-title{font-size:15px;font-weight:700}
+.sh-close{color:var(--text3);padding:4px 8px}
+</style>
+</head>
+<body>
+
+<nav id="tabbar">
+  <button class="tab on" data-action="tab" data-page="words"><span class="ico">📚</span>词汇</button>
+  <button class="tab" data-action="tab" data-page="sentences"><span class="ico">📝</span>语句</button>
+  <button class="tab" data-action="tab" data-page="settings"><span class="ico">⚙️</span>设置</button>
+</nav>
+
+<div id="app">
+
+  <section class="page" data-page="words">
+    <div class="page-head">
+      <div class="head-l"><h1>词汇</h1><span class="count-chip" id="wordCount">0</span></div>
+      <span class="badge" data-badge></span>
+    </div>
+    <div class="search-wrap"><input id="searchInput" aria-label="搜索" enterkeyhint="search"><button class="s-go" data-action="search-go">搜索</button></div>
+    <div class="btn-row two">
+      <button class="btn soft" data-action="word-add">＋ 新增词汇</button>
+      <button class="btn soft" data-action="csv-open">批量导入</button>
+    </div>
+    <button class="btn primary big" data-action="dict-open">词典</button>
+  </section>
+
+  <section class="page" data-page="search">
+    <div class="page-head">
+      <div class="head-l"><button class="back2" data-action="search-back">←</button><h1>搜索结果</h1></div>
+      <span class="badge" data-badge></span>
+    </div>
+    <div class="search-wrap" style="padding:6px 16px"><input id="resultSearch" aria-label="搜索"></div>
+    <div class="hint-line">点词编辑 · 长按复制 · 双击删除</div>
+    <div id="searchList"></div>
+  </section>
+
+  <section class="page" data-page="dict">
+    <div class="page-head">
+      <div class="head-l"><button class="back2" data-action="dict-back">←</button><h1>词典</h1></div>
+      <span class="badge" data-badge></span>
+    </div>
+    <div class="seg" id="dictSeg">
+      <div class="seg-item on" data-action="dict-mode" data-mode="alpha">按首字母</div>
+      <div class="seg-item" data-action="dict-mode" data-mode="pos">按词性</div>
+    </div>
+    <div class="qnav" id="qnav"></div>
+    <div id="dictList"></div>
+  </section>
+
+  <section class="page" data-page="word">
+    <div class="page-head">
+      <div class="head-l"><button class="back2" data-action="word-back">←</button><h1>词卡</h1></div>
+      <span class="badge" data-badge></span>
+    </div>
+    <div class="hint-line">点词编辑 · 长按复制 · 双击删除</div>
+    <div id="wordBox"></div>
+  </section>
+
+  <section class="page" data-page="sentences">
+    <div class="page-head"><h1>语句</h1><span class="badge" data-badge></span></div>
+    <div class="btn-row two">
+      <button class="btn primary" data-action="doc-import">导入文档</button>
+      <button class="btn soft" data-action="doc-paste">粘贴文本</button>
+    </div>
+    <button class="btn soft" data-action="s-add">＋ 新增句子</button>
+    <div id="sBody"></div>
+  </section>
+
+  <section class="page" data-page="settings">
+    <div class="page-head"><h1>设置</h1></div>
+    <div class="card warn" id="storeWarn" style="display:none">当前环境存储受限，数据仅暂存于本页。请改用部署链接或浏览器打开，即可自动保存。</div>
+    <div class="card">
+      <label class="f-label" style="margin-top:0">语言名称</label>
+      <input id="langInput" style="width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:10px;padding:10px 12px;outline:none">
+      <div class="btn-row two">
+        <button class="btn primary" data-action="save-lang">保存</button>
+        <button class="btn flat" data-action="theme" id="themeBtn">深色模式</button>
+      </div>
+    </div>
+    <div class="card"><div class="stat-row" id="statsRow"></div></div>
+    <div class="card">
+      <button class="btn primary" data-action="save-file">保存并生成新文件</button>
+      <button class="btn soft" data-action="export">导出 JSON</button>
+      <button class="btn soft" data-action="import">导入 JSON</button>
+    </div>
+    <div class="card warn">若需换浏览器或传给别人，点"保存并生成新文件"——新文件内含全部数据，打开它即可，数据随文件走。</div>
+  </section>
+
+</div>
+<div id="toast"></div>
+<div id="modalRoot"></div>
+<input type="file" id="gFile" accept=".txt,.md,.csv,.text,.doc,.docx,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+<input type="file" id="iFile" accept=".json,.txt,.md,.csv,.text,.doc,.docx,application/json,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+
+<script>
+'use strict';
+window.addEventListener('error',e=>{console.error(e);Toast('运行异常：'+(e.message||'未知错误'));});
+
+/* ===== 工具 ===== */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const badges=()=>$$('[data-badge]').forEach(b=>b.textContent=Store.state.langName);
+const newWord=obj=>Object.assign({id:uid(),created:Date.now(),raw:'',phonetic:'',pos:'',meaning:''},obj);
+const POS_LIST=['名词','动词','修饰词','数词','冠词','代词','介词','连词','疑问词','功能词','声词'];
+const POS_RE=new RegExp('^('+POS_LIST.join('|')+')');
+
+/* ===== 音标自动生成 ===== */
+const C_IPA={p:'p',b:'b',t:'t',d:'d',c:'k',g:'g',ch:'tʃ',j:'dʒ',f:'f',v:'v',s:'s',z:'z',sh:'ʃ',h:'h',m:'m',n:'n',r:'r',l:'l',y:'j',w:'w'};
+const V_IPA={a:'a',e:'e',i:'i',o:'o',u:'u',ai:'ai',ei:'ei',oi:'oi',au:'au',eu:'eu'};
+const CLUSTERS=['pl','pr','bl','br','tr','dr','cl','cr','gl','gr','fl','fr','sp','st','sc'];
+function tokenizeIPA(s){
+  s=String(s).toLowerCase();
+  const units=[];let i=0;
+  while(i<s.length){
+    const ch=s[i];
+    if(!/[a-z]/.test(ch)){i++;continue;}
+    let d=null;
+    for(const k of ['ai','ei','oi','au','eu'])if(s.startsWith(k,i)){d=k;break;}
+    if(d){units.push({v:1,g:d,ipa:V_IPA[d]});i+=d.length;continue;}
+    if('aeiou'.includes(ch)){units.push({v:1,g:ch,ipa:V_IPA[ch]});i++;continue;}
+    let c=ch;
+    if(s.startsWith('ch',i))c='ch';else if(s.startsWith('sh',i))c='sh';
+    if(C_IPA[c])units.push({v:0,g:c,ipa:C_IPA[c]});
+    i+=c.length;
+  }
+  return units;
+}
+function syllabify(units){
+  const vIdx=units.map((u,i)=>u.v?i:-1).filter(i=>i>=0);
+  if(!vIdx.length)return [units];
+  const sylls=[];let cur=[];
+  for(let i=0;i<=vIdx[0];i++)cur.push(units[i]);
+  for(let vi=1;vi<vIdx.length;vi++){
+    const nextV=vIdx[vi];
+    const cs=units.slice(vIdx[vi-1]+1,nextV);
+    let coda=[],onset=cs;
+    if(cs.length){
+      const g=cs.map(u=>u.g).join('');
+      if(!(cs.length===1||CLUSTERS.includes(g))){coda=[cs[0]];onset=cs.slice(1);}
+    }
+    cur.push(...coda);
+    sylls.push(cur);
+    cur=[...onset,units[nextV]];
+  }
+  for(let i=vIdx[vIdx.length-1]+1;i<units.length;i++)cur.push(units[i]);
+  sylls.push(cur);
+  return sylls;
+}
+function genIPA(raw){
+  const units=tokenizeIPA(raw);
+  if(!units.length)return '';
+  const sylls=syllabify(units);
+  const stress=Math.max(0,sylls.length-2);
+  const out=sylls.map((sy,idx)=>(idx===stress?"'":'')+sy.map(u=>u.ipa).join(''));
+  return '/'+out.join('.')+'/';
+}
+
+/* ===== 存储层 ===== */
+const NAME_KEY='CONLANG::';
+const Persist={
+  ok:false,
+  check(){try{localStorage.setItem('__probe','1');this.ok=localStorage.getItem('__probe')==='1';localStorage.removeItem('__probe');}catch(e){this.ok=false;}return this.ok;}
+};
+function idbOpen(){return new Promise((res,rej)=>{const q=indexedDB.open('conlang-db',1);
+  q.onupgradeneeded=()=>q.result.createObjectStore('kv');
+  q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
+async function idbSet(v){try{const db=await idbOpen();db.transaction('kv','readwrite').objectStore('kv').put(v,'data');}catch(e){}}
+async function idbGet(){try{const db=await idbOpen();
+  return await new Promise(res=>{const g=db.transaction('kv').objectStore('kv').get('data');
+    g.onsuccess=()=>res(g.result||null);g.onerror=()=>res(null);});}catch(e){return null;}}
+function nameGet(){try{const n=window.name||'';if(n.indexOf(NAME_KEY)===0)return JSON.parse(n.slice(NAME_KEY.length));}catch(e){}return null;}
+function nameSet(j){try{if(j.length<1e6)window.name=NAME_KEY+j;}catch(e){}}
+function readEmbedded(){
+  const el=document.getElementById('embedData');
+  if(!el)return null;
+  try{return JSON.parse(el.textContent);}catch(e){return null;}
+}
+const Store={
+  KEY:'conlang.studio.v15', state:null,
+  defaults:()=>({version:15,langName:'我的人造语言',theme:'light',words:[],sentences:[]}),
+  async load(){
+    let s=null,src='';
+    if(Persist.ok){try{const v=JSON.parse(localStorage.getItem(this.KEY));if(v){s=v;src='ls';}}catch(e){}}
+    if(!s){const v=await idbGet();if(v){s=v;src='idb';}}
+    if(!s){const v=nameGet();if(v){s=v;src='name';}}
+    if(!s){const v=readEmbedded();if(v){s=v;src='embed';}}
+    if(!s&&Persist.ok)for(const k of ['conlang.studio.v14','conlang.studio.v13','conlang_app_data']){
+      try{const v=JSON.parse(localStorage.getItem(k));if(v){s=v;src='ls';break;}}catch(e){}}
+    const d=this.defaults();s=(s&&typeof s==='object')?s:{};
+    this.state={...d,...s,
+      words:Array.isArray(s.words)?s.words:[],
+      sentences:Array.isArray(s.sentences)?s.sentences:[]};
+    this.state.words.forEach(w=>{if(!w.phonetic)w.phonetic=genIPA(w.raw);});
+    this.applyTheme();
+    if(src)this.save();
+  },
+  save(){
+    const j=JSON.stringify(this.state);
+    if(Persist.ok){try{localStorage.setItem(this.KEY,j);}catch(e){Persist.ok=false;}}
+    idbSet(j);
+    nameSet(j);
+  },
+  applyTheme(){document.documentElement.dataset.theme=this.state.theme;}
+};
+
+/* ===== 生成数据随文件走的新版本 ===== */
+function generatePortable(){
+  try{
+    Modal.close();
+    const json=JSON.stringify(Store.state).replace(/</g,'\\u003c');
+    const clone=document.documentElement.cloneNode(true);
+    clone.querySelectorAll('#embedData').forEach(n=>n.remove());
+    const tag=document.createElement('script');
+    tag.id='embedData';tag.type='application/json';tag.textContent=json;
+    clone.appendChild(tag);
+    const blob=new Blob(['<!DOCTYPE html>\n'+clone.outerHTML],{type:'text/html'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=Store.state.langName+'-人造语言工具.html';
+    a.click();URL.revokeObjectURL(a.href);
+    Toast('已生成新文件，数据随行');
+  }catch(err){console.error(err);Toast('生成失败：'+err.message);}
+}
+
+/* ===== 提示 & 弹窗 ===== */
+const Toast=(()=>{let t;return m=>{const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(t);t=setTimeout(()=>el.classList.remove('show'),1800);};})();
+const Modal={
+  root:null,_res:null,
+  init(){this.root=$('#modalRoot');},
+  sheet(h){this.root.innerHTML=`<div class="sheet"><div class="mask" data-action="sheet-close"></div><div class="panel">${h}</div></div>`;},
+  close(){this.root.innerHTML='';this._res=null;},
+  confirm({title,content,ok='确定',danger=false}={}){
+    return new Promise(res=>{this._res=res;
+      this.root.innerHTML=`<div class="sheet center"><div class="mask" data-action="dlg-cancel"></div>
+      <div class="dialog"><div class="d-title">${esc(title||'提示')}</div><div class="d-content">${esc(content||'')}</div>
+      <div class="d-btns"><button class="btn flat" data-action="dlg-cancel">取消</button>
+      <button class="btn ${danger?'danger':'primary'}" data-action="dlg-ok">${esc(ok)}</button></div></div></div>`;});
+  },
+  ok(){const r=this._res;this.close();r&&r(true);},
+  cancel(){const r=this._res;this.close();r&&r(false);}
+};
+
+/* ===== 路由 ===== */
+const Router={
+  current:null,
+  go(p){
+    if(p===this.current)return;
+    this.current=p;
+    $$('.page').forEach(x=>x.classList.toggle('active',x.dataset.page===p));
+    $$('#tabbar .tab').forEach(t=>t.classList.toggle('on',t.dataset.page===p));
+    if(Render[p])Render[p]();
+    scrollTo({top:0});
+  }
+};
+
+/* ===== 文档解析 ===== */
+async function readDocx(buf){
+  const dv=new DataView(buf);let eocd=-1;
+  for(let i=buf.byteLength-22;i>=0;i--)if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;}
+  if(eocd<0)throw 0;
+  const count=dv.getUint16(eocd+10,true);let off=dv.getUint32(eocd+16,true);
+  const ent={};
+  for(let i=0;i<count;i++){
+    if(dv.getUint32(off,true)!==0x02014b50)break;
+    const method=dv.getUint16(off+10,true),csize=dv.getUint32(off+20,true),
+      nlen=dv.getUint16(off+28,true),elen=dv.getUint16(off+30,true),
+      clen=dv.getUint16(off+32,true),lhdr=dv.getUint32(off+42,true);
+    ent[new TextDecoder().decode(new Uint8Array(buf,off+46,nlen))]={method,csize,lhdr};
+    off+=46+nlen+elen+clen;
+  }
+  const e=ent['word/document.xml'];if(!e)throw 0;
+  const lnlen=dv.getUint16(e.lhdr+26,true),lelen=dv.getUint16(e.lhdr+28,true);
+  const data=new Uint8Array(buf,e.lhdr+30+lnlen+lelen,e.csize);
+  let xml;
+  if(e.method===0)xml=new TextDecoder().decode(data);
+  else if(e.method===8&&'DecompressionStream' in window){
+    const st=new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    xml=new TextDecoder().decode(await new Response(st).arrayBuffer());
+  }else throw 0;
+  return xml.replace(/<w:tab[^>]*>/g,'\t').replace(/<w:br[^>]*>/g,'\n').replace(/<\/w:p>/g,'\n')
+    .replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
+    .replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/\u00a0/g,' ');
+}
+function readDoc(buf){
+  const dv=new DataView(buf);let out='',cur='';
+  const fl=()=>{const t=cur.trim();if(t.length>=4)out+=t+'\n';cur='';};
+  for(let i=0;i+1<buf.byteLength;i+=2){
+    const ch=dv.getUint16(i,true);
+    if((ch>=0x4e00&&ch<=0x9fff)||(ch>=0x3000&&ch<=0x303f)||ch===0xff08||ch===0xff09||(ch>=0x20&&ch<0x7f)||ch===13||ch===10||ch===9)cur+=String.fromCharCode(ch);
+    else fl();
+  }
+  fl();return out;
+}
+function isHead(l){
+  if(!l||l.length>=40)return false;
+  const m=l.match(/^(#{1,6}\s+|第[一二三四五六七八九十百0-9]+[章节讲]|[一二三四五六七八九十]+[、.]|\d+[、.．]\s*|【)/);
+  if(!m)return false;
+  return !/[a-zA-Z]/.test(l.slice(m[0].length));
+}
+function classify(t){
+  let pos='';
+  const pm=t.match(/[（(]([^()（）]{1,12})[)）]/);
+  if(pm&&POS_RE.test(pm[1]))pos=pm[1].match(POS_RE)[1];
+  const clean=t.replace(/\/[^/]*\//g,' ').replace(/\[[^\]]*\]/g,' ').replace(/[（(][^)）]*[)）]/g,' ');
+  const ci=clean.search(/[\u4e00-\u9fff]/);
+  let latin,cjk;
+  if(ci>0){latin=clean.slice(0,ci);cjk=clean.slice(ci);}
+  else if(ci===0){
+    const li=clean.search(/[A-Za-z]/);
+    if(li<0)return null;
+    cjk=clean.slice(0,li);latin=clean.slice(li);
+  }else return null;
+  const latRaw=latin.trim();
+  cjk=cjk.replace(/^[\s:：\-—→>,，;；=]+/,'').trim();
+  const pm2=cjk.match(new RegExp('^('+POS_LIST.join('|')+')\\s*[.、,，:：]?\\s*(.*)$'));
+  if(pm2&&pm2[2]){pos=pos||pm2[1];cjk=pm2[2];}
+  if(!latRaw||!cjk||!/[\u4e00-\u9fff]/.test(cjk))return null;
+  if(!/^[A-Za-z][A-Za-z'’\-]*(\s+[A-Za-z][A-Za-z'’\-]*)*[\s.,!?;:]*$/.test(latRaw))return null;
+  const hasPunct=/[.!?;:]/.test(latRaw)||/,/.test(latRaw.replace(/,\s*$/,''));
+  if(hasPunct)return{kind:'s',text:latRaw,meaning:cjk};
+  const raw=latRaw.replace(/[\s.,!?;:]+$/,'').trim();
+  if(!raw)return null;
+  return{kind:'w',raw,pos,meaning:cjk};
+}
+function smartParse(text){
+  const res={words:[],sentences:[]},seen=new Set();
+  text.split(/\r?\n/).forEach(raw=>{
+    const line=raw.trim();if(!line||isHead(line))return;
+    const entry=classify(line.replace(/^\d+[、.．]\s*/,''));
+    if(!entry)return;
+    if(entry.kind==='w'){const k=entry.raw.toLowerCase();
+      if(!seen.has(k)){seen.add(k);res.words.push(entry);}}
+    else res.sentences.push({text:entry.text,meaning:entry.meaning});
+  });
+  return res;
+}
+function handleImportText(txt){
+  const r=smartParse(txt);
+  const total=r.words.length+r.sentences.length;
+  if(!total){Toast('未识别到内容');return;}
+  Modal.confirm({title:'识别结果',ok:'导入',content:
+    `词汇 ${r.words.length} 个\n句子 ${r.sentences.length} 条\n\n是否全部导入？`})
+  .then(ok=>{
+    if(!ok)return;
+    const st=Store.state;let added=0,dup=0;
+    r.words.forEach(w=>{if(st.words.some(x=>x.raw.toLowerCase()===w.raw.toLowerCase())){dup++;return;}
+      if(!w.phonetic)w.phonetic=genIPA(w.raw);
+      st.words.unshift(newWord(w));added++;});
+    r.sentences.forEach(p=>st.sentences.unshift({id:uid(),type:'sentence',text:p.text,meaning:p.meaning}));
+    Store.save();refreshWords();Sentences.render();
+    Toast(`已导入 ${added} 个词汇${dup?`（跳过重复 ${dup}）`:''}`);
+  });
+}
+function parseCSV(text){
+  const rows=[];let skip=0;const seen=new Set();
+  text.split(/\r?\n/).forEach(l=>{
+    l=l.trim();if(!l)return;
+    const p=l.split(/[,，\t|;；]/).map(s=>s.trim()).filter(s=>s!=='');
+    if(p.length<2){skip++;return;}
+    const raw=p[0],pos=p.length>=3?p[1]:'',meaning=p.length>=3?p.slice(2).join(','):p[1];
+    const k=raw.toLowerCase();
+    if(!/^[A-Za-z]/.test(raw)||seen.has(k)){skip++;return;}
+    seen.add(k);rows.push({raw,pos,meaning});
+  });
+  return{rows,skip};
+}
+function applyImport(txt){
+  if(!txt||!txt.trim()){Toast('内容为空');return;}
+  let d=null;
+  try{d=JSON.parse(txt);}catch(e){}
+  if(d&&Array.isArray(d.words)){
+    Store.state={...Store.defaults(),...d,
+      words:d.words,sentences:Array.isArray(d.sentences)?d.sentences:[]};
+    Store.state.words.forEach(w=>{if(!w.phonetic)w.phonetic=genIPA(w.raw);});
+    Store.save();Store.applyTheme();Modal.close();
+    badges();Render.settings();refreshWords();Sentences.render();
+    Toast('备份恢复成功');
+  }else handleImportText(txt);
+}
+function refreshWords(){
+  Render.words();Dict.render();
+  if(Router.current==='search')Search.render();
+  if(Router.current==='word')WordPage.render();
+}
+
+/* ===== 词卡详情 ===== */
+function detailHTML(w){
+  const ex=Store.state.sentences.filter(s=>s.type==='sentence'&&s.text.toLowerCase().includes(w.raw.toLowerCase())).slice(0,5);
+  return `<div class="card">
+    <span class="w-name act" data-wid="${w.id}">${esc(w.raw)}</span>
+    ${w.phonetic?`<div class="w-pho">${esc(w.phonetic)}</div>`:''}
+    <div class="w-sub">${w.pos?`<span class="w-tag">${esc(w.pos)}</span>`:''}<span class="w-mean-i">${esc(w.meaning)}</span></div>
+  </div>`+
+  (ex.length?`<div class="ex-head">双语例句</div><div class="card ex-list">${
+    ex.map((s,i)=>`<div class="ex-item"><span class="ex-n">${i+1}.</span><div><div class="ex-src">${esc(s.text)}</div><div class="ex-tr">${esc(s.meaning)}</div></div></div>`).join('')
+  }</div>`:'');
+}
+
+/* ===== 原词手势 ===== */
+const Gesture={
+  tapTimer:null,lastTap:0,suppress:false,lpTimer:null,lx:0,ly:0,
+  init(){
+    document.addEventListener('pointerdown',e=>{
+      const t=e.target.closest('.w-name.act');
+      this.suppress=false;
+      if(!t)return;
+      this.lx=e.clientX;this.ly=e.clientY;
+      clearTimeout(this.lpTimer);
+      this.lpTimer=setTimeout(()=>{this.suppress=true;copyWord(t.dataset.wid);},500);
+    });
+    document.addEventListener('pointermove',e=>{
+      if(this.lpTimer&&Math.hypot(e.clientX-this.lx,e.clientY-this.ly)>10){clearTimeout(this.lpTimer);this.lpTimer=null;}
+    });
+    document.addEventListener('pointerup',()=>clearTimeout(this.lpTimer));
+    document.addEventListener('pointercancel',()=>clearTimeout(this.lpTimer));
+    document.addEventListener('contextmenu',e=>{if(e.target.closest('.w-name.act'))e.preventDefault();});
+    document.addEventListener('click',e=>{
+      const t=e.target.closest('.w-name.act');
+      if(!t)return;
+      if(this.suppress){this.suppress=false;return;}
+      const now=Date.now();
+      if(now-this.lastTap<300){
+        this.lastTap=0;clearTimeout(this.tapTimer);
+        delWord(t.dataset.wid);
+      }else{
+        this.lastTap=now;
+        clearTimeout(this.tapTimer);
+        const id=t.dataset.wid;
+        this.tapTimer=setTimeout(()=>{WordSheet.open(id);this.lastTap=0;},300);
+      }
+    });
+  }
+};
+function copyWord(id){
+  const w=Store.state.words.find(x=>x.id===id);if(!w)return;
+  const done=()=>Toast('已复制 '+w.raw);
+  const fb=()=>{const ta=document.createElement('textarea');ta.value=w.raw;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    try{document.execCommand('copy');done();}catch(e){Toast('复制失败');}
+    ta.remove();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(w.raw).then(done).catch(fb);
+  else fb();
+}
+async function delWord(id){
+  if(await Modal.confirm({title:'删除词汇',content:'删除后不可恢复，确定删除？',ok:'删除',danger:true})){
+    Store.state.words=Store.state.words.filter(w=>w.id!==id);
+    Store.save();
+    const cur=Router.current;
+    if(cur==='word'){Router.go(WordPage.from==='search'?'search':'dict');refreshWords();}
+    else refreshWords();
+    Toast('已删除');
+  }
+}
+
+/* ===== 词汇编辑抽屉 ===== */
+const WordSheet={
+  editId:null,pos:'',phoTouched:false,
+  open(id){
+    this.editId=id||null;
+    const w=id?Store.state.words.find(x=>x.id===id):null;
+    this.pos=w?.pos||'';
+    this.phoTouched=!!(w&&w.phonetic);
+    Modal.sheet(`<div class="sheet-head"><span class="sh-title">${w?'编辑词汇':'新增词汇'}</span><span class="sh-close" data-action="sheet-close">✕</span></div>
+    <label class="f-label">原词 <i>*</i></label><input id="wRaw" value="${esc(w?.raw??'')}">
+    <label class="f-label">音标（自动生成，可修改）</label><input id="wPho" value="${esc(w?.phonetic??'')}">
+    <label class="f-label">词性</label>
+    <div class="pos-grid" id="posGrid">${POS_LIST.map(p=>`<button class="pos-item ${this.pos===p?'on':''}" data-action="pos-pick" data-pos="${p}">${p}</button>`).join('')}</div>
+    <label class="f-label">释义 <i>*</i></label><input id="wMean" value="${esc(w?.meaning??'')}">
+    <button class="btn primary big" data-action="word-save">保存</button>`);
+  },
+  save(){
+    const raw=$('#wRaw').value.trim(),phonetic=$('#wPho').value.trim(),meaning=$('#wMean').value.trim();
+    if(!raw||!meaning){Toast('请填写原词和释义');return;}
+    const st=Store.state;
+    if(this.editId)Object.assign(st.words.find(x=>x.id===this.editId),{raw,phonetic,pos:this.pos,meaning});
+    else st.words.unshift(newWord({raw,phonetic,pos:this.pos,meaning}));
+    Store.save();Modal.close();refreshWords();Toast('已保存');
+  }
+};
+
+/* ===== 句子编辑抽屉 ===== */
+const SentenceSheet={
+  editId:null,
+  open(id){
+    this.editId=id||null;
+    const s=id?Store.state.sentences.find(x=>x.id===id):null;
+    Modal.sheet(`<div class="sheet-head"><span class="sh-title">${s?'编辑句子':'新增句子'}</span><span class="sh-close" data-action="sheet-close">✕</span></div>
+    <label class="f-label">原文 <i>*</i></label><input id="sText" value="${esc(s?.text??'')}">
+    <label class="f-label">释义 <i>*</i></label><input id="sMean" value="${esc(s?.meaning??'')}">
+    <button class="btn primary big" data-action="s-save">保存</button>`);
+  },
+  save(){
+    const t=$('#sText').value.trim(),m=$('#sMean').value.trim();
+    if(!t||!m){Toast('请填写原文和释义');return;}
+    const st=Store.state;
+    if(this.editId)Object.assign(st.sentences.find(x=>x.id===this.editId),{text:t,meaning:m});
+    else st.sentences.unshift({id:uid(),type:'sentence',text:t,meaning:m});
+    Store.save();Modal.close();Sentences.render();refreshWords();Toast('已保存');
+  }
+};
+
+/* ===== 语句管理 ===== */
+const Sentences={
+  render(){
+    const items=Store.state.sentences.filter(x=>x.type==='sentence');
+    $('#sBody').innerHTML=items.map(s=>`<div class="card"><div class="w-name" style="font-size:14.5px">${esc(s.text)}</div>
+      <div class="w-mean-i" style="margin-top:6px">${esc(s.meaning)}</div>
+      <div class="w-actions"><button class="chip edit" data-action="s-edit" data-id="${s.id}">编辑</button>
+      <button class="chip del" data-action="s-del" data-id="${s.id}">删除</button></div></div>`).join('');
+  }
+};
+
+/* ===== 搜索结果页 ===== */
+const Search={
+  q:'',
+  render(){
+    badges();
+    const inp=$('#resultSearch');
+    if(inp.value!==this.q)inp.value=this.q;
+    const k=this.q.trim().toLowerCase();
+    const st=Store.state;
+    const list=k?st.words.filter(w=>w.raw.toLowerCase().includes(k)||w.meaning.includes(k.trim())||(w.pos||'').toLowerCase().includes(k)):[];
+    $('#searchList').innerHTML=list.map(w=>detailHTML(w)).join('');
+  },
+  go(){
+    const v=($('#searchInput').value||'').trim();
+    if(!v){Toast('先输入要查的内容');return;}
+    this.q=v;Router.go('search');
+  }
+};
+
+/* ===== 词卡页 ===== */
+const WordPage={
+  id:null,from:'dict',
+  open(id,from){this.id=id;this.from=from||'dict';Router.go('word');},
+  render(){
+    const w=Store.state.words.find(x=>x.id===this.id);
+    $('#wordBox').innerHTML=w?detailHTML(w):'';
+  }
+};
+
+/* ===== 词典 ===== */
+const Dict={
+  mode:'alpha',folded:{},
+  groups(){
+    const ws=Store.state.words;
+    const g=[];
+    if(this.mode==='alpha'){
+      const m={};
+      ws.forEach(w=>{let key=(w.raw[0]||'').toUpperCase();if(!/[A-Z]/.test(key))key='#';(m[key]=m[key]||[]).push(w);});
+      Object.keys(m).sort().forEach(key=>g.push([key,m[key]]));
+    }else{
+      POS_LIST.forEach(p=>{const list=ws.filter(w=>w.pos===p);if(list.length)g.push([p,list]);});
+      const rest=ws.filter(w=>!w.pos||!POS_LIST.includes(w.pos));
+      if(rest.length)g.push(['其他',rest]);
+    }
+    g.forEach(([,list])=>list.sort((a,b)=>a.raw.localeCompare(b.raw)));
+    return g;
+  },
+  render(){
+    badges();
+    $$('#dictSeg .seg-item').forEach(el=>el.classList.toggle('on',el.dataset.mode===this.mode));
+    const g=this.groups();
+    $('#qnav').innerHTML=g.map(([key])=>`<button class="qn" data-action="dict-jump" data-key="${esc(key)}">${esc(key)}</button>`).join('');
+    const row=w=>`<div class="card tap" data-action="word-open" data-id="${w.id}">
+      <div class="w-head" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="w-name">${esc(w.raw)}</span>${w.pos?`<span class="w-tag">${esc(w.pos)}</span>`:''}</div>
+      ${w.phonetic?`<div class="w-pho">${esc(w.phonetic)}</div>`:''}
+      <div class="w-mean-i" style="margin-top:6px">${esc(w.meaning)}</div></div>`;
+    $('#dictList').innerHTML=g.map(([key,list])=>{
+      const folded=!!this.folded[this.mode+':'+key];
+      return `<div class="d-group" id="dg-${esc(key)}" data-action="dict-fold" data-key="${esc(key)}">
+        <span>${esc(key)}</span><span class="cnt">${list.length}</span><span class="fold">${folded?'▸':'▾'}</span></div>`+
+        (folded?'':list.map(row).join(''));
+    }).join('');
+  },
+  jump(key){
+    const fk=this.mode+':'+key;
+    if(this.folded[fk]){this.folded[fk]=false;this.render();}
+    requestAnimationFrame(()=>{
+      const el=document.getElementById('dg-'+key);
+      if(!el)return;
+      const top=el.getBoundingClientRect().top+window.pageYOffset-94;
+      window.scrollTo({top,behavior:'smooth'});
+    });
+  }
+};
+
+/* ===== 渲染 ===== */
+const Render={
+  words(){
+    badges();
+    $('#wordCount').textContent=Store.state.words.length;
+    $('#storeWarn').style.display=Persist.ok?'none':'block';
+  },
+  search(){Search.render();},
+  dict(){Dict.render();},
+  word(){badges();WordPage.render();},
+  sentences(){badges();Sentences.render();},
+  settings(){
+    const s=Store.state;
+    $('#langInput').value=s.langName;
+    $('#themeBtn').textContent=s.theme==='dark'?'浅色模式':'深色模式';
+    $('#statsRow').innerHTML=`<div class="stat"><b>${s.words.length}</b><span>词汇</span></div>
+      <div class="stat"><b>${s.sentences.filter(x=>x.type==='sentence').length}</b><span>句子</span></div>`;
+  }
+};
+
+/* ===== 事件 ===== */
+const Actions={
+  tab:d=>Router.go(d.page),
+  'search-go':()=>Search.go(),
+  'search-back':()=>{Search.q='';const i=$('#searchInput');if(i)i.value='';Router.go('words');},
+  'dict-open':()=>Router.go('dict'),
+  'dict-back':()=>Router.go('words'),
+  'dict-mode':d=>{Dict.mode=d.mode;Dict.render();},
+  'dict-fold':d=>{const fk=Dict.mode+':'+d.key;Dict.folded[fk]=!Dict.folded[fk];Dict.render();},
+  'dict-jump':d=>Dict.jump(d.key),
+  'word-open':d=>WordPage.open(d.id,'dict'),
+  'word-back':()=>Router.go(WordPage.from==='search'?'search':'dict'),
+  'pos-pick':d=>{
+    WordSheet.pos=WordSheet.pos===d.pos?'':d.pos;
+    $$('#posGrid .pos-item').forEach(el=>el.classList.toggle('on',el.dataset.pos===WordSheet.pos));
+  },
+  'word-add':()=>WordSheet.open(),
+  'word-save':()=>WordSheet.save(),
+  'csv-open':()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">批量导入</span><span class="sh-close" data-action="sheet-close">✕</span></div>
+    <label class="f-label" style="margin-top:4px">每行：原词, 词性, 释义（两列时按 原词, 释义）</label>
+    <textarea id="csvBox"></textarea>
+    <button class="btn primary big" data-action="csv-save">导入</button>`),
+  'csv-save':()=>{
+    const {rows,skip}=parseCSV($('#csvBox').value);
+    if(!rows.length){Toast('未识别到有效行');return;}
+    const st=Store.state;let added=0,dup=0;
+    rows.forEach(r=>{if(st.words.some(x=>x.raw.toLowerCase()===r.raw.toLowerCase())){dup++;return;}
+      r.phonetic=genIPA(r.raw);
+      st.words.unshift(newWord(r));added++;});
+    Store.save();Modal.close();refreshWords();Toast(`已导入 ${added} 个词汇${dup+skip?`，跳过 ${dup+skip} 行`:''}`);
+  },
+  'sheet-close':()=>Modal.close(),
+  'dlg-ok':()=>Modal.ok(),'dlg-cancel':()=>Modal.cancel(),
+  'doc-import':()=>$('#gFile').click(),
+  'doc-paste':()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">粘贴文本</span><span class="sh-close" data-action="sheet-close">✕</span></div>
+    <label class="f-label" style="margin-top:4px">自动识别：无标点行 → 词汇；半角标点行 → 句子</label>
+    <textarea id="pasteBox"></textarea>
+    <button class="btn primary big" data-action="paste-import">识别并导入</button>`),
+  'paste-import':()=>{const v=$('#pasteBox').value.trim();if(!v){Toast('请先粘贴内容');return;}Modal.close();handleImportText(v);},
+  's-add':()=>SentenceSheet.open(),
+  's-edit':d=>SentenceSheet.open(d.id),
+  's-save':()=>SentenceSheet.save(),
+  's-del':async d=>{if(await Modal.confirm({title:'删除句子',content:'确定删除？',ok:'删除',danger:true})){
+    Store.state.sentences=Store.state.sentences.filter(x=>x.id!==d.id);Store.save();Sentences.render();refreshWords();}},
+  'save-lang':()=>{Store.state.langName=$('#langInput').value.trim()||'我的人造语言';Store.save();badges();Render.settings();Toast('已保存');},
+  theme:()=>{Store.state.theme=Store.state.theme==='dark'?'light':'dark';Store.applyTheme();Store.save();Render.settings();},
+  'save-file':()=>generatePortable(),
+  export:()=>{
+    const s=JSON.stringify(Store.state,null,2);
+    Modal.sheet(`<div class="sheet-head"><span class="sh-title">导出 JSON</span><span class="sh-close" data-action="sheet-close">✕</span></div>
+    <textarea id="expBox" style="min-height:200px">${esc(s)}</textarea>
+    <button class="btn primary big" data-action="exp-copy">复制全部</button>
+    <button class="btn soft" data-action="exp-dl">下载为文件</button>`);
+  },
+  'exp-copy':()=>{
+    const el=$('#expBox');el.focus();el.select();
+    let ok=false;try{ok=document.execCommand('copy');}catch(e){}
+    if(ok)Toast('已复制，可粘贴保存');
+    else if(navigator.clipboard)navigator.clipboard.writeText(el.value)
+      .then(()=>Toast('已复制，可粘贴保存')).catch(()=>Toast('请长按文本手动复制'));
+    else Toast('请长按文本手动复制');
+  },
+  'exp-dl':()=>{
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([$('#expBox').value],{type:'application/json'}));
+    a.download=Store.state.langName+'-资料.json';a.click();URL.revokeObjectURL(a.href);
+    Toast('已开始下载');
+  },
+  import:()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">导入 JSON</span><span class="sh-close" data-action="sheet-close">✕</span></div>
+    <label class="f-label" style="margin-top:4px">支持 JSON 备份 / TXT / DOCX / 纯文本</label>
+    <textarea id="impBox" style="min-height:180px"></textarea>
+    <button class="btn primary big" data-action="imp-go">导入</button>
+    <button class="btn soft" data-action="imp-file">从文件选择</button>`),
+  'imp-go':()=>applyImport($('#impBox').value),
+  'imp-file':()=>$('#iFile').click()
+};
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-action]');if(!t)return;
+  const fn=Actions[t.dataset.action];
+  if(fn){try{fn(t.dataset,t,e);}catch(err){console.error(err);Toast('操作失败：'+err.message);}}
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='resultSearch'){Search.q=e.target.value;Search.render();}
+  if(e.target.id==='wRaw'&&!WordSheet.phoTouched){
+    const p=$('#wPho');if(p)p.value=genIPA(e.target.value);
+  }
+  if(e.target.id==='wPho'){WordSheet.phoTouched=e.target.value.trim()!=='';}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.id==='searchInput'){
+    if(e.isComposing||e.keyCode===229)return;
+    e.preventDefault();Search.go();
+  }
+});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Store.save();});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.id!=='gFile'&&el.id!=='iFile')return;
+  const f=el.files[0];if(!f)return;
+  const name=(f.name||'').toLowerCase();
+  const fr=new FileReader();
+  fr.onload=async()=>{
+    try{
+      let text;
+      if(name.endsWith('.docx'))text=await readDocx(fr.result);
+      else if(name.endsWith('.doc'))text=readDoc(fr.result);
+      else text=String(fr.result);
+      if(el.id==='iFile')applyImport(text);else handleImportText(text);
+    }catch(err){Toast('无法解析该文件，请转为 txt 后重试');}
+    el.value='';
+  };
+  if(name.endsWith('.docx')||name.endsWith('.doc'))fr.readAsArrayBuffer(f);
+  else fr.readAsText(f);
+});
+
+/* ===== 启动 ===== */
+(async function boot(){
+  try{
+    Modal.init();
+    Gesture.init();
+    Persist.check();
+    await Store.load();
+    Router.go('words');
+    /* PWA：仅在 http(s) 环境注册离线服务 */
+    if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
+      window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
+    }
+  }catch(err){console.error(err);Toast('启动异常：'+err.message);}
+})();
+</script>
+</body>
+      </html>
