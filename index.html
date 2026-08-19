@@ -213,6 +213,8 @@ var POS_LIST=['名词','动词','修饰词','数词','冠词','代词','介词',
 var POS_RE=new RegExp('^('+POS_LIST.join('|')+')');
 function existsWord(raw,exceptId){return Store.state.words.some(function(w){return w.raw.toLowerCase()===raw.toLowerCase()&&w.id!==exceptId;});}
 var FOLD_SVG='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 3 L15 10 L6 17 Z"></path></svg>';
+/* 纯 WebView 空壳（无 plus 运行时）识别 */
+function inBareWebView(){return !window.plus&&/; wv\)/.test(navigator.userAgent);}
 
 /* ===== 音标自动生成 ===== */
 var C_IPA={p:'p',b:'b',t:'t',d:'d',c:'k',g:'g',ch:'tʃ',j:'dʒ',f:'f',v:'v',s:'s',z:'z',sh:'ʃ',h:'h',m:'m',n:'n',r:'r',l:'l',y:'j',w:'w'};
@@ -315,7 +317,7 @@ var Store={
   }
 };
 
-/* ===== 下载：APP 内写入 Download/Tansica（Android 10-16 免权限），浏览器走 a[download] ===== */
+/* ===== 下载：HBuilderX 原生写 Download/Tansica；浏览器 a[download]；空壳兜底 ===== */
 function anchorDownload(blob,filename){
   try{
     var url=URL.createObjectURL(blob);
@@ -336,7 +338,6 @@ function saveBlobPlus(blob,filename,mime){
       var Base64=plus.android.importClass('android.util.Base64');
       var bytes=Base64.decode(b64,0);
       var saved='';
-      /* 1) MediaStore（Android 10-16，无需权限）→ Download/Tansica/ */
       try{
         var main=plus.android.runtimeMainActivity();
         plus.android.importClass('android.content.ContentResolver');
@@ -354,7 +355,6 @@ function saveBlobPlus(blob,filename,mime){
           saved='Download/Tansica/'+filename;
         }
       }catch(e){}
-      /* 2) Java 直写（Android 9 及以下）→ Download/Tansica */
       if(!saved){
         try{
           var Environment=plus.android.importClass('android.os.Environment');
@@ -368,7 +368,6 @@ function saveBlobPlus(blob,filename,mime){
           saved='Download/Tansica/'+filename;
         }catch(e){}
       }
-      /* 3) 应用外部目录兜底 */
       if(!saved){
         var act=plus.android.runtimeMainActivity();
         var File2=plus.android.importClass('java.io.File');
@@ -388,8 +387,20 @@ function saveBlobPlus(blob,filename,mime){
   reader.readAsDataURL(blob);
 }
 function download(blob,filename,mime){
-  if(window.plus&&plus.android){saveBlobPlus(blob,filename,mime);}
-  else{anchorDownload(blob,filename);}
+  if(window.plus&&plus.android){saveBlobPlus(blob,filename,mime);return;}
+  if(inBareWebView()){
+    anchorDownload(blob,filename);
+    setTimeout(function(){Toast('若无文件：此外壳不支持保存，请改用浏览器或 HBuilderX');},1900);
+    return;
+  }
+  anchorDownload(blob,filename);
+}
+/* 空壳兜底：TXT 改为全文复制窗 */
+function copySheet(text,title){
+  Modal.sheet('<div class="sheet-head"><span class="sh-title">'+esc(title||'导出')+'</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
+  '<label class="f-label" style="margin-top:4px">此外壳无法存文件，请复制后粘贴到记事本保存</label>'+
+  '<textarea id="expBox" style="min-height:260px">'+esc(text)+'</textarea>'+
+  '<button class="btn primary big" data-action="exp-copy">复制全部</button>');
 }
 function crc32(buf){
   var t=crc32.t;
@@ -459,11 +470,13 @@ function exportWordsTXT(){
     lines.push(l);
     if(w.note)lines.push('　补充：'+w.note);
   });
+  if(inBareWebView()){copySheet(lines.join('\n'),'词库 TXT');return;}
   download(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/plain;charset=utf-8'}),Store.state.langName+'-词库.txt','text/plain');
 }
 function exportWordsDocx(){
   var ws=sortedWords();
   if(!ws.length){Toast('词库为空');return;}
+  if(inBareWebView()){Toast('此外壳无法存 DOCX：请用浏览器或 HBuilderX 导出','danger');return;}
   var paras=[{text:Store.state.langName+' 词库',b:1,sz:36},{text:''}];
   ws.forEach(function(w){
     paras.push({text:w.raw+(w.phonetic?'  '+w.phonetic:''),b:1,sz:28});
