@@ -17,18 +17,10 @@
   --bg1:#f6f6f4;--bg2:#ebebe9;--card:#fff;--card2:#f1f1ef;--tabbg:rgba(255,255,255,.92);--line:rgba(0,0,0,.09);
   --text:#1c1c1e;--text2:#6e6e73;--text3:#a8a8ad;
   --btnbg:#1c1c1e;--btnfg:#fff;--prisoft:#ececea;--ring:rgba(0,0,0,.1);
-  --accent:#8a6b4f;--tanbg:#efe4d3;
+  --accent:#8a6b4f;
   --danger:#b3261e;--dangersoft:#f6e7e5;
   --sh1:0 1px 8px rgba(0,0,0,.05);--sh2:0 10px 30px rgba(0,0,0,.14);
-  --r:16px;--rs:10px;--tabh:58px;
-}
-[data-theme="dark"]{
-  --bg1:#141416;--bg2:#0c0c0e;--card:#1c1c1f;--card2:#242427;--tabbg:rgba(16,16,18,.92);--line:rgba(255,255,255,.1);
-  --text:#f2f2f4;--text2:#9a9aa0;--text3:#5f5f64;
-  --btnbg:#f2f2f4;--btnfg:#141416;--prisoft:#2a2a2e;--ring:rgba(255,255,255,.14);
-  --accent:#c8a97e;--tanbg:#37302a;
-  --danger:#ff8a80;--dangersoft:#3a2626;
-  --sh1:0 1px 8px rgba(0,0,0,.4);--sh2:0 10px 30px rgba(0,0,0,.6);
+  --r:16px;--rs:20px;--tabh:58px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
   color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));background-attachment:fixed;min-height:100vh;font-size:14px}
@@ -46,27 +38,23 @@ input,textarea{font:inherit;color:var(--text)}
 .count-chip{background:var(--prisoft);color:var(--accent);border-radius:999px;font-size:12px;font-weight:700;
   display:inline-flex;align-items:center;justify-content:center;line-height:1;height:24px;padding:0 11px;flex:none;transform:translateY(2px)}
 .card{background:var(--card);border-radius:var(--r);padding:15px;margin:10px 0;box-shadow:var(--sh1);border:1px solid var(--line)}
-.card.tap{cursor:pointer;transition:transform .15s}
-.card.tap:active{transform:scale(.98)}
-.note-box{border-left:4px solid var(--accent);color:var(--text2);font-size:13.5px;line-height:1.7}
+.card.gest,.card.pick{cursor:pointer;transition:transform .15s}
+.card.gest:active,.card.pick:active{transform:scale(.98)}
+.note-box{color:var(--text2);font-size:13.5px;line-height:1.7}
 .sug{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
 .sug-k{font-weight:700;font-size:15px;color:var(--text)}
 .sug-v{color:var(--text3);font-size:14px}
-.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:7px 7px 7px 17px;box-shadow:var(--sh1);border:1px solid var(--line);margin-bottom:5px}
-.search-wrap input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:14px}
-.search-big{padding:13px 18px}
-.search-big input{font-size:15px}
-.s-go{flex:none;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:700;background:var(--btnbg);color:var(--btnfg);transition:transform .15s}
-.s-go:active{transform:scale(.94)}
-.btn{display:block;width:100%;border-radius:12px;padding:11px 15px;font-size:14px;font-weight:600;margin-top:8px;transition:transform .15s,opacity .15s}
+.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:13px 18px;box-shadow:var(--sh1);border:1px solid var(--line);margin-bottom:5px}
+.search-wrap input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:15px}
+.btn{display:block;width:100%;border-radius:999px;padding:11px 15px;font-size:14px;font-weight:600;margin-top:8px;transition:transform .15s,opacity .15s}
 .btn:active{transform:scale(.97);opacity:.85}
 .btn.primary{background:var(--btnbg);color:var(--btnfg)}
 .btn.soft{background:var(--card);border:1px solid var(--line);color:var(--text);box-shadow:var(--sh1)}
-.btn.tan{background:var(--tanbg);color:var(--accent);border:none;box-shadow:none}
-.btn.big{padding:14px;border-radius:14px;font-size:15px;margin-top:14px}
+.btn.lib{background:var(--card);color:var(--accent);border:1.5px solid var(--accent);box-shadow:none}
+.btn.big{padding:14px;font-size:15px;margin-top:14px}
 .btn-row.two{display:flex;gap:8px}.btn-row.two .btn{flex:1;margin-top:10px}
-.seg{display:flex;gap:6px;background:var(--card2);border-radius:12px;padding:3px;margin-bottom:6px}
-.seg-item{flex:1;text-align:center;padding:10px 0;border-radius:9px;color:var(--text2);font-size:13.5px;transition:.2s}
+.seg{display:flex;gap:6px;background:var(--card2);border-radius:999px;padding:3px;margin-bottom:6px}
+.seg-item{flex:1;text-align:center;padding:10px 0;border-radius:999px;color:var(--text2);font-size:13.5px;transition:.2s}
 .seg-item:not(.on){border:1px solid var(--line)}
 .seg-item.on{background:var(--btnbg);color:var(--btnfg);font-weight:700}
 .qnav{position:sticky;top:0;z-index:6;display:flex;gap:6px;overflow-x:auto;padding:8px 2px;
@@ -74,17 +62,19 @@ input,textarea{font:inherit;color:var(--text)}
 .qnav::-webkit-scrollbar{display:none}
 .qn{flex:none;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:700;background:var(--card);border:1px solid var(--line);color:var(--text2);transition:.15s}
 .qn:active{transform:scale(.93);color:var(--text)}
-.stat-row{display:flex}
-.stat{flex:1;text-align:center}
-.stat b{display:block;font-size:20px;color:var(--text);margin-bottom:4px}
-.stat span{font-size:12px;color:var(--text2)}
 .w-name{font-size:18px;font-weight:800;color:var(--text)}
 .w-pho{margin-top:6px;color:var(--text3);font-size:14px}
 .w-sub{display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap}
 .w-mean-i{color:var(--text2);font-size:14px}
 .w-tag{background:var(--prisoft);color:var(--accent);border-radius:8px;padding:2px 10px;font-size:12px;font-weight:700}
 .w-extra{margin-top:6px;color:var(--text3);font-size:13px;white-space:pre-wrap}
-.hint-line{font-size:12px;color:var(--text3);margin:0 2px 6px;text-align:center}
+.ex-head{font-size:13px;font-weight:800;color:var(--text2);margin:14px 2px 2px}
+.ex-list{padding:4px 14px}
+.ex-item{display:flex;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.ex-item:last-child{border-bottom:none}
+.ex-n{flex:none;color:var(--text3);font-weight:700}
+.ex-src{font-size:14.5px;font-weight:600;color:var(--text)}
+.ex-tr{margin-top:4px;font-size:13.5px;color:var(--text3)}
 .d-group{display:flex;align-items:center;margin:18px 2px 8px;padding:4px 2px;cursor:pointer}
 .d-pill{display:inline-flex;align-items:center;gap:10px;padding:7px 16px;border-radius:999px;background:var(--card);border:1px solid var(--line);box-shadow:var(--sh1)}
 .d-key{font-size:18px;font-weight:800;color:var(--accent);letter-spacing:1px;line-height:1}
@@ -98,9 +88,13 @@ input,textarea{font:inherit;color:var(--text)}
 .pos-item.on{background:var(--btnbg);color:var(--btnfg)}
 .f-label{display:block;font-size:13px;color:var(--text2);margin:12px 0 5px}
 .f-label i{color:var(--danger);font-style:normal}
-.sheet input,.sheet textarea{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:var(--rs);padding:11px 13px;font-size:14px;outline:none;transition:.2s}
+.sheet input{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:999px;padding:11px 16px;font-size:14px;outline:none;transition:.2s}
+.sheet textarea{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:var(--rs);padding:11px 16px;font-size:14px;outline:none;transition:.2s;min-height:70px;resize:vertical}
 .sheet input:focus,.sheet textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
-.sheet textarea{min-height:120px;resize:vertical}
+.sense-row{display:flex;gap:6px;align-items:center;margin-top:8px}
+.sense-row input{width:auto;flex:1;min-width:0}
+.pos-btn{flex:none;min-width:84px;background:var(--prisoft);color:var(--accent);border-radius:999px;padding:10px 12px;font-size:12.5px;font-weight:700}
+.sense-del{flex:none;width:34px;height:34px;border-radius:50%;background:var(--dangersoft);color:var(--danger);font-size:16px}
 #tabbar{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;display:flex;z-index:20;
   background:var(--tabbg);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
   border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);transition:transform .25s ease}
@@ -110,9 +104,11 @@ input,textarea{font:inherit;color:var(--text)}
 #tabbar .tab.on{color:var(--text)}
 #tabbar .tab.on .ico{opacity:1}
 #toast{position:fixed;top:calc(env(safe-area-inset-top) + 6px);left:50%;transform:translate(-50%,-220%);opacity:0;
-  background:rgba(24,24,26,.92);color:#fff;padding:9px 19px;border-radius:999px;font-size:13px;
-  transition:transform .35s cubic-bezier(.2,.9,.3,1.2),opacity .3s;z-index:99;max-width:92%;pointer-events:none}
+  background:rgba(38,38,42,.78);color:#fff;padding:10px 26px;border-radius:999px;font-size:13px;text-align:center;
+  min-width:50%;max-width:94%;
+  transition:transform .35s cubic-bezier(.2,.9,.3,1.2),opacity .3s;z-index:99;pointer-events:none}
 #toast.show{transform:translate(-50%,0);opacity:1}
+#toast.danger{background:rgba(179,38,30,.85)}
 .sheet{position:fixed;inset:0;z-index:50}
 .sheet .mask{position:absolute;inset:0;background:rgba(0,0,0,.4)}
 .sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--card);
@@ -134,7 +130,7 @@ input,textarea{font:inherit;color:var(--text)}
 <nav id="tabbar">
   <button class="tab on" data-action="tab" data-page="words"><span class="ico">📝</span>词汇</button>
   <button class="tab" data-action="tab" data-page="dict"><span class="ico">📚</span>词库</button>
-  <button class="tab" data-action="tab" data-page="settings"><span class="ico">⚙️</span>设置</button>
+  <button class="tab" data-action="tab" data-page="sentences"><span class="ico">🗒️</span>语句</button>
 </nav>
 
 <div id="app">
@@ -143,10 +139,14 @@ input,textarea{font:inherit;color:var(--text)}
     <div class="page-head">
       <div class="head-l"><h1>词汇</h1><span class="count-chip" id="wordCount">0</span></div>
     </div>
-    <div class="search-wrap"><input id="searchInput" aria-label="搜索" enterkeyhint="search"><button class="s-go" data-action="search-go">搜索</button></div>
-    <div class="btn-row two">
-      <button class="btn soft" data-action="word-add">＋ 新增词汇</button>
-      <button class="btn soft" data-action="csv-open">批量导入</button>
+    <div class="search-wrap"><input id="searchInput" aria-label="搜索" enterkeyhint="search"></div>
+    <div id="sugList"></div>
+    <div id="wordsActions">
+      <div class="btn-row two">
+        <button class="btn soft" data-action="word-add">＋ 新增词汇</button>
+        <button class="btn soft" data-action="csv-open">批量导入</button>
+      </div>
+      <button class="btn primary big" data-action="doc-import">导入文档</button>
     </div>
   </section>
 
@@ -154,9 +154,7 @@ input,textarea{font:inherit;color:var(--text)}
     <div class="page-head">
       <div class="head-l"><button class="back2" data-action="search-back">←</button><h1>搜索结果</h1></div>
     </div>
-    <div class="search-wrap search-big"><input id="resultSearch" aria-label="搜索"></div>
-    <div class="hint-line">点词编辑 · 长按复制 · 双击删除</div>
-    <div id="searchList"></div>
+    <div id="searchBox"></div>
   </section>
 
   <section class="page" data-page="dict">
@@ -171,27 +169,34 @@ input,textarea{font:inherit;color:var(--text)}
     <div id="dictList"></div>
   </section>
 
-  <section class="page" data-page="word">
+  <section class="page" data-page="sentences">
     <div class="page-head">
-      <div class="head-l"><button class="back2" data-action="word-back">←</button><h1>词卡</h1></div>
+      <div class="head-l"><h1>语句</h1><span class="count-chip" id="sentCount">0</span></div>
     </div>
-    <div class="hint-line">点词编辑 · 长按复制 · 双击删除</div>
-    <div id="wordBox"></div>
+    <div class="search-wrap"><input id="sentSearch" aria-label="搜索句子" enterkeyhint="search"></div>
+    <div id="ssugList"></div>
+    <div id="sentActions">
+      <div class="btn-row two">
+        <button class="btn soft" data-action="s-add">＋ 新增语句</button>
+        <button class="btn soft" data-action="csv-open">批量导入</button>
+      </div>
+      <button class="btn primary big" data-action="doc-import">导入文档</button>
+      <button class="btn lib big" data-action="sentlib-open">句库</button>
+    </div>
   </section>
 
-  <section class="page" data-page="settings">
-    <div class="page-head"><h1>设置</h1></div>
-    <div class="card"><div class="stat-row" id="statsRow"></div></div>
-    <div class="card">
-      <div class="btn-row two">
-        <button class="btn tan" data-action="exp-words-txt">词库 TXT</button>
-        <button class="btn tan" data-action="exp-words-docx">词库 DOCX</button>
-      </div>
+  <section class="page" data-page="ssearch">
+    <div class="page-head">
+      <div class="head-l"><button class="back2" data-action="ssearch-back">←</button><h1>搜索结果</h1></div>
     </div>
-    <div class="card">
-      <button class="btn primary" data-action="export">导出</button>
-      <button class="btn soft" data-action="import">导入</button>
+    <div id="ssearchBox"></div>
+  </section>
+
+  <section class="page" data-page="sentlib">
+    <div class="page-head">
+      <div class="head-l"><button class="back2" data-action="sentlib-back">←</button><h1>句库</h1></div>
     </div>
+    <div id="sentlibList"></div>
   </section>
 
 </div>
@@ -203,20 +208,27 @@ input,textarea{font:inherit;color:var(--text)}
 'use strict';
 window.addEventListener('error',function(e){console.error(e);Toast('运行异常：'+(e.message||'未知错误'));});
 
-/* ===== 工具 ===== */
 function $(s,r){return (r||document).querySelector(s);}
 function $$(s,r){return Array.from((r||document).querySelectorAll(s));}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
-function newWord(obj){var o={id:uid(),created:Date.now(),raw:'',phonetic:'',pos:'',meaning:'',note:''};for(var k in obj)o[k]=obj[k];return o;}
-var POS_LIST=['名词','动词','修饰词','数词','冠词','代词','介词','连词','疑问词','功能词','声词'];
+function newWord(obj){var o={id:uid(),created:Date.now(),raw:'',phonetic:'',note:'',senses:[]};for(var k in obj){o[k]=obj[k];}return o;}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function hasWord(text,raw){
+  var t=(text||'').toLowerCase(),r=(raw||'').toLowerCase();
+  if(!r){return false;}
+  if(r.indexOf(' ')>=0){return t.indexOf(r)>=0;}
+  var m=t.match(/[a-z']+/g)||[];
+  return m.indexOf(r)>=0;
+}
+var TRAD='個們語詞說話書學習東車馬鳥魚門問時間國萬與業華開關點聽讀寫買賣飛電雲風長張陳劉黃蘇盧葉鄭鄧蕭網線機場廠廳廚衛藝術體運動農豐財經濟貿銀錢價優勞勢議員會組織職權劃區縣鄉鎮歲歷轉輪灣臺號碼聯繫統軟應資訊絡數據庫備還進導瀏覽頁麵飯館飲藥醫護軍戰爭勝負敗敵親愛謝對錯誤舊壞醜惡熱溫涼億沒無這麼為誰幾兩內後麗離陽陰園圓圖環現選擇讓給雖盡總將並別極滿夠記憶識覺觀尋覓發創造製採用';
+var SIMP='个们语词说话书学习东车马鸟鱼门问时间国万与业华开关点听读写买卖飞电云风长张陈刘黄苏卢叶郑邓萧网线机场厂厅厨卫艺术体运动农丰财经济贸银钱价优劳势议员会组织职权划区县乡镇岁历转轮湾台号码联系统软应资讯络数据库备还进导浏览页面饭馆饮药医护军战争胜负败敌亲爱谢对错误旧坏丑恶热温凉亿没无这么为谁几两内后丽离阳阴园圆图环现选择让给虽尽总将并别极满够记忆识觉观寻觅发创造制采用';
+function t2s(s){return String(s).replace(/[\u4e00-\u9fff]/g,function(ch){var i=TRAD.indexOf(ch);return i>=0?SIMP.charAt(i):ch;});}
+var POS_LIST=['名词','动词','修饰词','数词','冠词','代词','介词','连词','声词'];
 var POS_RE=new RegExp('^('+POS_LIST.join('|')+')');
 function existsWord(raw,exceptId){return Store.state.words.some(function(w){return w.raw.toLowerCase()===raw.toLowerCase()&&w.id!==exceptId;});}
 var FOLD_SVG='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 3 L15 10 L6 17 Z"></path></svg>';
-/* 纯 WebView 空壳（无 plus 运行时）识别 */
-function inBareWebView(){return !window.plus&&/; wv\)/.test(navigator.userAgent);}
 
-/* ===== 音标自动生成 ===== */
 var C_IPA={p:'p',b:'b',t:'t',d:'d',c:'k',g:'g',ch:'tʃ',j:'dʒ',f:'f',v:'v',s:'s',z:'z',sh:'ʃ',h:'h',m:'m',n:'n',r:'r',l:'l',y:'j',w:'w'};
 var V_IPA={a:'a',e:'e',i:'i',o:'o',u:'u',ai:'ai',ei:'ei',oi:'oi',au:'au',eu:'eu'};
 var CLUSTERS=['pl','pr','bl','br','tr','dr','cl','cr','gl','gr','fl','fr','sp','st','sc'];
@@ -226,23 +238,23 @@ function tokenizeIPA(s){
   while(i<s.length){
     var ch=s[i];
     if(!/[a-z]/.test(ch)){i++;continue;}
-    var d=null,ks=['ai','ei','oi','au','eu'];
-    for(var ki=0;ki<ks.length;ki++){if(s.indexOf(ks[ki],i)===i){d=ks[ki];break;}}
+    var d=null,ks=['ai','ei','oi','au','eu'],ki;
+    for(ki=0;ki<ks.length;ki++){if(s.indexOf(ks[ki],i)===i){d=ks[ki];break;}}
     if(d){units.push({v:1,g:d,ipa:V_IPA[d]});i+=d.length;continue;}
     if('aeiou'.indexOf(ch)>=0){units.push({v:1,g:ch,ipa:V_IPA[ch]});i++;continue;}
     var c=ch;
-    if(s.indexOf('ch',i)===i)c='ch';else if(s.indexOf('sh',i)===i)c='sh';
-    if(C_IPA[c])units.push({v:0,g:c,ipa:C_IPA[c]});
+    if(s.indexOf('ch',i)===i){c='ch';}else if(s.indexOf('sh',i)===i){c='sh';}
+    if(C_IPA[c]){units.push({v:0,g:c,ipa:C_IPA[c]});}
     i+=c.length;
   }
   return units;
 }
 function syllabify(units){
   var vIdx=units.map(function(u,i){return u.v?i:-1;}).filter(function(i){return i>=0;});
-  if(!vIdx.length)return [units];
-  var sylls=[],cur=[];
-  for(var i=0;i<=vIdx[0];i++)cur.push(units[i]);
-  for(var vi=1;vi<vIdx.length;vi++){
+  if(!vIdx.length){return [units];}
+  var sylls=[],cur=[],i,vi,j;
+  for(i=0;i<=vIdx[0];i++){cur.push(units[i]);}
+  for(vi=1;vi<vIdx.length;vi++){
     var nextV=vIdx[vi];
     var cs=units.slice(vIdx[vi-1]+1,nextV);
     var coda=[],onset=cs;
@@ -254,7 +266,7 @@ function syllabify(units){
     sylls.push(cur);
     cur=onset.concat([units[nextV]]);
   }
-  for(var j=vIdx[vIdx.length-1]+1;j<units.length;j++)cur.push(units[j]);
+  for(j=vIdx[vIdx.length-1]+1;j<units.length;j++){cur.push(units[j]);}
   sylls.push(cur);
   return sylls;
 }
@@ -263,7 +275,7 @@ function genIPA(raw){
   var parts=[];
   for(var i=0;i<ws.length;i++){
     var units=tokenizeIPA(ws[i]);
-    if(!units.length)continue;
+    if(!units.length){continue;}
     var sylls=syllabify(units);
     var stress=Math.max(0,sylls.length-2);
     parts.push(sylls.map(function(sy,idx){return (idx===stress?"'":'')+sy.map(function(u){return u.ipa;}).join('');}).join('.'));
@@ -271,7 +283,6 @@ function genIPA(raw){
   return parts.length?('/'+parts.join(' ')+'/'):'';
 }
 
-/* ===== 存储层 ===== */
 var NAME_KEY='CONLANG::';
 var Persist={
   ok:false,
@@ -283,30 +294,29 @@ function idbOpen(){return new Promise(function(res,rej){var q=indexedDB.open('co
 function idbSet(v){idbOpen().then(function(db){db.transaction('kv','readwrite').objectStore('kv').put(v,'data');}).catch(function(){});}
 function idbGet(){return idbOpen().then(function(db){return new Promise(function(res){var g=db.transaction('kv').objectStore('kv').get('data');
   g.onsuccess=function(){res(g.result||null);};g.onerror=function(){res(null);};});}).catch(function(){return null;});}
-function nameGet(){try{var n=window.name||'';if(n.indexOf(NAME_KEY)===0)return JSON.parse(n.slice(NAME_KEY.length));}catch(e){}return null;}
-function nameSet(j){try{if(j.length<1e6)window.name=NAME_KEY+j;}catch(e){}}
+function nameGet(){try{var n=window.name||'';if(n.indexOf(NAME_KEY)===0){return JSON.parse(n.slice(NAME_KEY.length));}}catch(e){}return null;}
+function nameSet(j){try{if(j.length<1e6){window.name=NAME_KEY+j;}}catch(e){}}
 var Store={
-  KEY:'conlang.studio.v23', state:null,
-  defaults:function(){return {version:23,langName:'我的人造语言',words:[]};},
+  KEY:'conlang.studio.v30', state:null,
+  defaults:function(){return {version:30,langName:'我的人造语言',words:[],sentences:[]};},
   load:function(){
     var self=this,s=null,src='';
     if(Persist.ok){try{var v=JSON.parse(localStorage.getItem(this.KEY));if(v){s=v;src='ls';}}catch(e){}}
     var p=Promise.resolve();
-    if(!s)p=idbGet().then(function(v){if(v){s=v;src='idb';}});
+    if(!s){p=idbGet().then(function(v){if(v){s=v;src='idb';}});}
     return p.then(function(){
       if(!s){var v2=nameGet();if(v2){s=v2;src='name';}}
-      if(!s&&Persist.ok){var ks=['conlang.studio.v22','conlang.studio.v21'];
+      if(!s&&Persist.ok){var ks=['conlang.studio.v29','conlang.studio.v28'];
         for(var i=0;i<ks.length;i++){try{var v3=JSON.parse(localStorage.getItem(ks[i]));if(v3){s=v3;src='ls';break;}}catch(e){}}}
       var d=self.defaults();s=(s&&typeof s==='object')?s:{};
-      self.state=Object.assign({},d,s,{words:Array.isArray(s.words)?s.words:[]});
-      var migrated=false;
-      if(!self.state.ipaV2){
-        self.state.words.forEach(function(w){w.phonetic=genIPA(w.raw);});
-        self.state.ipaV2=2;migrated=true;
-      }else{
-        self.state.words.forEach(function(w){if(!w.phonetic)w.phonetic=genIPA(w.raw);});
-      }
-      if(src||migrated)self.save();
+      self.state=Object.assign({},d,s,{
+        words:Array.isArray(s.words)?s.words:[],
+        sentences:Array.isArray(s.sentences)?s.sentences:[]});
+      self.state.words.forEach(function(w){
+        if(!Array.isArray(w.senses)||!w.senses.length){w.senses=[{pos:w.pos||'',meaning:w.meaning||''}];}
+        if(!w.phonetic){w.phonetic=genIPA(w.raw);}
+      });
+      if(src){self.save();}
     });
   },
   save:function(){
@@ -317,177 +327,6 @@ var Store={
   }
 };
 
-/* ===== 下载：HBuilderX 原生写 Download/Tansica；浏览器 a[download]；空壳兜底 ===== */
-function anchorDownload(blob,filename){
-  try{
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement('a');
-    a.href=url;a.download=filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(function(){URL.revokeObjectURL(url);},3000);
-    Toast('已触发下载');
-  }catch(e){Toast('下载失败');}
-}
-function saveBlobPlus(blob,filename,mime){
-  var reader=new FileReader();
-  reader.onload=function(){
-    try{
-      var b64=String(reader.result).split(',')[1]||'';
-      var Base64=plus.android.importClass('android.util.Base64');
-      var bytes=Base64.decode(b64,0);
-      var saved='';
-      try{
-        var main=plus.android.runtimeMainActivity();
-        plus.android.importClass('android.content.ContentResolver');
-        var ContentValues=plus.android.importClass('android.content.ContentValues');
-        var MSD=plus.android.importClass('android.provider.MediaStore$Downloads');
-        var resolver=main.getContentResolver();
-        var values=new ContentValues();
-        values.put('_display_name',filename);
-        values.put('mime_type',mime||'application/octet-stream');
-        values.put('relative_path','Download/Tansica/');
-        var uri=resolver.insert(MSD.EXTERNAL_CONTENT_URI,values);
-        if(uri){
-          var os=resolver.openOutputStream(uri);
-          os.write(bytes);os.flush();os.close();
-          saved='Download/Tansica/'+filename;
-        }
-      }catch(e){}
-      if(!saved){
-        try{
-          var Environment=plus.android.importClass('android.os.Environment');
-          var File=plus.android.importClass('java.io.File');
-          var FileOutputStream=plus.android.importClass('java.io.FileOutputStream');
-          var base=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-          var dir=new File(base,'Tansica');dir.mkdirs();
-          var f=new File(dir,filename);
-          var fos=new FileOutputStream(f);
-          fos.write(bytes);fos.flush();fos.close();
-          saved='Download/Tansica/'+filename;
-        }catch(e){}
-      }
-      if(!saved){
-        var act=plus.android.runtimeMainActivity();
-        var File2=plus.android.importClass('java.io.File');
-        var FileOutputStream2=plus.android.importClass('java.io.FileOutputStream');
-        var d2=act.getExternalFilesDir('Tansica')||act.getFilesDir();
-        var f2=new File2(d2,filename);
-        var fos2=new FileOutputStream2(f2);
-        fos2.write(bytes);fos2.flush();fos2.close();
-        saved=String(f2.getAbsolutePath());
-      }
-      Toast('已保存：'+saved);
-    }catch(e){
-      anchorDownload(blob,filename);
-    }
-  };
-  reader.onerror=function(){anchorDownload(blob,filename);};
-  reader.readAsDataURL(blob);
-}
-function download(blob,filename,mime){
-  if(window.plus&&plus.android){saveBlobPlus(blob,filename,mime);return;}
-  if(inBareWebView()){
-    anchorDownload(blob,filename);
-    setTimeout(function(){Toast('若无文件：此外壳不支持保存，请改用浏览器或 HBuilderX');},1900);
-    return;
-  }
-  anchorDownload(blob,filename);
-}
-/* 空壳兜底：TXT 改为全文复制窗 */
-function copySheet(text,title){
-  Modal.sheet('<div class="sheet-head"><span class="sh-title">'+esc(title||'导出')+'</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
-  '<label class="f-label" style="margin-top:4px">此外壳无法存文件，请复制后粘贴到记事本保存</label>'+
-  '<textarea id="expBox" style="min-height:260px">'+esc(text)+'</textarea>'+
-  '<button class="btn primary big" data-action="exp-copy">复制全部</button>');
-}
-function crc32(buf){
-  var t=crc32.t;
-  if(!t){t=crc32.t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}}
-  var cc=0xFFFFFFFF;
-  for(var i=0;i<buf.length;i++)cc=t[(cc^buf[i])&0xFF]^(cc>>>8);
-  return (cc^0xFFFFFFFF)>>>0;
-}
-function zipStore(files){
-  var enc=new TextEncoder();
-  var parts=[],central=[],offset=0;
-  files.forEach(function(f){
-    var name=enc.encode(f.name),data=f.data,crc=crc32(data);
-    var lh=new DataView(new ArrayBuffer(30));
-    lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0,true);lh.setUint16(8,0,true);
-    lh.setUint16(10,0,true);lh.setUint16(12,0,true);
-    lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,data.length,true);
-    lh.setUint16(26,name.length,true);lh.setUint16(28,0,true);
-    parts.push(new Uint8Array(lh.buffer),name,data);
-    var ch=new DataView(new ArrayBuffer(46));
-    ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0,true);ch.setUint16(10,0,true);
-    ch.setUint16(12,0,true);ch.setUint16(14,0,true);
-    ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,data.length,true);
-    ch.setUint16(28,name.length,true);ch.setUint16(30,0,true);ch.setUint16(32,0,true);
-    ch.setUint16(34,0,true);ch.setUint16(36,0,true);ch.setUint32(38,0,true);ch.setUint32(42,offset,true);
-    central.push(new Uint8Array(ch.buffer),name);
-    offset+=30+name.length+data.length;
-  });
-  var csize=central.reduce(function(s,p){return s+p.length;},0);
-  var eo=new DataView(new ArrayBuffer(22));
-  eo.setUint32(0,0x06054b50,true);eo.setUint16(4,0,true);eo.setUint16(6,0,true);
-  eo.setUint16(8,files.length,true);eo.setUint16(10,files.length,true);
-  eo.setUint32(12,csize,true);eo.setUint32(16,offset,true);eo.setUint16(20,0,true);
-  parts.push.apply(parts,central);parts.push(new Uint8Array(eo.buffer));
-  var total=parts.reduce(function(s,p){return s+p.length;},0);
-  var out=new Uint8Array(total),o=0;
-  parts.forEach(function(p){out.set(p,o);o+=p.length;});
-  return out;
-}
-function makeDocx(paras){
-  function x(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  var body=paras.map(function(p){
-    var pr=(p.b||p.sz)?('<w:rPr>'+(p.b?'<w:b/>':'')+(p.sz?'<w:sz w:val="'+p.sz+'"/>':'')+'</w:rPr>'):'';
-    return '<w:p><w:r>'+pr+'<w:t xml:space="preserve">'+x(p.text)+'</w:t></w:r></w:p>';
-  }).join('');
-  var doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+'<w:sectPr/></w:body></w:document>';
-  var types='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
-  var rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
-  var enc=new TextEncoder();
-  return zipStore([
-    {name:'[Content_Types].xml',data:enc.encode(types)},
-    {name:'_rels/.rels',data:enc.encode(rels)},
-    {name:'word/document.xml',data:enc.encode(doc)}
-  ]);
-}
-var DOCX_TYPE='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-function sortedWords(){return Store.state.words.slice().sort(function(a,b){return a.raw.localeCompare(b.raw);});}
-function exportWordsTXT(){
-  var ws=sortedWords();
-  if(!ws.length){Toast('词库为空');return;}
-  var lines=[];
-  ws.forEach(function(w){
-    var l=w.raw;
-    if(w.phonetic)l+='  '+w.phonetic;
-    if(w.pos)l+='  ['+w.pos+']';
-    l+='  —  '+w.meaning;
-    lines.push(l);
-    if(w.note)lines.push('　补充：'+w.note);
-  });
-  if(inBareWebView()){copySheet(lines.join('\n'),'词库 TXT');return;}
-  download(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/plain;charset=utf-8'}),Store.state.langName+'-词库.txt','text/plain');
-}
-function exportWordsDocx(){
-  var ws=sortedWords();
-  if(!ws.length){Toast('词库为空');return;}
-  if(inBareWebView()){Toast('此外壳无法存 DOCX：请用浏览器或 HBuilderX 导出','danger');return;}
-  var paras=[{text:Store.state.langName+' 词库',b:1,sz:36},{text:''}];
-  ws.forEach(function(w){
-    paras.push({text:w.raw+(w.phonetic?'  '+w.phonetic:''),b:1,sz:28});
-    paras.push({text:(w.pos?'['+w.pos+'] ':'')+w.meaning,sz:24});
-    if(w.note)paras.push({text:'补充：'+w.note,sz:22});
-    paras.push({text:''});
-  });
-  download(new Blob([makeDocx(paras)],{type:DOCX_TYPE}),Store.state.langName+'-词库.docx',DOCX_TYPE);
-}
-
-/* ===== 提示 & 弹窗 ===== */
 var Toast=(function(){var t;return function(m,type){var el=$('#toast');el.textContent=m;el.classList.toggle('danger',type==='danger');el.classList.add('show');clearTimeout(t);t=setTimeout(function(){el.classList.remove('show');},1800);};})();
 var Modal={
   root:null,_res:null,
@@ -505,36 +344,37 @@ var Modal={
         '<button class="btn '+(o.danger?'danger':'primary')+'" data-action="dlg-ok">'+esc(o.ok||'确定')+'</button></div></div></div>';
     });
   },
-  ok:function(){var r=this._res;this.close();if(r)r(true);},
-  cancel:function(){var r=this._res;this.close();if(r)r(false);}
+  ok:function(){var r=this._res;this.close();if(r){r(true);}},
+  cancel:function(){var r=this._res;this.close();if(r){r(false);}}
 };
 
-/* ===== 路由 ===== */
 var Router={
   current:null,
   show:function(p){
     this.current=p;
+    if(p==='words'){var i1=$('#searchInput');if(i1){i1.value='';}}
+    if(p==='sentences'){var i2=$('#sentSearch');if(i2){i2.value='';}}
     $$('.page').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-page')===p);});
     $$('#tabbar .tab').forEach(function(t){t.classList.toggle('on',t.getAttribute('data-page')===p);});
-    if(Render[p])Render[p]();
+    if(Render[p]){Render[p]();}
     scrollTo({top:0});
   },
   go:function(p){
-    if(p===this.current)return;
+    if(p===this.current){return;}
     try{history.pushState({p:p},'');}catch(e){}
     this.show(p);
   },
   back:function(){
     var cur=this.current,t='words';
-    if(cur==='word')t=(WordPage.from==='search')?'search':((WordPage.from==='dict')?'dict':'words');
-    else if(cur==='search')t='words';
-    else if(cur==='dict')t='words';
+    if(cur==='search'){t='words';}
+    else if(cur==='dict'){t='words';}
+    else if(cur==='ssearch'){t='sentences';}
+    else if(cur==='sentlib'){t='sentences';}
     this.show(t);
   }
 };
 window.addEventListener('popstate',function(){Router.back();});
 
-/* ===== 键盘检测 & 抽屉输入框防遮挡 ===== */
 (function(){
   var bar=$('#tabbar');
   function isField(t){return t&&/^(INPUT|TEXTAREA)$/.test(t.tagName);}
@@ -542,12 +382,11 @@ window.addEventListener('popstate',function(){Router.back();});
   function kbOpen(){
     var vv=window.visualViewport;
     var layoutShrink=(baseH-window.innerHeight)>120;
-    if(vv)return (window.innerHeight-vv.height)>120||layoutShrink;
+    if(vv){return (window.innerHeight-vv.height)>120||layoutShrink;}
     return layoutShrink;
   }
   function update(){
-    if(kbOpen()&&focused)bar.classList.add('kb-hide');
-    else bar.classList.remove('kb-hide');
+    if(kbOpen()&&focused){bar.classList.add('kb-hide');}else{bar.classList.remove('kb-hide');}
   }
   document.addEventListener('focusin',function(e){
     if(isField(e.target)){
@@ -559,7 +398,7 @@ window.addEventListener('popstate',function(){Router.back();});
     }
   });
   document.addEventListener('focusout',function(e){
-    if(isField(e.target))setTimeout(function(){focused=isField(document.activeElement);update();},100);
+    if(isField(e.target)){setTimeout(function(){focused=isField(document.activeElement);update();},100);}
   });
   window.addEventListener('resize',function(){baseH=Math.max(baseH,window.innerHeight);update();});
   window.addEventListener('orientationchange',function(){setTimeout(function(){baseH=window.innerHeight;update();},300);});
@@ -573,30 +412,29 @@ window.addEventListener('popstate',function(){Router.back();});
   }
 })();
 
-/* ===== 文档解析 ===== */
 function cleanDocxXml(xml){
   return xml.replace(/<w:tab[^>]*>/g,'\t').replace(/<w:br[^>]*>/g,'\n').replace(/<\/w:p>/g,'\n')
     .replace(/<[^>]+>/g,'')
     .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/\u00a0/g,' ');
 }
 function readDocxIn(buf){
-  var dv=new DataView(buf),eocd=-1;
-  for(var i=buf.byteLength-22;i>=0;i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;}}
-  if(eocd<0)return Promise.reject(0);
+  var dv=new DataView(buf),eocd=-1,i;
+  for(i=buf.byteLength-22;i>=0;i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;}}
+  if(eocd<0){return Promise.reject(0);}
   var count=dv.getUint16(eocd+10,true),off=dv.getUint32(eocd+16,true);
   var ent={};
-  for(var k=0;k<count;k++){
-    if(dv.getUint32(off,true)!==0x02014b50)break;
+  for(i=0;i<count;i++){
+    if(dv.getUint32(off,true)!==0x02014b50){break;}
     var method=dv.getUint16(off+10,true),csize=dv.getUint32(off+20,true),
       nlen=dv.getUint16(off+28,true),elen=dv.getUint16(off+30,true),
       clen=dv.getUint16(off+32,true),lhdr=dv.getUint32(off+42,true);
     ent[new TextDecoder().decode(new Uint8Array(buf,off+46,nlen))]={method:method,csize:csize,lhdr:lhdr};
     off+=46+nlen+elen+clen;
   }
-  var e=ent['word/document.xml'];if(!e)return Promise.reject(0);
+  var e=ent['word/document.xml'];if(!e){return Promise.reject(0);}
   var lnlen=dv.getUint16(e.lhdr+26,true),lelen=dv.getUint16(e.lhdr+28,true);
   var data=new Uint8Array(buf,e.lhdr+30+lnlen+lelen,e.csize);
-  if(e.method===0)return Promise.resolve(cleanDocxXml(new TextDecoder().decode(data)));
+  if(e.method===0){return Promise.resolve(cleanDocxXml(new TextDecoder().decode(data)));}
   if(e.method===8&&'DecompressionStream' in window){
     var st=new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
     return new Response(st).arrayBuffer().then(function(ab){return cleanDocxXml(new TextDecoder().decode(ab));});
@@ -605,73 +443,113 @@ function readDocxIn(buf){
 }
 function readDoc(buf){
   var dv=new DataView(buf),out='',cur='';
-  function fl(){var t=cur.trim();if(t.length>=4)out+=t+'\n';cur='';}
+  function fl(){var t=cur.trim();if(t.length>=4){out+=t+'\n';}cur='';}
   for(var i=0;i+1<buf.byteLength;i+=2){
     var ch=dv.getUint16(i,true);
-    if((ch>=0x4e00&&ch<=0x9fff)||(ch>=0x3000&&ch<=0x303f)||ch===0xff08||ch===0xff09||(ch>=0x20&&ch<0x7f)||ch===13||ch===10||ch===9)cur+=String.fromCharCode(ch);
-    else fl();
+    if((ch>=0x4e00&&ch<=0x9fff)||(ch>=0x3000&&ch<=0x303f)||ch===0xff08||ch===0xff09||(ch>=0x20&&ch<0x7f)||ch===13||ch===10||ch===9){cur+=String.fromCharCode(ch);}
+    else{fl();}
   }
   fl();return out;
 }
 function isHead(l){
-  if(!l||l.length>=40)return false;
+  if(!l||l.length>=40){return false;}
   var m=l.match(/^(#{1,6}\s+|第[一二三四五六七八九十百0-9]+[章节讲]|[一二三四五六七八九十]+[、.]|\d+[、.．]\s*|【)/);
-  if(!m)return false;
+  if(!m){return false;}
   return !/[a-zA-Z]/.test(l.slice(m[0].length));
 }
-function isGarbage(l){return /[<>{}]|xmlns|https?:\/\//i.test(l);}
-function classifyWord(t){
-  t=String(t).replace(/^\ufeff/,'').trim();
-  if(!t||isGarbage(t))return null;
+function isGarbage(l){return /[<>{}]|xmlns|https?:\/\//.test(l);}
+function classifyLine(t){
+  t=t2s(String(t).replace(/^\ufeff/,'')).trim();
+  if(!t||isGarbage(t)){return null;}
+  if(/[@*#]/.test(t)){return null;}
   var pos='';
   var bm=t.match(/[（(]([^()（）]{1,12})[)）]/)||t.match(/\[([^\[\]]{1,12})\]/);
-  if(bm&&POS_RE.test(bm[1]))pos=POS_RE.exec(bm[1])[0];
+  if(bm&&POS_RE.test(bm[1])){pos=POS_RE.exec(bm[1])[0];}
   var clean=t.replace(/\/[^/]*\//g,' ').replace(/\[[^\]]*\]/g,' ').replace(/[（(][^)）]*[)）]/g,' ');
   var latinRuns=clean.match(/[A-Za-z][A-Za-z'’\-]*(?:\s+[A-Za-z][A-Za-z'’\-]*)*/g);
-  if(!latinRuns)return null;
+  if(!latinRuns){return null;}
+  var ci=clean.search(/[\u4e00-\u9fff]/);
+  var stext=(ci>=0)?clean.slice(0,ci):clean;
+  stext=stext.replace(/[\s\-—–]+$/,'').trim();
+  var isSent=/[.!?]/.test(stext);
   var cjkRuns=clean.match(/[\u4e00-\u9fff][\u4e00-\u9fff，,。；;：:、！!？?—\-]*/g)||[];
   var cands=[];
   for(var i=0;i<cjkRuns.length;i++){
-    var r=cjkRuns[i].replace(/[\s，,。；;：:、！!？?—\-]+$/,'');
-    if(!r)continue;
+    var r=cjkRuns[i].replace(/[\s，,、；;：:—\-]+$/,'');
+    if(!isSent){r=r.replace(/[。!！?？]+$/,'');}
+    if(!r){continue;}
     var skip=false;
     for(var pi=0;pi<POS_LIST.length;pi++){
       var p=POS_LIST[pi];
       if(r===p){pos=pos||p;skip=true;break;}
       if(r.indexOf(p)===0&&r.length>p.length&&/[，,。；;：:、]/.test(r.charAt(p.length))){pos=pos||p;r=r.slice(p.length+1);break;}
     }
-    if(skip)continue;
-    if(r)cands.push(r);
+    if(skip){continue;}
+    if(r){cands.push(r);}
   }
-  if(!cands.length)return null;
-  var latin=latinRuns.slice().sort(function(a,b){return b.length-a.length;})[0].replace(/[\s.,;:!?]+$/,'').trim();
   var cjk=cands.join('');
-  if(!latin||!cjk)return null;
-  return {raw:latin,pos:pos,meaning:cjk};
+  if(isSent){
+    if(!stext){return null;}
+    return {kind:'s',text:stext,meaning:cjk};
+  }
+  var latin=latinRuns.slice().sort(function(a,b){return b.length-a.length;})[0].replace(/[\s.,;:!?]+$/,'').trim();
+  if(!latin||!cjk){return null;}
+  return {kind:'w',raw:latin,pos:pos,meaning:cjk};
 }
 function smartParse(text){
-  var res=[],seen={};
+  var words=[],sents=[],seenW={},seenS={};
   String(text).replace(/^\ufeff/,'').split(/\r?\n/).forEach(function(line0){
     var line=line0.trim();
-    if(!line||isHead(line)||isGarbage(line))return;
+    if(!line||isHead(line)||isGarbage(line)){return;}
+    if(/[@*#]/.test(line)){return;}
     line=line.replace(/^\d+[、.．]\s*/,'');
-    var e=classifyWord(line);
-    if(e){var k=e.raw.toLowerCase();if(!seen[k]){seen[k]=1;res.push(e);}}
+    var e=classifyLine(line);
+    if(!e){return;}
+    if(e.kind==='w'){var k=e.raw.toLowerCase();if(!seenW[k]){seenW[k]=1;words.push(e);}}
+    else{var ks=e.text.toLowerCase();if(!seenS[ks]){seenS[ks]=1;sents.push(e);}}
   });
-  return res;
+  return {words:words,sents:sents};
 }
+function sameSense(a,b){return (a.pos||'')===(b.pos||'')&&a.meaning===b.meaning;}
 function handleImportText(txt){
   var r=smartParse(txt);
+  if(!r.words.length&&!r.sents.length){Toast('未识别到内容','danger');return;}
   var st=Store.state;
-  var newW=r.filter(function(w){return !existsWord(w.raw,null);});
-  var dup=r.length-newW.length;
-  if(!newW.length){Toast(dup?'全部重复，未导入':'未识别到内容',dup?'danger':undefined);return;}
-  Modal.confirm({title:'识别结果',ok:'导入',content:'新词 '+newW.length+' 个（重复跳过 '+dup+'）\n\n是否导入？'})
+  var batch={},order=[];
+  r.words.forEach(function(e){
+    var k=e.raw.toLowerCase();
+    if(!batch[k]){batch[k]={raw:e.raw,senses:[]};order.push(k);}
+    if(!batch[k].senses.some(function(s){return sameSense(s,e);})){batch[k].senses.push({pos:e.pos||'',meaning:e.meaning});}
+  });
+  var added=0,merged=0,dup=0;
+  order.forEach(function(k){
+    var b=batch[k];
+    var ex=st.words.find(function(w){return w.raw.toLowerCase()===k;});
+    if(ex){
+      var changed=false;
+      b.senses.forEach(function(s){
+        if(!ex.senses.some(function(s2){return sameSense(s2,s);})){ex.senses.push(s);changed=true;}
+      });
+      if(changed){merged++;}else{dup++;}
+    }else{
+      b.phonetic=genIPA(b.raw);
+      st.words.unshift(newWord(b));
+      added++;
+    }
+  });
+  var newS=[],dupS=0;
+  r.sents.forEach(function(s){
+    var has=st.sentences.some(function(x){return (x.text||'').toLowerCase()===s.text.toLowerCase();})||
+      newS.some(function(x){return x.text.toLowerCase()===s.text.toLowerCase();});
+    if(has){dupS++;}else{newS.push(s);}
+  });
+  if(!added&&!merged&&!newS.length){Toast('全部重复，未导入','danger');return;}
+  Modal.confirm({title:'识别结果',ok:'导入',content:'新词 '+added+' 个 / 新义项 '+merged+' 条\n新句 '+newS.length+' 条 / 跳过 '+(dup+dupS)+' 条\n\n是否导入？'})
   .then(function(ok){
-    if(!ok)return;
-    newW.forEach(function(w){w.phonetic=w.phonetic||genIPA(w.raw);st.words.unshift(newWord(w));});
-    Store.save();refreshWords();
-    Toast('已导入 '+newW.length+' 个词汇');
+    if(!ok){return;}
+    newS.forEach(function(s){st.sentences.unshift({id:uid(),type:'sentence',text:s.text,meaning:s.meaning||'',src:'',use:''});});
+    Store.save();refreshAll();
+    Toast('已导入：词 '+added+' / 句 '+newS.length);
   });
 }
 function applyImport(txt){
@@ -679,170 +557,290 @@ function applyImport(txt){
   var d=null;
   try{d=JSON.parse(txt);}catch(e){}
   if(d&&Array.isArray(d.words)){
-    Store.state=Object.assign({},Store.defaults(),d,{words:d.words});
-    Store.state.words.forEach(function(w){if(!w.phonetic)w.phonetic=genIPA(w.raw);});
-    Store.save();Modal.close();
-    Render.settings();refreshWords();
+    var st=Store.state;
+    d.words.forEach(function(w){
+      if(!Array.isArray(w.senses)||!w.senses.length){w.senses=[{pos:w.pos||'',meaning:w.meaning||''}];}
+      if(!w.phonetic){w.phonetic=genIPA(w.raw);}
+      var ex=st.words.find(function(x){return x.raw.toLowerCase()===String(w.raw).toLowerCase();});
+      if(ex){
+        w.senses.forEach(function(s){if(!ex.senses.some(function(s2){return sameSense(s2,s);})){ex.senses.push(s);}});
+      }else{
+        st.words.unshift(newWord(w));
+      }
+    });
+    if(Array.isArray(d.sentences)){d.sentences.forEach(function(s){
+      st.sentences.unshift({id:uid(),type:'sentence',text:s.text||'',meaning:s.meaning||'',src:s.src||'',use:s.use||''});
+    });}
+    Store.save();refreshAll();
     Toast('备份恢复成功');
-  }else handleImportText(txt);
+  }else{handleImportText(txt);}
 }
 function refreshWords(){
   Render.words();Dict.render();
-  if(Router.current==='search')Search.render();
-  if(Router.current==='word')WordPage.render();
+  if(Router.current==='search'){Search.render();}
 }
+function refreshSents(){
+  Render.sentences();SentLib.render();
+  if(Router.current==='ssearch'){SSearch.render();}
+}
+function refreshAll(){refreshWords();refreshSents();}
 
-/* ===== 词卡详情 ===== */
+function sensesHTML(w){
+  return (w.senses||[]).map(function(s){
+    return '<div class="w-sub">'+(s.pos?'<span class="w-tag">'+esc(s.pos)+'</span>':'')+'<span class="w-mean-i">'+esc(s.meaning)+'</span></div>';
+  }).join('');
+}
 function detailHTML(w){
-  return '<div class="card">'+
-    '<span class="w-name act" data-wid="'+w.id+'">'+esc(w.raw)+'</span>'+
+  var matches=Store.state.sentences.filter(function(s){return s.type==='sentence'&&s.meaning&&hasWord(s.text,w.raw);});
+  var ex=shuffle(matches).slice(0,3);
+  return '<div class="card gest" data-gtype="word" data-gid="'+w.id+'">'+
+    '<div class="w-name">'+esc(w.raw)+'</div>'+
     (w.phonetic?'<div class="w-pho">'+esc(w.phonetic)+'</div>':'')+
-    '<div class="w-sub">'+(w.pos?'<span class="w-tag">'+esc(w.pos)+'</span>':'')+'<span class="w-mean-i">'+esc(w.meaning)+'</span></div>'+
+    sensesHTML(w)+
     '</div>'+
-    (w.note?'<div class="card note-box">'+esc(w.note)+'</div>':'');
+    (w.note?'<div class="card note-box">说明：'+esc(w.note)+'</div>':'')+
+    (ex.length?'<div class="ex-head">例句</div><div class="card ex-list">'+
+      ex.map(function(s,i){return '<div class="ex-item"><span class="ex-n">'+(i+1)+'.</span><div><div class="ex-src">'+esc(s.text)+'</div><div class="ex-tr">'+esc(s.meaning)+'</div></div></div>';}).join('')+
+    '</div>':'');
+}
+function sentCard(s){
+  return '<div class="card gest" data-gtype="sent" data-gid="'+s.id+'">'+
+    '<div class="w-name" style="font-size:15.5px">'+esc(s.text)+'</div>'+
+    (s.meaning?'<div class="w-mean-i" style="margin-top:6px">'+esc(s.meaning)+'</div>':'')+
+    (s.src?'<div class="w-extra">来源：'+esc(s.src)+'</div>':'')+
+    (s.use?'<div class="w-extra">语用：'+esc(s.use)+'</div>':'')+
+    '</div>';
 }
 
-/* ===== 原词手势 ===== */
+function wordSugs(q){
+  q=(q||'').trim().toLowerCase();
+  if(!q){return '';}
+  var lat=/^[a-z]/.test(q);
+  var list;
+  if(lat){
+    list=Store.state.words.filter(function(w){
+      if(!/[A-Za-z]/.test(w.raw)){return false;}
+      var ws2=w.raw.toLowerCase().split(/\s+/);
+      return ws2.some(function(wd){return wd.indexOf(q)===0;});
+    }).sort(function(a,b){
+      var ea=(a.raw.toLowerCase()===q)?0:1,eb=(b.raw.toLowerCase()===q)?0:1;
+      if(ea!==eb){return ea-eb;}
+      if(a.raw.length!==b.raw.length){return a.raw.length-b.raw.length;}
+      return a.raw.localeCompare(b.raw);
+    });
+  }else{
+    list=Store.state.words.filter(function(w){
+      if(!/[A-Za-z]/.test(w.raw)){return false;}
+      return (w.senses||[]).some(function(s){return (s.meaning||'').toLowerCase().indexOf(q)>=0;});
+    });
+  }
+  return list.slice(0,20).map(function(w){
+    var mean=(w.senses||[]).map(function(s){return s.meaning;}).join(' / ');
+    var inner=lat
+      ?('<span class="sug-k">'+esc(w.raw)+'</span><span class="sug-v">'+esc(mean)+'</span>')
+      :('<span class="sug-k">'+esc(mean)+'</span><span class="sug-v">'+esc(w.raw)+'</span>');
+    return '<div class="card pick" data-type="word" data-id="'+w.id+'"><div class="sug">'+inner+'</div></div>';
+  }).join('');
+}
+function sentSugs(q){
+  q=(q||'').trim().toLowerCase();
+  if(!q){return '';}
+  var list=Store.state.sentences.filter(function(s){
+    return s.type==='sentence'&&((s.text||'').toLowerCase().indexOf(q)>=0||(s.meaning||'').toLowerCase().indexOf(q)>=0);
+  }).slice(0,20);
+  return list.map(function(s){
+    return '<div class="card pick" data-type="sent" data-id="'+s.id+'"><div class="sug"><span class="sug-k">'+esc(s.text)+'</span><span class="sug-v">'+esc(s.meaning||'')+'</span></div></div>';
+  }).join('');
+}
+
 var Gesture={
-  tapTimer:null,lastTap:0,suppress:false,lpTimer:null,lx:0,ly:0,
+  tapTimer:null,lastTap:0,lastId:'',suppress:false,lpTimer:null,lx:0,ly:0,
+  textFor:function(type,id){
+    if(type==='word'){var w=Store.state.words.find(function(x){return x.id===id;});return w?w.raw:'';}
+    var s=Store.state.sentences.find(function(x){return x.id===id;});return s?s.text:'';
+  },
   init:function(){
     var self=this;
     document.addEventListener('pointerdown',function(e){
-      var t=e.target.closest('.w-name.act');
+      var t=e.target.closest('.gest');
       self.suppress=false;
-      if(!t)return;
+      if(!t){return;}
       self.lx=e.clientX;self.ly=e.clientY;
       clearTimeout(self.lpTimer);
-      self.lpTimer=setTimeout(function(){self.suppress=true;copyWord(t.getAttribute('data-wid'));},500);
+      self.lpTimer=setTimeout(function(){
+        self.suppress=true;
+        copyText(self.textFor(t.getAttribute('data-gtype'),t.getAttribute('data-gid')));
+      },500);
     });
     document.addEventListener('pointermove',function(e){
       if(self.lpTimer&&Math.hypot(e.clientX-self.lx,e.clientY-self.ly)>10){clearTimeout(self.lpTimer);self.lpTimer=null;}
     });
     document.addEventListener('pointerup',function(){clearTimeout(self.lpTimer);});
     document.addEventListener('pointercancel',function(){clearTimeout(self.lpTimer);});
-    document.addEventListener('contextmenu',function(e){if(e.target.closest('.w-name.act'))e.preventDefault();});
+    document.addEventListener('contextmenu',function(e){if(e.target.closest('.gest')){e.preventDefault();}});
     document.addEventListener('click',function(e){
-      var t=e.target.closest('.w-name.act');
-      if(!t)return;
+      var t=e.target.closest('.gest');
+      if(!t){return;}
       if(self.suppress){self.suppress=false;return;}
+      var id=t.getAttribute('data-gid'),type=t.getAttribute('data-gtype');
       var now=Date.now();
-      if(now-self.lastTap<300){
+      if(now-self.lastTap<300&&self.lastId===id){
         self.lastTap=0;clearTimeout(self.tapTimer);
-        delWord(t.getAttribute('data-wid'));
+        if(type==='word'){delWord(id);}else{delSent(id);}
       }else{
-        self.lastTap=now;
+        self.lastTap=now;self.lastId=id;
         clearTimeout(self.tapTimer);
-        var id=t.getAttribute('data-wid');
-        self.tapTimer=setTimeout(function(){WordSheet.open(id);self.lastTap=0;},300);
+        self.tapTimer=setTimeout(function(){
+          if(type==='word'){WordSheet.open(id);}else{SentenceSheet.open(id);}
+        },300);
       }
     });
   }
 };
-function copyWord(id){
-  var w=Store.state.words.find(function(x){return x.id===id;});if(!w)return;
-  var done=function(){Toast('已复制 '+w.raw);};
-  var fb=function(){var ta=document.createElement('textarea');ta.value=w.raw;ta.style.position='fixed';ta.style.opacity='0';
+function copyText(txt){
+  if(!txt){Toast('无内容可复制');return;}
+  var done=function(){Toast('已复制 '+txt);};
+  var fb=function(){var ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
     document.body.appendChild(ta);ta.focus();ta.select();
     try{document.execCommand('copy');done();}catch(e){Toast('复制失败');}
     ta.remove();};
-  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(w.raw).then(done).catch(fb);
-  else fb();
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(fb);}
+  else{fb();}
 }
 function delWord(id){
   Modal.confirm({title:'删除词汇',content:'删除后不可恢复，确定删除？',ok:'删除',danger:true}).then(function(ok){
-    if(!ok)return;
+    if(!ok){return;}
     Store.state.words=Store.state.words.filter(function(w){return w.id!==id;});
-    Store.save();
-    var cur=Router.current;
-    if(cur==='word'){Router.go(WordPage.from==='search'?'search':(WordPage.from==='dict'?'dict':'words'));refreshWords();}
-    else refreshWords();
+    Store.save();refreshWords();
+    Toast('已删除');
+  });
+}
+function delSent(id){
+  Modal.confirm({title:'删除句子',content:'删除后不可恢复，确定删除？',ok:'删除',danger:true}).then(function(ok){
+    if(!ok){return;}
+    Store.state.sentences=Store.state.sentences.filter(function(x){return x.id!==id;});
+    Store.save();refreshSents();refreshWords();
     Toast('已删除');
   });
 }
 
-/* ===== 词汇编辑抽屉 ===== */
 var WordSheet={
-  editId:null,pos:'',phoTouched:false,
+  editId:null,senses:[],openPos:-1,phoTouched:false,
   open:function(id){
     this.editId=id||null;
+    this.openPos=-1;
     var w=id?Store.state.words.find(function(x){return x.id===id;}):null;
-    this.pos=(w&&w.pos)||'';
+    this.senses=(w&&w.senses&&w.senses.length)?w.senses.map(function(s){return{pos:s.pos||'',meaning:s.meaning||''};}):[{pos:'',meaning:''}];
     this.phoTouched=!!(w&&w.phonetic);
-    var self=this;
     Modal.sheet('<div class="sheet-head"><span class="sh-title">'+(w?'编辑词汇':'新增词汇')+'</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
     '<label class="f-label">原词 <i>*</i></label><input id="wRaw" value="'+esc(w?w.raw:'')+'">'+
     '<label class="f-label">音标（自动生成，可修改）</label><input id="wPho" value="'+esc(w?w.phonetic:'')+'">'+
-    '<label class="f-label">词性</label>'+
-    '<div class="pos-grid" id="posGrid">'+POS_LIST.map(function(p){return '<button class="pos-item '+(self.pos===p?'on':'')+'" data-action="pos-pick" data-pos="'+p+'">'+p+'</button>';}).join('')+'</div>'+
-    '<label class="f-label">释义 <i>*</i></label><input id="wMean" value="'+esc(w?w.meaning:'')+'">'+
+    '<label class="f-label">词性＋释义（可多组）</label><div id="senseList"></div>'+
     '<label class="f-label">补充说明</label><textarea id="wNote">'+esc(w?w.note:'')+'</textarea>'+
     '<button class="btn primary big" data-action="word-save">保存</button>');
+    this.renderSenses();
+  },
+  renderSenses:function(){
+    var self=this;
+    var html=this.senses.map(function(s,i){
+      return '<div class="sense-row">'+
+        '<button class="pos-btn" data-action="sense-pos" data-i="'+i+'" data-pos="'+esc(s.pos)+'">'+(s.pos?esc(s.pos):'词性')+'</button>'+
+        '<input value="'+esc(s.meaning)+'" placeholder="释义">'+
+        '<button class="sense-del" data-action="sense-del" data-i="'+i+'">×</button></div>'+
+        (self.openPos===i?('<div class="pos-grid" style="margin-top:8px">'+
+          '<button class="pos-item'+(s.pos===''?' on':'')+'" data-action="sense-pick" data-i="'+i+'" data-pos="">无</button>'+
+          POS_LIST.map(function(p){return '<button class="pos-item'+(p===s.pos?' on':'')+'" data-action="sense-pick" data-i="'+i+'" data-pos="'+p+'">'+p+'</button>';}).join('')+
+        '</div>'):'');
+    }).join('');
+    $('#senseList').innerHTML=html+'<button class="btn soft" data-action="sense-add" style="margin-top:10px">＋ 添加一组词性/释义</button>';
+  },
+  collectSenses:function(){
+    var arr=[];
+    $$('#senseList .sense-row').forEach(function(r){
+      arr.push({pos:r.querySelector('.pos-btn').getAttribute('data-pos')||'',meaning:r.querySelector('input').value.trim()});
+    });
+    return arr;
   },
   save:function(){
-    var raw=$('#wRaw').value.trim(),phonetic=$('#wPho').value.trim(),meaning=$('#wMean').value.trim(),note=$('#wNote').value.trim();
-    if(!raw||!meaning){Toast('请填写原词和释义');return;}
+    var raw=$('#wRaw').value.trim(),phonetic=$('#wPho').value.trim(),note=$('#wNote').value.trim();
+    var senses=this.collectSenses().filter(function(s){return s.meaning;});
+    var uniq=[];
+    senses.forEach(function(s){if(!uniq.some(function(u){return sameSense(u,s);})){uniq.push(s);}});
+    if(!raw){Toast('请填写原词');return;}
+    if(!/[A-Za-z]/.test(raw)){Toast('原词请包含拉丁字母','danger');return;}
+    if(!uniq.length){Toast('请至少填写一组释义','danger');return;}
     if(existsWord(raw,this.editId)){Toast('该词汇已存在','danger');return;}
     var st=Store.state;
     if(this.editId){
       var w=st.words.find(function(x){return x.id===this.editId;}.bind(this));
-      if(w)Object.assign(w,{raw:raw,phonetic:phonetic,pos:this.pos,meaning:meaning,note:note});
-    }else st.words.unshift(newWord({raw:raw,phonetic:phonetic,pos:this.pos,meaning:meaning,note:note}));
+      if(w){Object.assign(w,{raw:raw,phonetic:phonetic,note:note,senses:uniq});}
+    }else{
+      st.words.unshift(newWord({raw:raw,phonetic:phonetic,note:note,senses:uniq}));
+    }
     Store.save();Modal.close();refreshWords();Toast('已保存');
   }
 };
 
-/* ===== 搜索结果页 ===== */
-var Search={
-  q:'',
-  render:function(){
-    var inp=$('#resultSearch');
-    if(inp.value!==this.q)inp.value=this.q;
-    var k=this.q.trim();
-    var st=Store.state;
-    var html='';
-    if(k){
-      if(/^[A-Za-z]/.test(k)){
-        var w=st.words.find(function(x){return x.raw.toLowerCase()===k.toLowerCase();});
-        html=w?detailHTML(w):'';
-      }else{
-        html=st.words.filter(function(x){return x.meaning.indexOf(k)>=0;}).map(function(x){
-          return '<div class="card tap" data-action="word-open" data-id="'+x.id+'">'+
-            '<div class="sug"><span class="sug-k">'+esc(x.meaning)+'</span><span class="sug-v">'+esc(x.raw)+'</span></div></div>';
-        }).join('');
-      }
-    }
-    $('#searchList').innerHTML=html;
+var SentenceSheet={
+  editId:null,
+  open:function(id){
+    this.editId=id||null;
+    var s=id?Store.state.sentences.find(function(x){return x.id===id;}):null;
+    Modal.sheet('<div class="sheet-head"><span class="sh-title">'+(s?'编辑句子':'新增句子')+'</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
+    '<label class="f-label">原文 <i>*</i></label><input id="sText" value="'+esc(s?s.text:'')+'">'+
+    '<label class="f-label">释义</label><input id="sMean" value="'+esc(s?s.meaning:'')+'">'+
+    '<label class="f-label">来源</label><input id="sSrc" value="'+esc(s?s.src:'')+'">'+
+    '<label class="f-label">语用</label><input id="sUse" value="'+esc(s?s.use:'')+'">'+
+    '<button class="btn primary big" data-action="s-save">保存</button>');
   },
-  go:function(){
-    var v=($('#searchInput').value||'').trim();
-    if(!v){Toast('先输入要查的内容');return;}
-    this.q=v;Router.go('search');
+  save:function(){
+    var t=$('#sText').value.trim(),m=$('#sMean').value.trim(),src=$('#sSrc').value.trim(),use=$('#sUse').value.trim();
+    if(!t){Toast('请填写原文');return;}
+    var st=Store.state;
+    if(this.editId){
+      var s=st.sentences.find(function(x){return x.id===this.editId;}.bind(this));
+      if(s){Object.assign(s,{text:t,meaning:m,src:src,use:use});}
+    }else{
+      st.sentences.unshift({id:uid(),type:'sentence',text:t,meaning:m,src:src,use:use});
+    }
+    Store.save();Modal.close();refreshSents();refreshWords();Toast('已保存');
   }
 };
 
-/* ===== 词卡页 ===== */
-var WordPage={
-  id:null,from:'dict',
-  open:function(id,from){this.id=id;this.from=from||'dict';Router.go('word');},
+var Search={
+  id:null,
+  show:function(id){this.id=id;Router.go('search');},
   render:function(){
     var w=Store.state.words.find(function(x){return x.id===this.id;}.bind(this));
-    $('#wordBox').innerHTML=w?detailHTML(w):'';
+    $('#searchBox').innerHTML=w?detailHTML(w):'';
   }
 };
-
-/* ===== 词库 ===== */
+var SSearch={
+  id:null,
+  show:function(id){this.id=id;Router.go('ssearch');},
+  render:function(){
+    var s=Store.state.sentences.find(function(x){return x.id===this.id;}.bind(this));
+    $('#ssearchBox').innerHTML=s?sentCard(s):'';
+  }
+};
+var SentLib={
+  render:function(){
+    var items=Store.state.sentences.filter(function(s){return s.type==='sentence';});
+    $('#sentlibList').innerHTML=items.map(sentCard).join('');
+  }
+};
 var Dict={
   mode:'alpha',folded:{},
   groups:function(){
     var ws=Store.state.words,g=[];
     if(this.mode==='alpha'){
       var m={};
-      ws.forEach(function(w){var key=(w.raw[0]||'').toUpperCase();if(!/[A-Z]/.test(key))key='#';(m[key]=m[key]||[]).push(w);});
+      ws.forEach(function(w){var key=(w.raw[0]||'').toUpperCase();if(!/[A-Z]/.test(key)){key='#';}(m[key]=m[key]||[]).push(w);});
       Object.keys(m).sort().forEach(function(key){g.push([key,m[key]]);});
     }else{
-      POS_LIST.forEach(function(p){var list=ws.filter(function(w){return w.pos===p;});if(list.length)g.push([p,list]);});
-      var rest=ws.filter(function(w){return !w.pos||POS_LIST.indexOf(w.pos)<0;});
-      if(rest.length)g.push(['其他',rest]);
+      POS_LIST.forEach(function(p){var list=ws.filter(function(w){return (w.senses||[]).some(function(s){return s.pos===p;});});if(list.length){g.push([p,list]);}});
+      var rest=ws.filter(function(w){return !(w.senses||[]).some(function(s){return s.pos&&POS_LIST.indexOf(s.pos)>=0;});});
+      if(rest.length){g.push(['其他',rest]);}
     }
     g.forEach(function(pair){pair[1].sort(function(a,b){return a.raw.localeCompare(b.raw);});});
     return g;
@@ -856,10 +854,10 @@ var Dict={
       var key=pair[0],list=pair[1];
       var folded=!!self.folded[self.mode+':'+key];
       var rows=list.map(function(w){
-        return '<div class="card tap" data-action="word-open" data-id="'+w.id+'">'+
+        return '<div class="card gest" data-gtype="word" data-gid="'+w.id+'">'+
           '<div class="w-name">'+esc(w.raw)+'</div>'+
           (w.phonetic?'<div class="w-pho">'+esc(w.phonetic)+'</div>':'')+
-          '<div class="w-sub">'+(w.pos?'<span class="w-tag">'+esc(w.pos)+'</span>':'')+'<span class="w-mean-i">'+esc(w.meaning)+'</span></div>'+
+          sensesHTML(w)+
           (w.note?'<div class="w-extra">'+esc(w.note)+'</div>':'')+'</div>';
       }).join('');
       return '<div class="d-group" id="dg-'+esc(key)+'" data-action="dict-fold" data-key="'+esc(key)+'">'+
@@ -872,41 +870,67 @@ var Dict={
     if(this.folded[fk]){this.folded[fk]=false;this.render();}
     requestAnimationFrame(function(){
       var el=document.getElementById('dg-'+key);
-      if(!el)return;
+      if(!el){return;}
       var top=el.getBoundingClientRect().top+window.pageYOffset-50;
       window.scrollTo({top:top,behavior:'smooth'});
     });
   }
 };
 
-/* ===== 渲染 ===== */
 var Render={
-  words:function(){$('#wordCount').textContent=Store.state.words.length;},
+  words:function(){
+    $('#wordCount').textContent=Store.state.words.length;
+    var q=$('#searchInput').value;
+    var has=q.trim().length>0;
+    $('#wordsActions').style.display=has?'none':'';
+    $('#sugList').innerHTML=has?wordSugs(q):'';
+  },
+  sentences:function(){
+    $('#sentCount').textContent=Store.state.sentences.filter(function(s){return s.type==='sentence';}).length;
+    var q=$('#sentSearch').value;
+    var has=q.trim().length>0;
+    $('#sentActions').style.display=has?'none':'';
+    $('#ssugList').innerHTML=has?sentSugs(q):'';
+  },
   search:function(){Search.render();},
+  ssearch:function(){SSearch.render();},
   dict:function(){Dict.render();},
-  word:function(){WordPage.render();},
-  settings:function(){
-    var s=Store.state;
-    $('#statsRow').innerHTML='<div class="stat"><b>'+s.words.length+'</b><span>词汇</span></div>';
-  }
+  sentlib:function(){SentLib.render();}
 };
 
-/* ===== 事件 ===== */
 var Actions={
   tab:function(d){Router.go(d.page);},
-  'search-go':function(){Search.go();},
   'search-back':function(){Router.back();},
-  'word-back':function(){Router.back();},
-  'word-open':function(d){WordPage.open(d.id,Router.current==='search'?'search':'dict');},
+  'ssearch-back':function(){Router.back();},
+  'sentlib-open':function(){Router.go('sentlib');},
+  'sentlib-back':function(){Router.back();},
   'dict-mode':function(d){Dict.mode=d.mode;Dict.render();},
   'dict-fold':function(d){var fk=Dict.mode+':'+d.key;Dict.folded[fk]=!Dict.folded[fk];Dict.render();},
   'dict-jump':function(d){Dict.jump(d.key);},
-  'pos-pick':function(d){
-    WordSheet.pos=(WordSheet.pos===d.pos)?'':d.pos;
-    $$('#posGrid .pos-item').forEach(function(el){el.classList.toggle('on',el.getAttribute('data-pos')===WordSheet.pos);});
+  'sense-add':function(){WordSheet.senses=WordSheet.collectSenses();WordSheet.openPos=-1;WordSheet.senses.push({pos:'',meaning:''});WordSheet.renderSenses();},
+  'sense-del':function(d){
+    WordSheet.senses=WordSheet.collectSenses();
+    WordSheet.senses.splice(+d.i,1);
+    if(!WordSheet.senses.length){WordSheet.senses.push({pos:'',meaning:''});}
+    WordSheet.openPos=-1;
+    WordSheet.renderSenses();
+  },
+  'sense-pos':function(d){
+    WordSheet.senses=WordSheet.collectSenses();
+    var i=+d.i;
+    WordSheet.openPos=(WordSheet.openPos===i)?-1:i;
+    WordSheet.renderSenses();
+  },
+  'sense-pick':function(d){
+    WordSheet.senses=WordSheet.collectSenses();
+    WordSheet.senses[+d.i].pos=d.pos||'';
+    WordSheet.openPos=-1;
+    WordSheet.renderSenses();
   },
   'word-add':function(){WordSheet.open();},
   'word-save':function(){WordSheet.save();},
+  's-add':function(){SentenceSheet.open();},
+  's-save':function(){SentenceSheet.save();},
   'csv-open':function(){Modal.sheet('<div class="sheet-head"><span class="sh-title">批量导入</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
     '<textarea id="csvBox"></textarea>'+
     '<button class="btn primary big" data-action="csv-save">导入</button>');},
@@ -916,54 +940,44 @@ var Actions={
     Modal.close();
     handleImportText(v);
   },
+  'doc-import':function(){$('#iFile').click();},
   'sheet-close':function(){Modal.close();},
   'dlg-ok':function(){Modal.ok();},
-  'dlg-cancel':function(){Modal.cancel();},
-  'exp-words-txt':function(){exportWordsTXT();},
-  'exp-words-docx':function(){exportWordsDocx();},
-  export:function(){
-    var s=JSON.stringify(Store.state,null,2);
-    Modal.sheet('<div class="sheet-head"><span class="sh-title">导出</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
-    '<textarea id="expBox" style="min-height:200px">'+esc(s)+'</textarea>'+
-    '<button class="btn primary big" data-action="exp-copy">复制全部</button>'+
-    '<button class="btn soft" data-action="exp-dl">下载为文件</button>');
-  },
-  'exp-copy':function(){
-    var el=$('#expBox');el.focus();el.select();
-    var ok=false;try{ok=document.execCommand('copy');}catch(e){}
-    if(ok)Toast('已复制，可粘贴保存');
-    else if(navigator.clipboard)navigator.clipboard.writeText(el.value)
-      .then(function(){Toast('已复制，可粘贴保存');}).catch(function(){Toast('请长按文本手动复制');});
-    else Toast('请长按文本手动复制');
-  },
-  'exp-dl':function(){
-    download(new Blob([$('#expBox').value],{type:'application/json'}),Store.state.langName+'-资料.json','application/json');
-  },
-  import:function(){$('#iFile').click();}
+  'dlg-cancel':function(){Modal.cancel();}
 };
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-action]');if(!t)return;
+  var p=e.target.closest('.pick');
+  if(p){
+    if(p.getAttribute('data-type')==='word'){Search.show(p.getAttribute('data-id'));}
+    else{SSearch.show(p.getAttribute('data-id'));}
+    return;
+  }
+  var t=e.target.closest('[data-action]');
+  if(!t){return;}
   var fn=Actions[t.getAttribute('data-action')];
   if(fn){try{fn(t.dataset,t,e);}catch(err){console.error(err);Toast('操作失败：'+err.message);}}
 });
 document.addEventListener('input',function(e){
-  if(e.target.id==='resultSearch'){Search.q=e.target.value;Search.render();}
+  if(e.target.id==='searchInput'){
+    var q=e.target.value,has=q.trim().length>0;
+    $('#wordsActions').style.display=has?'none':'';
+    $('#sugList').innerHTML=has?wordSugs(q):'';
+  }
+  if(e.target.id==='sentSearch'){
+    var q2=e.target.value,has2=q2.trim().length>0;
+    $('#sentActions').style.display=has2?'none':'';
+    $('#ssugList').innerHTML=has2?sentSugs(q2):'';
+  }
   if(e.target.id==='wRaw'&&!WordSheet.phoTouched){
-    var p=$('#wPho');if(p)p.value=genIPA(e.target.value);
+    var p=$('#wPho');if(p){p.value=genIPA(e.target.value);}
   }
   if(e.target.id==='wPho'){WordSheet.phoTouched=e.target.value.trim()!=='';}
 });
-document.addEventListener('keydown',function(e){
-  if(e.key==='Enter'&&e.target.id==='searchInput'){
-    if(e.isComposing||e.keyCode===229)return;
-    e.preventDefault();Search.go();
-  }
-});
-document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')Store.save();});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){Store.save();}});
 document.addEventListener('change',function(e){
   var el=e.target;
-  if(el.id!=='iFile')return;
-  var f=el.files[0];if(!f)return;
+  if(el.id!=='iFile'){return;}
+  var f=el.files[0];if(!f){return;}
   var name=(f.name||'').toLowerCase();
   var fr=new FileReader();
   fr.onload=function(){
@@ -977,11 +991,10 @@ document.addEventListener('change',function(e){
     }
     el.value='';
   };
-  if(name.endsWith('.docx')||name.endsWith('.doc'))fr.readAsArrayBuffer(f);
-  else fr.readAsText(f);
+  if(name.endsWith('.docx')||name.endsWith('.doc')){fr.readAsArrayBuffer(f);}
+  else{fr.readAsText(f);}
 });
 
-/* ===== HBuilderX APP：安卓硬件返回键 ===== */
 document.addEventListener('plusready',function(){
   plus.key.addEventListener('backbutton',function(){
     if(document.querySelector('.sheet')){Modal.close();return;}
@@ -990,7 +1003,6 @@ document.addEventListener('plusready',function(){
   },false);
 });
 
-/* ===== 启动 ===== */
 (function boot(){
   try{
     Modal.init();
