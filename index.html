@@ -17,11 +17,18 @@
   --bg1:#f6f6f4;--bg2:#ebebe9;--card:#fff;--card2:#f1f1ef;--tabbg:rgba(255,255,255,.92);--line:rgba(0,0,0,.09);
   --text:#1c1c1e;--text2:#6e6e73;--text3:#a8a8ad;
   --btnbg:#1c1c1e;--btnfg:#fff;--prisoft:#ececea;--ring:rgba(0,0,0,.1);
-  --accent:#8a6b4f;
+  --accent:#8a6b4f;--tanbg:#efe4d3;
   --danger:#b3261e;--dangersoft:#f6e7e5;
   --sh1:0 1px 8px rgba(0,0,0,.05);--sh2:0 10px 30px rgba(0,0,0,.14);
-  --r:16px;--rs:10px;
-  --tabh:58px;
+  --r:16px;--rs:10px;--tabh:58px;
+}
+[data-theme="dark"]{
+  --bg1:#141416;--bg2:#0c0c0e;--card:#1c1c1f;--card2:#242427;--tabbg:rgba(16,16,18,.92);--line:rgba(255,255,255,.1);
+  --text:#f2f2f4;--text2:#9a9aa0;--text3:#5f5f64;
+  --btnbg:#f2f2f4;--btnfg:#141416;--prisoft:#2a2a2e;--ring:rgba(255,255,255,.14);
+  --accent:#c8a97e;--tanbg:#37302a;
+  --danger:#ff8a80;--dangersoft:#3a2626;
+  --sh1:0 1px 8px rgba(0,0,0,.4);--sh2:0 10px 30px rgba(0,0,0,.6);
 }
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
   color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));background-attachment:fixed;min-height:100vh;font-size:14px}
@@ -37,11 +44,14 @@ input,textarea{font:inherit;color:var(--text)}
 .head-l{display:flex;align-items:center;gap:8px}
 .back2{font-size:18px;color:var(--text2);padding:2px 8px}
 .count-chip{background:var(--prisoft);color:var(--accent);border-radius:999px;font-size:12px;font-weight:700;
-  display:inline-flex;align-items:center;justify-content:center;line-height:1;height:24px;padding:0 11px;flex:none;
-  transform:translateY(2px)}
+  display:inline-flex;align-items:center;justify-content:center;line-height:1;height:24px;padding:0 11px;flex:none;transform:translateY(2px)}
 .card{background:var(--card);border-radius:var(--r);padding:15px;margin:10px 0;box-shadow:var(--sh1);border:1px solid var(--line)}
 .card.tap{cursor:pointer;transition:transform .15s}
 .card.tap:active{transform:scale(.98)}
+.note-box{border-left:4px solid var(--accent);color:var(--text2);font-size:13.5px;line-height:1.7}
+.sug{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.sug-k{font-weight:700;font-size:15px;color:var(--text)}
+.sug-v{color:var(--text3);font-size:14px}
 .search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:7px 7px 7px 17px;box-shadow:var(--sh1);border:1px solid var(--line);margin-bottom:5px}
 .search-wrap input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:14px}
 .search-big{padding:13px 18px}
@@ -52,10 +62,12 @@ input,textarea{font:inherit;color:var(--text)}
 .btn:active{transform:scale(.97);opacity:.85}
 .btn.primary{background:var(--btnbg);color:var(--btnfg)}
 .btn.soft{background:var(--card);border:1px solid var(--line);color:var(--text);box-shadow:var(--sh1)}
+.btn.tan{background:var(--tanbg);color:var(--accent);border:none;box-shadow:none}
 .btn.big{padding:14px;border-radius:14px;font-size:15px;margin-top:14px}
 .btn-row.two{display:flex;gap:8px}.btn-row.two .btn{flex:1;margin-top:10px}
-.seg{display:flex;background:var(--card2);border-radius:12px;padding:3px;margin-bottom:6px}
+.seg{display:flex;gap:6px;background:var(--card2);border-radius:12px;padding:3px;margin-bottom:6px}
 .seg-item{flex:1;text-align:center;padding:10px 0;border-radius:9px;color:var(--text2);font-size:13.5px;transition:.2s}
+.seg-item:not(.on){border:1px solid var(--line)}
 .seg-item.on{background:var(--btnbg);color:var(--btnfg);font-weight:700}
 .qnav{position:sticky;top:0;z-index:6;display:flex;gap:6px;overflow-x:auto;padding:8px 2px;
   background:linear-gradient(var(--bg1) 78%,transparent);scrollbar-width:none}
@@ -72,22 +84,14 @@ input,textarea{font:inherit;color:var(--text)}
 .w-mean-i{color:var(--text2);font-size:14px}
 .w-tag{background:var(--prisoft);color:var(--accent);border-radius:8px;padding:2px 10px;font-size:12px;font-weight:700}
 .w-extra{margin-top:6px;color:var(--text3);font-size:13px;white-space:pre-wrap}
-.w-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
-.ex-head{font-size:13px;font-weight:800;color:var(--text2);margin:14px 2px 2px}
-.ex-list{padding:4px 14px}
-.ex-item{display:flex;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line)}
-.ex-item:last-child{border-bottom:none}
-.ex-n{flex:none;color:var(--text3);font-weight:700}
-.ex-src{font-size:14.5px;font-weight:600;color:var(--text)}
-.ex-tr{margin-top:4px;font-size:13.5px;color:var(--text3)}
 .hint-line{font-size:12px;color:var(--text3);margin:0 2px 6px;text-align:center}
-.chip{border-radius:10px;padding:7px 14px;font-size:12.5px;font-weight:600;transition:transform .15s}
-.chip:active{transform:scale(.95)}
-.chip.edit{background:var(--card2);color:var(--text2);border:1px solid var(--line)}
-.chip.del{background:var(--dangersoft);color:var(--danger)}
-.d-group{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--accent);letter-spacing:2px;margin:16px 2px 6px;cursor:pointer}
-.d-group .cnt{color:var(--text3);font-size:12px;font-weight:600;letter-spacing:0}
-.d-group .fold{margin-left:auto;color:var(--text3);font-size:11px;letter-spacing:0}
+.d-group{display:flex;align-items:center;margin:18px 2px 8px;padding:4px 2px;cursor:pointer}
+.d-pill{display:inline-flex;align-items:center;gap:10px;padding:7px 16px;border-radius:999px;background:var(--card);border:1px solid var(--line);box-shadow:var(--sh1)}
+.d-key{font-size:18px;font-weight:800;color:var(--accent);letter-spacing:1px;line-height:1}
+.d-group .cnt{color:var(--text2);font-size:14px;font-weight:700;line-height:1}
+.d-group .fold{margin-left:auto;color:var(--text2);display:inline-flex;align-items:center;justify-content:center}
+.d-group .fold svg{width:20px;height:20px;fill:currentColor;stroke:currentColor;stroke-width:3;stroke-linejoin:round;transition:transform .2s}
+.d-group .fold.open svg{transform:rotate(90deg)}
 .pos-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .pos-item{border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;background:var(--card2);color:var(--text2);transition:.15s}
 .pos-item:active{transform:scale(.95)}
@@ -96,7 +100,7 @@ input,textarea{font:inherit;color:var(--text)}
 .f-label i{color:var(--danger);font-style:normal}
 .sheet input,.sheet textarea{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:var(--rs);padding:11px 13px;font-size:14px;outline:none;transition:.2s}
 .sheet input:focus,.sheet textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
-.sheet textarea{min-height:100px;resize:vertical}
+.sheet textarea{min-height:70px;resize:vertical}
 #tabbar{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;display:flex;z-index:20;
   background:var(--tabbg);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
   border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);transition:transform .25s ease}
@@ -108,6 +112,7 @@ input,textarea{font:inherit;color:var(--text)}
 #toast{position:fixed;top:20px;left:50%;transform:translate(-50%,-220%);opacity:0;
   background:rgba(24,24,26,.92);color:#fff;padding:9px 19px;border-radius:999px;font-size:13px;
   transition:transform .35s cubic-bezier(.2,.9,.3,1.2),opacity .3s;z-index:99;max-width:80%;pointer-events:none}
+#toast.danger{background:var(--danger)}
 #toast.show{transform:translate(-50%,0);opacity:1}
 .sheet{position:fixed;inset:0;z-index:50}
 .sheet .mask{position:absolute;inset:0;background:rgba(0,0,0,.4)}
@@ -128,8 +133,8 @@ input,textarea{font:inherit;color:var(--text)}
 <body>
 
 <nav id="tabbar">
-  <button class="tab on" data-action="tab" data-page="words"><span class="ico">📚</span>词汇</button>
-  <button class="tab" data-action="tab" data-page="sentences"><span class="ico">📝</span>语句</button>
+  <button class="tab on" data-action="tab" data-page="words"><span class="ico">📝</span>词汇</button>
+  <button class="tab" data-action="tab" data-page="dict"><span class="ico">📚</span>词库</button>
   <button class="tab" data-action="tab" data-page="settings"><span class="ico">⚙️</span>设置</button>
 </nav>
 
@@ -144,7 +149,6 @@ input,textarea{font:inherit;color:var(--text)}
       <button class="btn soft" data-action="word-add">＋ 新增词汇</button>
       <button class="btn soft" data-action="csv-open">批量导入</button>
     </div>
-    <button class="btn primary big" data-action="dict-open">词典</button>
   </section>
 
   <section class="page" data-page="search">
@@ -158,7 +162,7 @@ input,textarea{font:inherit;color:var(--text)}
 
   <section class="page" data-page="dict">
     <div class="page-head">
-      <div class="head-l"><button class="back2" data-action="dict-back">←</button><h1>词典</h1></div>
+      <div class="head-l"><h1>词库</h1></div>
     </div>
     <div class="seg" id="dictSeg">
       <div class="seg-item on" data-action="dict-mode" data-mode="alpha">按首字母</div>
@@ -176,215 +180,293 @@ input,textarea{font:inherit;color:var(--text)}
     <div id="wordBox"></div>
   </section>
 
-  <section class="page" data-page="sentences">
-    <div class="page-head">
-      <div class="head-l"><h1>语句</h1><span class="count-chip" id="sentCount">0</span></div>
-    </div>
-    <div class="btn-row two">
-      <button class="btn primary" data-action="doc-import">导入文档</button>
-      <button class="btn soft" data-action="doc-paste">粘贴文本</button>
-    </div>
-    <button class="btn soft" data-action="s-add">＋ 新增句子</button>
-    <div id="sBody"></div>
-  </section>
-
   <section class="page" data-page="settings">
     <div class="page-head"><h1>设置</h1></div>
     <div class="card"><div class="stat-row" id="statsRow"></div></div>
     <div class="card">
-      <button class="btn primary" data-action="save-file">保存并生成新文件</button>
-      <button class="btn soft" data-action="export">导出 JSON</button>
-      <button class="btn soft" data-action="import">导入 JSON</button>
+      <div class="btn-row two">
+        <button class="btn tan" data-action="exp-words-txt">词库 TXT</button>
+        <button class="btn tan" data-action="exp-words-docx">词库 DOCX</button>
+      </div>
+    </div>
+    <div class="card">
+      <button class="btn primary" data-action="export">导出</button>
+      <button class="btn soft" data-action="import">导入</button>
     </div>
   </section>
 
 </div>
 <div id="toast"></div>
 <div id="modalRoot"></div>
-<input type="file" id="gFile" accept=".txt,.md,.csv,.text,.doc,.docx,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
 <input type="file" id="iFile" accept=".json,.txt,.md,.csv,.text,.doc,.docx,application/json,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
 
 <script>
 'use strict';
-window.addEventListener('error',e=>{console.error(e);Toast('运行异常：'+(e.message||'未知错误'));});
+window.addEventListener('error',function(e){console.error(e);Toast('运行异常：'+(e.message||'未知错误'));});
 
 /* ===== 工具 ===== */
-const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
-const newWord=obj=>Object.assign({id:uid(),created:Date.now(),raw:'',phonetic:'',pos:'',meaning:''},obj);
-const POS_LIST=['名词','动词','修饰词','数词','冠词','代词','介词','连词','疑问词','功能词','声词'];
-const POS_RE=new RegExp('^('+POS_LIST.join('|')+')');
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.from((r||document).querySelectorAll(s));}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function newWord(obj){var o={id:uid(),created:Date.now(),raw:'',phonetic:'',pos:'',meaning:'',note:''};for(var k in obj)o[k]=obj[k];return o;}
+var POS_LIST=['名词','动词','修饰词','数词','冠词','代词','介词','连词','疑问词','功能词','声词'];
+var POS_RE=new RegExp('^('+POS_LIST.join('|')+')');
+function existsWord(raw,exceptId){return Store.state.words.some(function(w){return w.raw.toLowerCase()===raw.toLowerCase()&&w.id!==exceptId;});}
+var FOLD_SVG='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 3 L15 10 L6 17 Z"></path></svg>';
 
-/* ===== 音标自动生成 ===== */
-const C_IPA={p:'p',b:'b',t:'t',d:'d',c:'k',g:'g',ch:'tʃ',j:'dʒ',f:'f',v:'v',s:'s',z:'z',sh:'ʃ',h:'h',m:'m',n:'n',r:'r',l:'l',y:'j',w:'w'};
-const V_IPA={a:'a',e:'e',i:'i',o:'o',u:'u',ai:'ai',ei:'ei',oi:'oi',au:'au',eu:'eu'};
-const CLUSTERS=['pl','pr','bl','br','tr','dr','cl','cr','gl','gr','fl','fr','sp','st','sc'];
+/* ===== 音标自动生成（多词各自划音节、各自标重音） ===== */
+var C_IPA={p:'p',b:'b',t:'t',d:'d',c:'k',g:'g',ch:'tʃ',j:'dʒ',f:'f',v:'v',s:'s',z:'z',sh:'ʃ',h:'h',m:'m',n:'n',r:'r',l:'l',y:'j',w:'w'};
+var V_IPA={a:'a',e:'e',i:'i',o:'o',u:'u',ai:'ai',ei:'ei',oi:'oi',au:'au',eu:'eu'};
+var CLUSTERS=['pl','pr','bl','br','tr','dr','cl','cr','gl','gr','fl','fr','sp','st','sc'];
 function tokenizeIPA(s){
   s=String(s).toLowerCase();
-  const units=[];let i=0;
+  var units=[],i=0;
   while(i<s.length){
-    const ch=s[i];
+    var ch=s[i];
     if(!/[a-z]/.test(ch)){i++;continue;}
-    let d=null;
-    for(const k of ['ai','ei','oi','au','eu'])if(s.startsWith(k,i)){d=k;break;}
+    var d=null,ks=['ai','ei','oi','au','eu'];
+    for(var ki=0;ki<ks.length;ki++){if(s.indexOf(ks[ki],i)===i){d=ks[ki];break;}}
     if(d){units.push({v:1,g:d,ipa:V_IPA[d]});i+=d.length;continue;}
-    if('aeiou'.includes(ch)){units.push({v:1,g:ch,ipa:V_IPA[ch]});i++;continue;}
-    let c=ch;
-    if(s.startsWith('ch',i))c='ch';else if(s.startsWith('sh',i))c='sh';
+    if('aeiou'.indexOf(ch)>=0){units.push({v:1,g:ch,ipa:V_IPA[ch]});i++;continue;}
+    var c=ch;
+    if(s.indexOf('ch',i)===i)c='ch';else if(s.indexOf('sh',i)===i)c='sh';
     if(C_IPA[c])units.push({v:0,g:c,ipa:C_IPA[c]});
     i+=c.length;
   }
   return units;
 }
 function syllabify(units){
-  const vIdx=units.map((u,i)=>u.v?i:-1).filter(i=>i>=0);
+  var vIdx=units.map(function(u,i){return u.v?i:-1;}).filter(function(i){return i>=0;});
   if(!vIdx.length)return [units];
-  const sylls=[];let cur=[];
-  for(let i=0;i<=vIdx[0];i++)cur.push(units[i]);
-  for(let vi=1;vi<vIdx.length;vi++){
-    const nextV=vIdx[vi];
-    const cs=units.slice(vIdx[vi-1]+1,nextV);
-    let coda=[],onset=cs;
+  var sylls=[],cur=[];
+  for(var i=0;i<=vIdx[0];i++)cur.push(units[i]);
+  for(var vi=1;vi<vIdx.length;vi++){
+    var nextV=vIdx[vi];
+    var cs=units.slice(vIdx[vi-1]+1,nextV);
+    var coda=[],onset=cs;
     if(cs.length){
-      const g=cs.map(u=>u.g).join('');
-      if(!(cs.length===1||CLUSTERS.includes(g))){coda=[cs[0]];onset=cs.slice(1);}
+      var g=cs.map(function(u){return u.g;}).join('');
+      if(!(cs.length===1||CLUSTERS.indexOf(g)>=0)){coda=[cs[0]];onset=cs.slice(1);}
     }
-    cur.push(...coda);
+    cur=cur.concat(coda);
     sylls.push(cur);
-    cur=[...onset,units[nextV]];
+    cur=onset.concat([units[nextV]]);
   }
-  for(let i=vIdx[vIdx.length-1]+1;i<units.length;i++)cur.push(units[i]);
+  for(var j=vIdx[vIdx.length-1]+1;j<units.length;j++)cur.push(units[j]);
   sylls.push(cur);
   return sylls;
 }
 function genIPA(raw){
-  const units=tokenizeIPA(raw);
-  if(!units.length)return '';
-  const sylls=syllabify(units);
-  const stress=Math.max(0,sylls.length-2);
-  const out=sylls.map((sy,idx)=>(idx===stress?"'":'')+sy.map(u=>u.ipa).join(''));
-  return '/'+out.join('.')+'/';
+  var ws=String(raw).toLowerCase().split(/\s+/).filter(function(w){return /[a-z]/.test(w);});
+  var parts=[];
+  for(var i=0;i<ws.length;i++){
+    var units=tokenizeIPA(ws[i]);
+    if(!units.length)continue;
+    var sylls=syllabify(units);
+    var stress=Math.max(0,sylls.length-2);
+    parts.push(sylls.map(function(sy,idx){return (idx===stress?"'":'')+sy.map(function(u){return u.ipa;}).join('');}).join('.'));
+  }
+  return parts.length?('/'+parts.join(' ')+'/'):'';
 }
 
 /* ===== 存储层 ===== */
-const NAME_KEY='CONLANG::';
-const Persist={
+var NAME_KEY='CONLANG::';
+var Persist={
   ok:false,
-  check(){try{localStorage.setItem('__probe','1');this.ok=localStorage.getItem('__probe')==='1';localStorage.removeItem('__probe');}catch(e){this.ok=false;}return this.ok;}
+  check:function(){try{localStorage.setItem('__probe','1');this.ok=localStorage.getItem('__probe')==='1';localStorage.removeItem('__probe');}catch(e){this.ok=false;}return this.ok;}
 };
-function idbOpen(){return new Promise((res,rej)=>{const q=indexedDB.open('conlang-db',1);
-  q.onupgradeneeded=()=>q.result.createObjectStore('kv');
-  q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
-async function idbSet(v){try{const db=await idbOpen();db.transaction('kv','readwrite').objectStore('kv').put(v,'data');}catch(e){}}
-async function idbGet(){try{const db=await idbOpen();
-  return await new Promise(res=>{const g=db.transaction('kv').objectStore('kv').get('data');
-    g.onsuccess=()=>res(g.result||null);g.onerror=()=>res(null);});}catch(e){return null;}}
-function nameGet(){try{const n=window.name||'';if(n.indexOf(NAME_KEY)===0)return JSON.parse(n.slice(NAME_KEY.length));}catch(e){}return null;}
+function idbOpen(){return new Promise(function(res,rej){var q=indexedDB.open('conlang-db',1);
+  q.onupgradeneeded=function(){q.result.createObjectStore('kv');};
+  q.onsuccess=function(){res(q.result);};q.onerror=function(){rej(q.error);};});}
+function idbSet(v){idbOpen().then(function(db){db.transaction('kv','readwrite').objectStore('kv').put(v,'data');}).catch(function(){});}
+function idbGet(){return idbOpen().then(function(db){return new Promise(function(res){var g=db.transaction('kv').objectStore('kv').get('data');
+  g.onsuccess=function(){res(g.result||null);};g.onerror=function(){res(null);};});}).catch(function(){return null;});}
+function nameGet(){try{var n=window.name||'';if(n.indexOf(NAME_KEY)===0)return JSON.parse(n.slice(NAME_KEY.length));}catch(e){}return null;}
 function nameSet(j){try{if(j.length<1e6)window.name=NAME_KEY+j;}catch(e){}}
-function readEmbedded(){
-  const el=document.getElementById('embedData');
-  if(!el)return null;
-  try{return JSON.parse(el.textContent);}catch(e){return null;}
-}
-const Store={
-  KEY:'conlang.studio.v16', state:null,
-  defaults:()=>({version:16,langName:'我的人造语言',words:[],sentences:[]}),
-  async load(){
-    let s=null,src='';
-    if(Persist.ok){try{const v=JSON.parse(localStorage.getItem(this.KEY));if(v){s=v;src='ls';}}catch(e){}}
-    if(!s){const v=await idbGet();if(v){s=v;src='idb';}}
-    if(!s){const v=nameGet();if(v){s=v;src='name';}}
-    if(!s){const v=readEmbedded();if(v){s=v;src='embed';}}
-    if(!s&&Persist.ok)for(const k of ['conlang.studio.v15','conlang.studio.v14','conlang.studio.v13','conlang_app_data']){
-      try{const v=JSON.parse(localStorage.getItem(k));if(v){s=v;src='ls';break;}}catch(e){}}
-    const d=this.defaults();s=(s&&typeof s==='object')?s:{};
-    this.state={...d,...s,
-      words:Array.isArray(s.words)?s.words:[],
-      sentences:Array.isArray(s.sentences)?s.sentences:[]};
-    this.state.words.forEach(w=>{if(!w.phonetic)w.phonetic=genIPA(w.raw);});
-    if(src)this.save();
+var Store={
+  KEY:'conlang.studio.v23', state:null,
+  defaults:function(){return {version:23,langName:'我的人造语言',words:[]};},
+  load:function(){
+    var self=this,s=null,src='';
+    if(Persist.ok){try{var v=JSON.parse(localStorage.getItem(this.KEY));if(v){s=v;src='ls';}}catch(e){}}
+    var p=Promise.resolve();
+    if(!s)p=idbGet().then(function(v){if(v){s=v;src='idb';}});
+    return p.then(function(){
+      if(!s){var v2=nameGet();if(v2){s=v2;src='name';}}
+      if(!s&&Persist.ok){var ks=['conlang.studio.v22','conlang.studio.v21'];
+        for(var i=0;i<ks.length;i++){try{var v3=JSON.parse(localStorage.getItem(ks[i]));if(v3){s=v3;src='ls';break;}}catch(e){}}}
+      var d=self.defaults();s=(s&&typeof s==='object')?s:{};
+      self.state=Object.assign({},d,s,{words:Array.isArray(s.words)?s.words:[]});
+      var migrated=false;
+      if(!self.state.ipaV2){
+        self.state.words.forEach(function(w){w.phonetic=genIPA(w.raw);});
+        self.state.ipaV2=2;migrated=true;
+      }else{
+        self.state.words.forEach(function(w){if(!w.phonetic)w.phonetic=genIPA(w.raw);});
+      }
+      if(src||migrated)self.save();
+    });
   },
-  save(){
-    const j=JSON.stringify(this.state);
+  save:function(){
+    var j=JSON.stringify(this.state);
     if(Persist.ok){try{localStorage.setItem(this.KEY,j);}catch(e){Persist.ok=false;}}
     idbSet(j);
     nameSet(j);
   }
 };
 
-/* ===== 生成数据随文件走的新版本 ===== */
-function generatePortable(){
+/* ===== 下载 & DOCX/TXT 导出 ===== */
+function download(blob,filename){
   try{
-    Modal.close();
-    const json=JSON.stringify(Store.state).replace(/</g,'\\u003c');
-    const clone=document.documentElement.cloneNode(true);
-    clone.querySelectorAll('#embedData').forEach(n=>n.remove());
-    const tag=document.createElement('script');
-    tag.id='embedData';tag.type='application/json';tag.textContent=json;
-    clone.appendChild(tag);
-    const blob=new Blob(['<!DOCTYPE html>\n'+clone.outerHTML],{type:'text/html'});
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
-    a.download=Store.state.langName+'-人造语言工具.html';
-    a.click();URL.revokeObjectURL(a.href);
-    Toast('已生成新文件，数据随行');
-  }catch(err){console.error(err);Toast('生成失败：'+err.message);}
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download=filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url);},3000);
+    Toast('已触发下载');
+  }catch(e){Toast('下载失败');}
+}
+function crc32(buf){
+  var t=crc32.t;
+  if(!t){t=crc32.t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}}
+  var cc=0xFFFFFFFF;
+  for(var i=0;i<buf.length;i++)cc=t[(cc^buf[i])&0xFF]^(cc>>>8);
+  return (cc^0xFFFFFFFF)>>>0;
+}
+function zipStore(files){
+  var enc=new TextEncoder();
+  var parts=[],central=[],offset=0;
+  files.forEach(function(f){
+    var name=enc.encode(f.name),data=f.data,crc=crc32(data);
+    var lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0,true);lh.setUint16(8,0,true);
+    lh.setUint16(10,0,true);lh.setUint16(12,0,true);
+    lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,data.length,true);
+    lh.setUint16(26,name.length,true);lh.setUint16(28,0,true);
+    parts.push(new Uint8Array(lh.buffer),name,data);
+    var ch=new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0,true);ch.setUint16(10,0,true);
+    ch.setUint16(12,0,true);ch.setUint16(14,0,true);
+    ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,data.length,true);
+    ch.setUint16(28,name.length,true);ch.setUint16(30,0,true);ch.setUint16(32,0,true);
+    ch.setUint16(34,0,true);ch.setUint16(36,0,true);ch.setUint32(38,0,true);ch.setUint32(42,offset,true);
+    central.push(new Uint8Array(ch.buffer),name);
+    offset+=30+name.length+data.length;
+  });
+  var csize=central.reduce(function(s,p){return s+p.length;},0);
+  var eo=new DataView(new ArrayBuffer(22));
+  eo.setUint32(0,0x06054b50,true);eo.setUint16(4,0,true);eo.setUint16(6,0,true);
+  eo.setUint16(8,files.length,true);eo.setUint16(10,files.length,true);
+  eo.setUint32(12,csize,true);eo.setUint32(16,offset,true);eo.setUint16(20,0,true);
+  parts.push.apply(parts,central);parts.push(new Uint8Array(eo.buffer));
+  var total=parts.reduce(function(s,p){return s+p.length;},0);
+  var out=new Uint8Array(total),o=0;
+  parts.forEach(function(p){out.set(p,o);o+=p.length;});
+  return out;
+}
+function makeDocx(paras){
+  function x(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  var body=paras.map(function(p){
+    var pr=(p.b||p.sz)?('<w:rPr>'+(p.b?'<w:b/>':'')+(p.sz?'<w:sz w:val="'+p.sz+'"/>':'')+'</w:rPr>'):'';
+    return '<w:p><w:r>'+pr+'<w:t xml:space="preserve">'+x(p.text)+'</w:t></w:r></w:p>';
+  }).join('');
+  var doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+'<w:sectPr/></w:body></w:document>';
+  var types='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+  var rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+  var enc=new TextEncoder();
+  return zipStore([
+    {name:'[Content_Types].xml',data:enc.encode(types)},
+    {name:'_rels/.rels',data:enc.encode(rels)},
+    {name:'word/document.xml',data:enc.encode(doc)}
+  ]);
+}
+var DOCX_TYPE='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+function sortedWords(){return Store.state.words.slice().sort(function(a,b){return a.raw.localeCompare(b.raw);});}
+function exportWordsTXT(){
+  var ws=sortedWords();
+  if(!ws.length){Toast('词库为空');return;}
+  var lines=[];
+  ws.forEach(function(w){
+    var l=w.raw;
+    if(w.phonetic)l+='  '+w.phonetic;
+    if(w.pos)l+='  ['+w.pos+']';
+    l+='  —  '+w.meaning;
+    lines.push(l);
+    if(w.note)lines.push('　补充：'+w.note);
+  });
+  download(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/plain;charset=utf-8'}),Store.state.langName+'-词库.txt');
+}
+function exportWordsDocx(){
+  var ws=sortedWords();
+  if(!ws.length){Toast('词库为空');return;}
+  var paras=[{text:Store.state.langName+' 词库',b:1,sz:36},{text:''}];
+  ws.forEach(function(w){
+    paras.push({text:w.raw+(w.phonetic?'  '+w.phonetic:''),b:1,sz:28});
+    paras.push({text:(w.pos?'['+w.pos+'] ':'')+w.meaning,sz:24});
+    if(w.note)paras.push({text:'补充：'+w.note,sz:22});
+    paras.push({text:''});
+  });
+  download(new Blob([makeDocx(paras)],{type:DOCX_TYPE}),Store.state.langName+'-词库.docx');
 }
 
 /* ===== 提示 & 弹窗 ===== */
-const Toast=(()=>{let t;return m=>{const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(t);t=setTimeout(()=>el.classList.remove('show'),1800);};})();
-const Modal={
+var Toast=(function(){var t;return function(m,type){var el=$('#toast');el.textContent=m;el.classList.toggle('danger',type==='danger');el.classList.add('show');clearTimeout(t);t=setTimeout(function(){el.classList.remove('show');},1800);};})();
+var Modal={
   root:null,_res:null,
-  init(){this.root=$('#modalRoot');},
-  sheet(h){this.root.innerHTML=`<div class="sheet"><div class="mask" data-action="sheet-close"></div><div class="panel">${h}</div></div>`;},
-  close(){this.root.innerHTML='';this._res=null;},
-  confirm({title,content,ok='确定',danger=false}={}){
-    return new Promise(res=>{this._res=res;
-      this.root.innerHTML=`<div class="sheet center"><div class="mask" data-action="dlg-cancel"></div>
-      <div class="dialog"><div class="d-title">${esc(title||'提示')}</div><div class="d-content">${esc(content||'')}</div>
-      <div class="d-btns"><button class="btn soft" data-action="dlg-cancel">取消</button>
-      <button class="btn ${danger?'danger':'primary'}" data-action="dlg-ok">${esc(ok)}</button></div></div></div>`;});
+  init:function(){this.root=$('#modalRoot');},
+  sheet:function(h){this.root.innerHTML='<div class="sheet"><div class="mask" data-action="sheet-close"></div><div class="panel">'+h+'</div></div>';},
+  close:function(){this.root.innerHTML='';this._res=null;},
+  confirm:function(opt){
+    var self=this;
+    return new Promise(function(res){
+      self._res=res;
+      var o=opt||{};
+      self.root.innerHTML='<div class="sheet center"><div class="mask" data-action="dlg-cancel"></div>'+
+        '<div class="dialog"><div class="d-title">'+esc(o.title||'提示')+'</div><div class="d-content">'+esc(o.content||'')+'</div>'+
+        '<div class="d-btns"><button class="btn soft" data-action="dlg-cancel">取消</button>'+
+        '<button class="btn '+(o.danger?'danger':'primary')+'" data-action="dlg-ok">'+esc(o.ok||'确定')+'</button></div></div></div>';
+    });
   },
-  ok(){const r=this._res;this.close();r&&r(true);},
-  cancel(){const r=this._res;this.close();r&&r(false);}
+  ok:function(){var r=this._res;this.close();if(r)r(true);},
+  cancel:function(){var r=this._res;this.close();if(r)r(false);}
 };
 
 /* ===== 路由 ===== */
-const Router={
+var Router={
   current:null,
-  show(p){
+  show:function(p){
     this.current=p;
-    $$('.page').forEach(x=>x.classList.toggle('active',x.dataset.page===p));
-    $$('#tabbar .tab').forEach(t=>t.classList.toggle('on',t.dataset.page===p));
+    $$('.page').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-page')===p);});
+    $$('#tabbar .tab').forEach(function(t){t.classList.toggle('on',t.getAttribute('data-page')===p);});
     if(Render[p])Render[p]();
     scrollTo({top:0});
   },
-  go(p){
+  go:function(p){
     if(p===this.current)return;
     try{history.pushState({p:p},'');}catch(e){}
     this.show(p);
   },
-  back(){
-    const cur=this.current;
-    let t='words';
-    if(cur==='word')t=WordPage.from==='search'?'search':'dict';
-    else if(cur==='search'||cur==='dict')t='words';
-    else if(cur!=='words')t='words';
+  back:function(){
+    var cur=this.current,t='words';
+    if(cur==='word')t=(WordPage.from==='search')?'search':((WordPage.from==='dict')?'dict':'words');
+    else if(cur==='search')t='words';
+    else if(cur==='dict')t='words';
     this.show(t);
   }
 };
-window.addEventListener('popstate',()=>{Router.back();});
+window.addEventListener('popstate',function(){Router.back();});
 
-/* ===== 键盘检测 ===== */
+/* ===== 键盘检测 & 抽屉输入框防遮挡 ===== */
 (function(){
-  const bar=$('#tabbar');
-  const isField=t=>t&&/^(INPUT|TEXTAREA)$/.test(t.tagName);
-  let focused=false,baseH=window.innerHeight;
+  var bar=$('#tabbar');
+  function isField(t){return t&&/^(INPUT|TEXTAREA)$/.test(t.tagName);}
+  var focused=false,baseH=window.innerHeight;
   function kbOpen(){
-    const vv=window.visualViewport;
-    const layoutShrink=(baseH-window.innerHeight)>120;
+    var vv=window.visualViewport;
+    var layoutShrink=(baseH-window.innerHeight)>120;
     if(vv)return (window.innerHeight-vv.height)>120||layoutShrink;
     return layoutShrink;
   }
@@ -392,49 +474,60 @@ window.addEventListener('popstate',()=>{Router.back();});
     if(kbOpen()&&focused)bar.classList.add('kb-hide');
     else bar.classList.remove('kb-hide');
   }
-  document.addEventListener('focusin',e=>{if(isField(e.target)){focused=true;update();}});
-  document.addEventListener('focusout',e=>{if(isField(e.target))setTimeout(()=>{focused=isField(document.activeElement);update();},100);});
-  window.addEventListener('resize',()=>{baseH=Math.max(baseH,window.innerHeight);update();});
-  window.addEventListener('orientationchange',()=>{setTimeout(()=>{baseH=window.innerHeight;update();},300);});
+  document.addEventListener('focusin',function(e){
+    if(isField(e.target)){
+      focused=true;update();
+      if(e.target.closest('.sheet')){
+        var el=e.target;
+        setTimeout(function(){try{el.scrollIntoView({block:'center',behavior:'smooth'});}catch(err){}},350);
+      }
+    }
+  });
+  document.addEventListener('focusout',function(e){
+    if(isField(e.target))setTimeout(function(){focused=isField(document.activeElement);update();},100);
+  });
+  window.addEventListener('resize',function(){baseH=Math.max(baseH,window.innerHeight);update();});
+  window.addEventListener('orientationchange',function(){setTimeout(function(){baseH=window.innerHeight;update();},300);});
   if(window.visualViewport){
-    window.visualViewport.addEventListener('resize',update);
+    window.visualViewport.addEventListener('resize',function(){
+      update();
+      var a=document.activeElement;
+      if(isField(a)&&a.closest('.sheet')){try{a.scrollIntoView({block:'center'});}catch(e){}}
+    });
     window.visualViewport.addEventListener('scroll',update);
   }
 })();
 
-/* ===== 文档解析 ===== */
-async function readDocx(buf){
-  const dv=new DataView(buf);let eocd=-1;
-  for(let i=buf.byteLength-22;i>=0;i--)if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;}
-  if(eocd<0)throw 0;
-  const count=dv.getUint16(eocd+10,true);let off=dv.getUint32(eocd+16,true);
-  const ent={};
-  for(let i=0;i<count;i++){
+/* ===== 智能识别：拉丁=原词，汉字=释义（前后皆可），固定词性词自动提取 ===== */
+function readDocxIn(buf){
+  var dv=new DataView(buf),eocd=-1;
+  for(var i=buf.byteLength-22;i>=0;i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;}}
+  if(eocd<0)return Promise.reject(0);
+  var count=dv.getUint16(eocd+10,true),off=dv.getUint32(eocd+16,true);
+  var ent={};
+  for(var k=0;k<count;k++){
     if(dv.getUint32(off,true)!==0x02014b50)break;
-    const method=dv.getUint16(off+10,true),csize=dv.getUint32(off+20,true),
+    var method=dv.getUint16(off+10,true),csize=dv.getUint32(off+20,true),
       nlen=dv.getUint16(off+28,true),elen=dv.getUint16(off+30,true),
       clen=dv.getUint16(off+32,true),lhdr=dv.getUint32(off+42,true);
-    ent[new TextDecoder().decode(new Uint8Array(buf,off+46,nlen))]={method,csize,lhdr};
+    ent[new TextDecoder().decode(new Uint8Array(buf,off+46,nlen))]={method:method,csize:csize,lhdr:lhdr};
     off+=46+nlen+elen+clen;
   }
-  const e=ent['word/document.xml'];if(!e)throw 0;
-  const lnlen=dv.getUint16(e.lhdr+26,true),lelen=dv.getUint16(e.lhdr+28,true);
-  const data=new Uint8Array(buf,e.lhdr+30+lnlen+lelen,e.csize);
-  let xml;
-  if(e.method===0)xml=new TextDecoder().decode(data);
-  else if(e.method===8&&'DecompressionStream' in window){
-    const st=new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
-    xml=new TextDecoder().decode(await new Response(st).arrayBuffer());
-  }else throw 0;
-  return xml.replace(/<w:tab[^>]*>/g,'\t').replace(/<w:br[^>]*>/g,'\n').replace(/<\/w:p>/g,'\n')
-    .replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
-    .replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/\u00a0/g,' ');
+  var e=ent['word/document.xml'];if(!e)return Promise.reject(0);
+  var lnlen=dv.getUint16(e.lhdr+26,true),lelen=dv.getUint16(e.lhdr+28,true);
+  var data=new Uint8Array(buf,e.lhdr+30+lnlen+lelen,e.csize);
+  if(e.method===0)return Promise.resolve(new TextDecoder().decode(data));
+  if(e.method===8&&'DecompressionStream' in window){
+    var st=new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return new Response(st).arrayBuffer().then(function(ab){return new TextDecoder().decode(ab);});
+  }
+  return Promise.reject(0);
 }
 function readDoc(buf){
-  const dv=new DataView(buf);let out='',cur='';
-  const fl=()=>{const t=cur.trim();if(t.length>=4)out+=t+'\n';cur='';};
-  for(let i=0;i+1<buf.byteLength;i+=2){
-    const ch=dv.getUint16(i,true);
+  var dv=new DataView(buf),out='',cur='';
+  function fl(){var t=cur.trim();if(t.length>=4)out+=t+'\n';cur='';}
+  for(var i=0;i+1<buf.byteLength;i+=2){
+    var ch=dv.getUint16(i,true);
     if((ch>=0x4e00&&ch<=0x9fff)||(ch>=0x3000&&ch<=0x303f)||ch===0xff08||ch===0xff09||(ch>=0x20&&ch<0x7f)||ch===13||ch===10||ch===9)cur+=String.fromCharCode(ch);
     else fl();
   }
@@ -442,122 +535,63 @@ function readDoc(buf){
 }
 function isHead(l){
   if(!l||l.length>=40)return false;
-  const m=l.match(/^(#{1,6}\s+|第[一二三四五六七八九十百0-9]+[章节讲]|[一二三四五六七八九十]+[、.]|\d+[、.．]\s*|【)/);
+  var m=l.match(/^(#{1,6}\s+|第[一二三四五六七八九十百0-9]+[章节讲]|[一二三四五六七八九十]+[、.]|\d+[、.．]\s*|【)/);
   if(!m)return false;
   return !/[a-zA-Z]/.test(l.slice(m[0].length));
 }
-/* 纯人造语段落 → 按标点切句 */
-function splitCon(l){
-  const out=[];let cur='';
-  for(const ch of l){
-    cur+=ch;
-    if('.!?。！？'.includes(ch)){const t=cur.trim();if(t&&/[A-Za-z]/.test(t))out.push(t);cur='';}
+function classifyWord(t){
+  t=String(t).replace(/^\ufeff/,'').trim();
+  if(!t)return null;
+  var pos='';
+  var bm=t.match(/[（(]([^()（）]{1,12})[)）]/)||t.match(/\[([^\[\]]{1,12})\]/);
+  if(bm&&POS_RE.test(bm[1]))pos=POS_RE.exec(bm[1])[0];
+  var clean=t.replace(/\/[^/]*\//g,' ').replace(/\[[^\]]*\]/g,' ').replace(/[（(][^)）]*[)）]/g,' ');
+  var latinRuns=clean.match(/[A-Za-z][A-Za-z'’\-]*(?:\s+[A-Za-z][A-Za-z'’\-]*)*/g);
+  var cjkRuns=clean.match(/[\u4e00-\u9fff]+/g);
+  if(!latinRuns||!cjkRuns)return null;
+  for(var i=0;i<cjkRuns.length;i++){
+    if(!pos&&POS_LIST.indexOf(cjkRuns[i])>=0){pos=cjkRuns[i];}
   }
-  const t=cur.trim();if(t&&/[A-Za-z]/.test(t))out.push(t);
-  return out;
+  var cands=cjkRuns.filter(function(r){return POS_LIST.indexOf(r)<0;});
+  if(!cands.length)return null;
+  var latin=latinRuns.slice().sort(function(a,b){return b.length-a.length;})[0].replace(/[\s.,;:!?]+$/,'').trim();
+  var cjk=cands.slice().sort(function(a,b){return b.length-a.length;})[0];
+  if(!latin||!cjk)return null;
+  return {raw:latin,pos:pos,meaning:cjk};
 }
-function classify(t){
-  let pos='';
-  const pm=t.match(/[（(]([^()（）]{1,12})[)）]/);
-  if(pm&&POS_RE.test(pm[1]))pos=pm[1].match(POS_RE)[1];
-  const clean=t.replace(/\/[^/]*\//g,' ').replace(/\[[^\]]*\]/g,' ').replace(/[（(][^)）]*[)）]/g,' ');
-  const ci=clean.search(/[\u4e00-\u9fff]/);
-  let latin,cjk;
-  if(ci>0){latin=clean.slice(0,ci);cjk=clean.slice(ci);}
-  else if(ci===0){
-    const li=clean.search(/[A-Za-z]/);
-    if(li<0)return null;
-    cjk=clean.slice(0,li);latin=clean.slice(li);
-  }else return null;
-  const latRaw=latin.trim();
-  cjk=cjk.replace(/^[\s:：\-—→>,，;；=]+/,'').trim();
-  const pm2=cjk.match(new RegExp('^('+POS_LIST.join('|')+')\\s*[.、,，:：]?\\s*(.*)$'));
-  if(pm2&&pm2[2]){pos=pos||pm2[1];cjk=pm2[2];}
-  if(!latRaw||!cjk||!/[\u4e00-\u9fff]/.test(cjk))return null;
-  if(!/^[A-Za-z][A-Za-z'’\-]*(\s+[A-Za-z][A-Za-z'’\-]*)*[\s.,!?;:]*$/.test(latRaw))return null;
-  const hasPunct=/[.!?;:]/.test(latRaw)||/,/.test(latRaw.replace(/,\s*$/,''));
-  if(hasPunct)return{kind:'s',text:latRaw,meaning:cjk};
-  const raw=latRaw.replace(/[\s.,!?;:]+$/,'').trim();
-  if(!raw)return null;
-  return{kind:'w',raw,pos,meaning:cjk};
-}
-/* ===== 智能解析：词汇 / 对照句 / 纯人造语文章 ===== */
 function smartParse(text){
-  const res={words:[],sentences:[]},seenW=new Set(),seenS=new Set();
-  const addS=(t,m)=>{const k=t.toLowerCase();if(t&&!seenS.has(k)){seenS.add(k);res.sentences.push({text:t,meaning:m||''});}};
-  const addW=e=>{const k=e.raw.toLowerCase();if(!seenW.has(k)){seenW.add(k);res.words.push(e);}};
-  const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l);
-  for(let i=0;i<lines.length;i++){
-    let line=lines[i];
-    if(isHead(line))continue;
+  var res=[],seen={};
+  String(text).replace(/^\ufeff/,'').split(/\r?\n/).forEach(function(line0){
+    var line=line0.trim();if(!line||isHead(line))return;
     line=line.replace(/^\d+[、.．]\s*/,'');
-    const hasL=/[A-Za-z]/.test(line),hasK=/[\u4e00-\u9fff]/.test(line);
-    if(hasL&&hasK){
-      const e=classify(line);
-      if(!e)continue;
-      if(e.kind==='w')addW(e);else addS(e.text,e.meaning);
-      continue;
-    }
-    if(hasL&&!hasK){
-      const nxt=(lines[i+1]||'').replace(/^\d+[、.．]\s*/,'');
-      if(nxt&&/[\u4e00-\u9fff]/.test(nxt)&&!/[A-Za-z]/.test(nxt)&&!isHead(nxt)){
-        addS(line,nxt);i++;
-      }else{
-        splitCon(line).forEach(s=>addS(s,''));
-      }
-      continue;
-    }
-    /* 纯中文行：作为译文行已被上一行配对消费，否则忽略 */
-  }
+    var e=classifyWord(line);
+    if(e){var k=e.raw.toLowerCase();if(!seen[k]){seen[k]=1;res.push(e);}}
+  });
   return res;
 }
 function handleImportText(txt){
-  const r=smartParse(txt);
-  const total=r.words.length+r.sentences.length;
-  if(!total){Toast('未识别到内容');return;}
-  Modal.confirm({title:'识别结果',ok:'导入',content:
-    `词汇 ${r.words.length} 个\n句子 ${r.sentences.length} 条\n\n是否全部导入？`})
-  .then(ok=>{
+  var r=smartParse(txt);
+  var st=Store.state;
+  var newW=r.filter(function(w){return !existsWord(w.raw,null);});
+  var dup=r.length-newW.length;
+  if(!newW.length){Toast(dup?'全部重复，未导入':'未识别到内容',dup?'danger':undefined);return;}
+  Modal.confirm({title:'识别结果',ok:'导入',content:'新词 '+newW.length+' 个（重复跳过 '+dup+'）\n\n是否导入？'})
+  .then(function(ok){
     if(!ok)return;
-    const st=Store.state;let added=0,dup=0;
-    r.words.forEach(w=>{if(st.words.some(x=>x.raw.toLowerCase()===w.raw.toLowerCase())){dup++;return;}
-      if(!w.phonetic)w.phonetic=genIPA(w.raw);
-      st.words.unshift(newWord(w));added++;});
-    r.sentences.forEach(p=>st.sentences.unshift({id:uid(),type:'sentence',text:p.text,meaning:p.meaning}));
-    Store.save();refreshWords();Sentences.render();
-    Toast(`已导入 ${added} 个词汇、${r.sentences.length} 句${dup?`（跳过重复词 ${dup}）`:''}`);
+    newW.forEach(function(w){w.phonetic=w.phonetic||genIPA(w.raw);st.words.unshift(newWord(w));});
+    Store.save();refreshWords();
+    Toast('已导入 '+newW.length+' 个词汇');
   });
-}
-/* ===== 批量导入词汇 ===== */
-function parseCSV(text){
-  const rows=[];let skip=0;const seen=new Set();
-  text.split(/\r?\n/).forEach(l=>{
-    l=l.trim();if(!l)return;
-    let parts;
-    if(/[,，\t|;；]/.test(l))parts=l.split(/[,，\t|;；]/);
-    else if(l.includes('/'))parts=l.split('/');
-    else parts=l.split(/\s+/);
-    parts=parts.map(s=>s.trim()).filter(s=>s!=='');
-    if(parts.length<2){skip++;return;}
-    const raw=parts[0];
-    const pos=parts.length>=3?parts[1]:'';
-    const meaning=parts.length>=3?parts.slice(2).join(' '):parts[1];
-    const k=raw.toLowerCase();
-    if(!/^[A-Za-z]/.test(raw)||seen.has(k)){skip++;return;}
-    seen.add(k);rows.push({raw,pos,meaning});
-  });
-  return{rows,skip};
 }
 function applyImport(txt){
-  if(!txt||!txt.trim()){Toast('内容为空');return;}
-  let d=null;
+  if(!txt||!String(txt).trim()){Toast('内容为空');return;}
+  var d=null;
   try{d=JSON.parse(txt);}catch(e){}
   if(d&&Array.isArray(d.words)){
-    Store.state={...Store.defaults(),...d,
-      words:d.words,sentences:Array.isArray(d.sentences)?d.sentences:[]};
-    Store.state.words.forEach(w=>{if(!w.phonetic)w.phonetic=genIPA(w.raw);});
+    Store.state=Object.assign({},Store.defaults(),d,{words:d.words});
+    Store.state.words.forEach(function(w){if(!w.phonetic)w.phonetic=genIPA(w.raw);});
     Store.save();Modal.close();
-    Render.settings();refreshWords();Sentences.render();
+    Render.settings();refreshWords();
     Toast('备份恢复成功');
   }else handleImportText(txt);
 }
@@ -569,325 +603,288 @@ function refreshWords(){
 
 /* ===== 词卡详情 ===== */
 function detailHTML(w){
-  const ex=Store.state.sentences.filter(s=>s.type==='sentence'&&s.text.toLowerCase().includes(w.raw.toLowerCase())&&(s.meaning||'')).slice(0,5);
-  return `<div class="card">
-    <span class="w-name act" data-wid="${w.id}">${esc(w.raw)}</span>
-    ${w.phonetic?`<div class="w-pho">${esc(w.phonetic)}</div>`:''}
-    <div class="w-sub">${w.pos?`<span class="w-tag">${esc(w.pos)}</span>`:''}<span class="w-mean-i">${esc(w.meaning)}</span></div>
-  </div>`+
-  (ex.length?`<div class="ex-head">双语例句</div><div class="card ex-list">${
-    ex.map((s,i)=>`<div class="ex-item"><span class="ex-n">${i+1}.</span><div><div class="ex-src">${esc(s.text)}</div><div class="ex-tr">${esc(s.meaning)}</div></div></div>`).join('')
-  }</div>`:'');
+  return '<div class="card">'+
+    '<span class="w-name act" data-wid="'+w.id+'">'+esc(w.raw)+'</span>'+
+    (w.phonetic?'<div class="w-pho">'+esc(w.phonetic)+'</div>':'')+
+    '<div class="w-sub">'+(w.pos?'<span class="w-tag">'+esc(w.pos)+'</span>':'')+'<span class="w-mean-i">'+esc(w.meaning)+'</span></div>'+
+    '</div>'+
+    (w.note?'<div class="card note-box">'+esc(w.note)+'</div>':'');
 }
 
 /* ===== 原词手势 ===== */
-const Gesture={
+var Gesture={
   tapTimer:null,lastTap:0,suppress:false,lpTimer:null,lx:0,ly:0,
-  init(){
-    document.addEventListener('pointerdown',e=>{
-      const t=e.target.closest('.w-name.act');
-      this.suppress=false;
+  init:function(){
+    var self=this;
+    document.addEventListener('pointerdown',function(e){
+      var t=e.target.closest('.w-name.act');
+      self.suppress=false;
       if(!t)return;
-      this.lx=e.clientX;this.ly=e.clientY;
-      clearTimeout(this.lpTimer);
-      this.lpTimer=setTimeout(()=>{this.suppress=true;copyWord(t.dataset.wid);},500);
+      self.lx=e.clientX;self.ly=e.clientY;
+      clearTimeout(self.lpTimer);
+      self.lpTimer=setTimeout(function(){self.suppress=true;copyWord(t.getAttribute('data-wid'));},500);
     });
-    document.addEventListener('pointermove',e=>{
-      if(this.lpTimer&&Math.hypot(e.clientX-this.lx,e.clientY-this.ly)>10){clearTimeout(this.lpTimer);this.lpTimer=null;}
+    document.addEventListener('pointermove',function(e){
+      if(self.lpTimer&&Math.hypot(e.clientX-self.lx,e.clientY-self.ly)>10){clearTimeout(self.lpTimer);self.lpTimer=null;}
     });
-    document.addEventListener('pointerup',()=>clearTimeout(this.lpTimer));
-    document.addEventListener('pointercancel',()=>clearTimeout(this.lpTimer));
-    document.addEventListener('contextmenu',e=>{if(e.target.closest('.w-name.act'))e.preventDefault();});
-    document.addEventListener('click',e=>{
-      const t=e.target.closest('.w-name.act');
+    document.addEventListener('pointerup',function(){clearTimeout(self.lpTimer);});
+    document.addEventListener('pointercancel',function(){clearTimeout(self.lpTimer);});
+    document.addEventListener('contextmenu',function(e){if(e.target.closest('.w-name.act'))e.preventDefault();});
+    document.addEventListener('click',function(e){
+      var t=e.target.closest('.w-name.act');
       if(!t)return;
-      if(this.suppress){this.suppress=false;return;}
-      const now=Date.now();
-      if(now-this.lastTap<300){
-        this.lastTap=0;clearTimeout(this.tapTimer);
-        delWord(t.dataset.wid);
+      if(self.suppress){self.suppress=false;return;}
+      var now=Date.now();
+      if(now-self.lastTap<300){
+        self.lastTap=0;clearTimeout(self.tapTimer);
+        delWord(t.getAttribute('data-wid'));
       }else{
-        this.lastTap=now;
-        clearTimeout(this.tapTimer);
-        const id=t.dataset.wid;
-        this.tapTimer=setTimeout(()=>{WordSheet.open(id);this.lastTap=0;},300);
+        self.lastTap=now;
+        clearTimeout(self.tapTimer);
+        var id=t.getAttribute('data-wid');
+        self.tapTimer=setTimeout(function(){WordSheet.open(id);self.lastTap=0;},300);
       }
     });
   }
 };
 function copyWord(id){
-  const w=Store.state.words.find(x=>x.id===id);if(!w)return;
-  const done=()=>Toast('已复制 '+w.raw);
-  const fb=()=>{const ta=document.createElement('textarea');ta.value=w.raw;ta.style.position='fixed';ta.style.opacity='0';
+  var w=Store.state.words.find(function(x){return x.id===id;});if(!w)return;
+  var done=function(){Toast('已复制 '+w.raw);};
+  var fb=function(){var ta=document.createElement('textarea');ta.value=w.raw;ta.style.position='fixed';ta.style.opacity='0';
     document.body.appendChild(ta);ta.focus();ta.select();
     try{document.execCommand('copy');done();}catch(e){Toast('复制失败');}
     ta.remove();};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(w.raw).then(done).catch(fb);
   else fb();
 }
-async function delWord(id){
-  if(await Modal.confirm({title:'删除词汇',content:'删除后不可恢复，确定删除？',ok:'删除',danger:true})){
-    Store.state.words=Store.state.words.filter(w=>w.id!==id);
+function delWord(id){
+  Modal.confirm({title:'删除词汇',content:'删除后不可恢复，确定删除？',ok:'删除',danger:true}).then(function(ok){
+    if(!ok)return;
+    Store.state.words=Store.state.words.filter(function(w){return w.id!==id;});
     Store.save();
-    const cur=Router.current;
-    if(cur==='word'){Router.go(WordPage.from==='search'?'search':'dict');refreshWords();}
+    var cur=Router.current;
+    if(cur==='word'){Router.go(WordPage.from==='search'?'search':(WordPage.from==='dict'?'dict':'words'));refreshWords();}
     else refreshWords();
     Toast('已删除');
-  }
+  });
 }
 
 /* ===== 词汇编辑抽屉 ===== */
-const WordSheet={
+var WordSheet={
   editId:null,pos:'',phoTouched:false,
-  open(id){
+  open:function(id){
     this.editId=id||null;
-    const w=id?Store.state.words.find(x=>x.id===id):null;
-    this.pos=w?.pos||'';
+    var w=id?Store.state.words.find(function(x){return x.id===id;}):null;
+    this.pos=(w&&w.pos)||'';
     this.phoTouched=!!(w&&w.phonetic);
-    Modal.sheet(`<div class="sheet-head"><span class="sh-title">${w?'编辑词汇':'新增词汇'}</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <label class="f-label">原词 <i>*</i></label><input id="wRaw" value="${esc(w?.raw??'')}">
-    <label class="f-label">音标（自动生成，可修改）</label><input id="wPho" value="${esc(w?.phonetic??'')}">
-    <label class="f-label">词性</label>
-    <div class="pos-grid" id="posGrid">${POS_LIST.map(p=>`<button class="pos-item ${this.pos===p?'on':''}" data-action="pos-pick" data-pos="${p}">${p}</button>`).join('')}</div>
-    <label class="f-label">释义 <i>*</i></label><input id="wMean" value="${esc(w?.meaning??'')}">
-    <button class="btn primary big" data-action="word-save">保存</button>`);
+    var self=this;
+    Modal.sheet('<div class="sheet-head"><span class="sh-title">'+(w?'编辑词汇':'新增词汇')+'</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
+    '<label class="f-label">原词 <i>*</i></label><input id="wRaw" value="'+esc(w?w.raw:'')+'">'+
+    '<label class="f-label">音标（自动生成，可修改）</label><input id="wPho" value="'+esc(w?w.phonetic:'')+'">'+
+    '<label class="f-label">词性</label>'+
+    '<div class="pos-grid" id="posGrid">'+POS_LIST.map(function(p){return '<button class="pos-item '+(self.pos===p?'on':'')+'" data-action="pos-pick" data-pos="'+p+'">'+p+'</button>';}).join('')+'</div>'+
+    '<label class="f-label">释义 <i>*</i></label><input id="wMean" value="'+esc(w?w.meaning:'')+'">'+
+    '<label class="f-label">补充说明</label><textarea id="wNote">'+esc(w?w.note:'')+'</textarea>'+
+    '<button class="btn primary big" data-action="word-save">保存</button>');
   },
-  save(){
-    const raw=$('#wRaw').value.trim(),phonetic=$('#wPho').value.trim(),meaning=$('#wMean').value.trim();
+  save:function(){
+    var raw=$('#wRaw').value.trim(),phonetic=$('#wPho').value.trim(),meaning=$('#wMean').value.trim(),note=$('#wNote').value.trim();
     if(!raw||!meaning){Toast('请填写原词和释义');return;}
-    const st=Store.state;
-    if(this.editId)Object.assign(st.words.find(x=>x.id===this.editId),{raw,phonetic,pos:this.pos,meaning});
-    else st.words.unshift(newWord({raw,phonetic,pos:this.pos,meaning}));
+    if(existsWord(raw,this.editId)){Toast('该词汇已存在','danger');return;}
+    var st=Store.state;
+    if(this.editId){
+      var w=st.words.find(function(x){return x.id===this.editId;}.bind(this));
+      if(w)Object.assign(w,{raw:raw,phonetic:phonetic,pos:this.pos,meaning:meaning,note:note});
+    }else st.words.unshift(newWord({raw:raw,phonetic:phonetic,pos:this.pos,meaning:meaning,note:note}));
     Store.save();Modal.close();refreshWords();Toast('已保存');
   }
 };
 
-/* ===== 句子编辑抽屉 ===== */
-const SentenceSheet={
-  editId:null,
-  open(id){
-    this.editId=id||null;
-    const s=id?Store.state.sentences.find(x=>x.id===id):null;
-    Modal.sheet(`<div class="sheet-head"><span class="sh-title">${s?'编辑句子':'新增句子'}</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <label class="f-label">原文 <i>*</i></label><input id="sText" value="${esc(s?.text??'')}">
-    <label class="f-label">释义（可留空后补）</label><input id="sMean" value="${esc(s?.meaning??'')}">
-    <button class="btn primary big" data-action="s-save">保存</button>`);
-  },
-  save(){
-    const t=$('#sText').value.trim(),m=$('#sMean').value.trim();
-    if(!t){Toast('请填写原文');return;}
-    const st=Store.state;
-    if(this.editId)Object.assign(st.sentences.find(x=>x.id===this.editId),{text:t,meaning:m});
-    else st.sentences.unshift({id:uid(),type:'sentence',text:t,meaning:m});
-    Store.save();Modal.close();Sentences.render();refreshWords();Toast('已保存');
-  }
-};
-
-/* ===== 语句管理 ===== */
-const Sentences={
-  render(){
-    const items=Store.state.sentences.filter(x=>x.type==='sentence');
-    $('#sentCount').textContent=items.length;
-    $('#sBody').innerHTML=items.map(s=>`<div class="card"><div class="w-name" style="font-size:15.5px">${esc(s.text)}</div>
-      <div class="w-mean-i" style="margin-top:6px">${s.meaning?esc(s.meaning):'<span style="color:var(--text3)">（暂无释义，点编辑补填）</span>'}</div>
-      <div class="w-actions"><button class="chip edit" data-action="s-edit" data-id="${s.id}">编辑</button>
-      <button class="chip del" data-action="s-del" data-id="${s.id}">删除</button></div></div>`).join('');
-  }
-};
-
 /* ===== 搜索结果页 ===== */
-const Search={
+var Search={
   q:'',
-  render(){
-    const inp=$('#resultSearch');
+  render:function(){
+    var inp=$('#resultSearch');
     if(inp.value!==this.q)inp.value=this.q;
-    const k=this.q.trim().toLowerCase();
-    const st=Store.state;
-    const list=k?st.words.filter(w=>w.raw.toLowerCase().includes(k)||w.meaning.includes(k.trim())||(w.pos||'').toLowerCase().includes(k)):[];
-    $('#searchList').innerHTML=list.map(w=>detailHTML(w)).join('');
+    var k=this.q.trim();
+    var st=Store.state;
+    var html='';
+    if(k){
+      if(/^[A-Za-z]/.test(k)){
+        var w=st.words.find(function(x){return x.raw.toLowerCase()===k.toLowerCase();});
+        html=w?detailHTML(w):'';
+      }else{
+        html=st.words.filter(function(x){return x.meaning.indexOf(k)>=0;}).map(function(x){
+          return '<div class="card tap" data-action="word-open" data-id="'+x.id+'">'+
+            '<div class="sug"><span class="sug-k">'+esc(x.meaning)+'</span><span class="sug-v">'+esc(x.raw)+'</span></div></div>';
+        }).join('');
+      }
+    }
+    $('#searchList').innerHTML=html;
   },
-  go(){
-    const v=($('#searchInput').value||'').trim();
+  go:function(){
+    var v=($('#searchInput').value||'').trim();
     if(!v){Toast('先输入要查的内容');return;}
     this.q=v;Router.go('search');
   }
 };
 
 /* ===== 词卡页 ===== */
-const WordPage={
+var WordPage={
   id:null,from:'dict',
-  open(id,from){this.id=id;this.from=from||'dict';Router.go('word');},
-  render(){
-    const w=Store.state.words.find(x=>x.id===this.id);
+  open:function(id,from){this.id=id;this.from=from||'dict';Router.go('word');},
+  render:function(){
+    var w=Store.state.words.find(function(x){return x.id===this.id;}.bind(this));
     $('#wordBox').innerHTML=w?detailHTML(w):'';
   }
 };
 
-/* ===== 词典 ===== */
-const Dict={
+/* ===== 词库 ===== */
+var Dict={
   mode:'alpha',folded:{},
-  groups(){
-    const ws=Store.state.words;
-    const g=[];
+  groups:function(){
+    var ws=Store.state.words,g=[];
     if(this.mode==='alpha'){
-      const m={};
-      ws.forEach(w=>{let key=(w.raw[0]||'').toUpperCase();if(!/[A-Z]/.test(key))key='#';(m[key]=m[key]||[]).push(w);});
-      Object.keys(m).sort().forEach(key=>g.push([key,m[key]]));
+      var m={};
+      ws.forEach(function(w){var key=(w.raw[0]||'').toUpperCase();if(!/[A-Z]/.test(key))key='#';(m[key]=m[key]||[]).push(w);});
+      Object.keys(m).sort().forEach(function(key){g.push([key,m[key]]);});
     }else{
-      POS_LIST.forEach(p=>{const list=ws.filter(w=>w.pos===p);if(list.length)g.push([p,list]);});
-      const rest=ws.filter(w=>!w.pos||!POS_LIST.includes(w.pos));
+      POS_LIST.forEach(function(p){var list=ws.filter(function(w){return w.pos===p;});if(list.length)g.push([p,list]);});
+      var rest=ws.filter(function(w){return !w.pos||POS_LIST.indexOf(w.pos)<0;});
       if(rest.length)g.push(['其他',rest]);
     }
-    g.forEach(([,list])=>list.sort((a,b)=>a.raw.localeCompare(b.raw)));
+    g.forEach(function(pair){pair[1].sort(function(a,b){return a.raw.localeCompare(b.raw);});});
     return g;
   },
-  render(){
-    $$('#dictSeg .seg-item').forEach(el=>el.classList.toggle('on',el.dataset.mode===this.mode));
-    const g=this.groups();
-    $('#qnav').innerHTML=g.map(([key])=>`<button class="qn" data-action="dict-jump" data-key="${esc(key)}">${esc(key)}</button>`).join('');
-    const row=w=>`<div class="card tap" data-action="word-open" data-id="${w.id}">
-      <div class="w-head" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="w-name">${esc(w.raw)}</span>${w.pos?`<span class="w-tag">${esc(w.pos)}</span>`:''}</div>
-      ${w.phonetic?`<div class="w-pho">${esc(w.phonetic)}</div>`:''}
-      <div class="w-mean-i" style="margin-top:6px">${esc(w.meaning)}</div></div>`;
-    $('#dictList').innerHTML=g.map(([key,list])=>{
-      const folded=!!this.folded[this.mode+':'+key];
-      return `<div class="d-group" id="dg-${esc(key)}" data-action="dict-fold" data-key="${esc(key)}">
-        <span>${esc(key)}</span><span class="cnt">${list.length}</span><span class="fold">${folded?'▸':'▾'}</span></div>`+
-        (folded?'':list.map(row).join(''));
+  render:function(){
+    var self=this;
+    $$('#dictSeg .seg-item').forEach(function(el){el.classList.toggle('on',el.getAttribute('data-mode')===self.mode);});
+    var g=this.groups();
+    $('#qnav').innerHTML=g.map(function(pair){return '<button class="qn" data-action="dict-jump" data-key="'+esc(pair[0])+'">'+esc(pair[0])+'</button>';}).join('');
+    $('#dictList').innerHTML=g.map(function(pair){
+      var key=pair[0],list=pair[1];
+      var folded=!!self.folded[self.mode+':'+key];
+      var rows=list.map(function(w){
+        return '<div class="card tap" data-action="word-open" data-id="'+w.id+'">'+
+          '<div class="w-name">'+esc(w.raw)+'</div>'+
+          (w.phonetic?'<div class="w-pho">'+esc(w.phonetic)+'</div>':'')+
+          '<div class="w-sub">'+(w.pos?'<span class="w-tag">'+esc(w.pos)+'</span>':'')+'<span class="w-mean-i">'+esc(w.meaning)+'</span></div>'+
+          (w.note?'<div class="w-extra">'+esc(w.note)+'</div>':'')+'</div>';
+      }).join('');
+      return '<div class="d-group" id="dg-'+esc(key)+'" data-action="dict-fold" data-key="'+esc(key)+'">'+
+        '<span class="d-pill"><span class="d-key">'+esc(key)+'</span><span class="cnt">'+list.length+'</span></span>'+
+        '<span class="fold '+(folded?'':'open')+'">'+FOLD_SVG+'</span></div>'+(folded?'':rows);
     }).join('');
   },
-  jump(key){
-    const fk=this.mode+':'+key;
+  jump:function(key){
+    var fk=this.mode+':'+key;
     if(this.folded[fk]){this.folded[fk]=false;this.render();}
-    requestAnimationFrame(()=>{
-      const el=document.getElementById('dg-'+key);
+    requestAnimationFrame(function(){
+      var el=document.getElementById('dg-'+key);
       if(!el)return;
-      const top=el.getBoundingClientRect().top+window.pageYOffset-50;
-      window.scrollTo({top,behavior:'smooth'});
+      var top=el.getBoundingClientRect().top+window.pageYOffset-50;
+      window.scrollTo({top:top,behavior:'smooth'});
     });
   }
 };
 
 /* ===== 渲染 ===== */
-const Render={
-  words(){$('#wordCount').textContent=Store.state.words.length;},
-  search(){Search.render();},
-  dict(){Dict.render();},
-  word(){WordPage.render();},
-  sentences(){Sentences.render();},
-  settings(){
-    const s=Store.state;
-    $('#statsRow').innerHTML=`<div class="stat"><b>${s.words.length}</b><span>词汇</span></div>
-      <div class="stat"><b>${s.sentences.filter(x=>x.type==='sentence').length}</b><span>句子</span></div>`;
+var Render={
+  words:function(){$('#wordCount').textContent=Store.state.words.length;},
+  search:function(){Search.render();},
+  dict:function(){Dict.render();},
+  word:function(){WordPage.render();},
+  settings:function(){
+    var s=Store.state;
+    $('#statsRow').innerHTML='<div class="stat"><b>'+s.words.length+'</b><span>词汇</span></div>';
   }
 };
 
 /* ===== 事件 ===== */
-const Actions={
-  tab:d=>Router.go(d.page),
-  'search-go':()=>Search.go(),
-  'search-back':()=>Router.back(),
-  'dict-back':()=>Router.back(),
-  'word-back':()=>Router.back(),
-  'dict-open':()=>Router.go('dict'),
-  'dict-mode':d=>{Dict.mode=d.mode;Dict.render();},
-  'dict-fold':d=>{const fk=Dict.mode+':'+d.key;Dict.folded[fk]=!Dict.folded[fk];Dict.render();},
-  'dict-jump':d=>Dict.jump(d.key),
-  'word-open':d=>WordPage.open(d.id,'dict'),
-  'pos-pick':d=>{
-    WordSheet.pos=WordSheet.pos===d.pos?'':d.pos;
-    $$('#posGrid .pos-item').forEach(el=>el.classList.toggle('on',el.dataset.pos===WordSheet.pos));
+var Actions={
+  tab:function(d){Router.go(d.page);},
+  'search-go':function(){Search.go();},
+  'search-back':function(){Router.back();},
+  'word-back':function(){Router.back();},
+  'word-open':function(d){WordPage.open(d.id,Router.current==='search'?'search':'dict');},
+  'dict-mode':function(d){Dict.mode=d.mode;Dict.render();},
+  'dict-fold':function(d){var fk=Dict.mode+':'+d.key;Dict.folded[fk]=!Dict.folded[fk];Dict.render();},
+  'dict-jump':function(d){Dict.jump(d.key);},
+  'pos-pick':function(d){
+    WordSheet.pos=(WordSheet.pos===d.pos)?'':d.pos;
+    $$('#posGrid .pos-item').forEach(function(el){el.classList.toggle('on',el.getAttribute('data-pos')===WordSheet.pos);});
   },
-  'word-add':()=>WordSheet.open(),
-  'word-save':()=>WordSheet.save(),
-  'csv-open':()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">批量导入</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <label class="f-label" style="margin-top:4px">每行一个：原词, 词性, 释义（也支持 / 或空格分隔）</label>
-    <textarea id="csvBox"></textarea>
-    <button class="btn primary big" data-action="csv-save">导入</button>`),
-  'csv-save':()=>{
-    const {rows,skip}=parseCSV($('#csvBox').value);
-    if(!rows.length){Toast('未识别到有效行');return;}
-    const st=Store.state;let added=0,dup=0;
-    rows.forEach(r=>{if(st.words.some(x=>x.raw.toLowerCase()===r.raw.toLowerCase())){dup++;return;}
-      r.phonetic=genIPA(r.raw);
-      st.words.unshift(newWord(r));added++;});
-    Store.save();Modal.close();refreshWords();Toast(`已导入 ${added} 个词汇${dup+skip?`，跳过 ${dup+skip} 行`:''}`);
+  'word-add':function(){WordSheet.open();},
+  'word-save':function(){WordSheet.save();},
+  'csv-open':function(){Modal.sheet('<div class="sheet-head"><span class="sh-title">批量导入</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
+    '<label class="f-label" style="margin-top:4px">每行一个：拉丁字母为原词，汉字为释义，词性可写可不写。如：&#10;moga 狗&#10;Adona America,名词,南美洲&#10;重复自动跳过</label>'+
+    '<textarea id="csvBox"></textarea>'+
+    '<button class="btn primary big" data-action="csv-save">导入</button>');},
+  'csv-save':function(){
+    var v=$('#csvBox').value.trim();
+    if(!v){Toast('请先粘贴内容');return;}
+    Modal.close();
+    handleImportText(v);
   },
-  'sheet-close':()=>Modal.close(),
-  'dlg-ok':()=>Modal.ok(),'dlg-cancel':()=>Modal.cancel(),
-  'doc-import':()=>$('#gFile').click(),
-  'doc-paste':()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">粘贴文本</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <textarea id="pasteBox"></textarea>
-    <button class="btn primary big" data-action="paste-import">识别并导入</button>`),
-  'paste-import':()=>{const v=$('#pasteBox').value.trim();if(!v){Toast('请先粘贴内容');return;}Modal.close();handleImportText(v);},
-  's-add':()=>SentenceSheet.open(),
-  's-edit':d=>SentenceSheet.open(d.id),
-  's-save':()=>SentenceSheet.save(),
-  's-del':async d=>{if(await Modal.confirm({title:'删除句子',content:'确定删除？',ok:'删除',danger:true})){
-    Store.state.sentences=Store.state.sentences.filter(x=>x.id!==d.id);Store.save();Sentences.render();refreshWords();}},
-  'save-file':()=>generatePortable(),
-  export:()=>{
-    const s=JSON.stringify(Store.state,null,2);
-    Modal.sheet(`<div class="sheet-head"><span class="sh-title">导出 JSON</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <textarea id="expBox" style="min-height:200px">${esc(s)}</textarea>
-    <button class="btn primary big" data-action="exp-copy">复制全部</button>
-    <button class="btn soft" data-action="exp-dl">下载为文件</button>`);
+  'sheet-close':function(){Modal.close();},
+  'dlg-ok':function(){Modal.ok();},
+  'dlg-cancel':function(){Modal.cancel();},
+  'exp-words-txt':function(){exportWordsTXT();},
+  'exp-words-docx':function(){exportWordsDocx();},
+  export:function(){
+    var s=JSON.stringify(Store.state,null,2);
+    Modal.sheet('<div class="sheet-head"><span class="sh-title">导出</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
+    '<textarea id="expBox" style="min-height:200px">'+esc(s)+'</textarea>'+
+    '<button class="btn primary big" data-action="exp-copy">复制全部</button>'+
+    '<button class="btn soft" data-action="exp-dl">下载为文件</button>');
   },
-  'exp-copy':()=>{
-    const el=$('#expBox');el.focus();el.select();
-    let ok=false;try{ok=document.execCommand('copy');}catch(e){}
+  'exp-copy':function(){
+    var el=$('#expBox');el.focus();el.select();
+    var ok=false;try{ok=document.execCommand('copy');}catch(e){}
     if(ok)Toast('已复制，可粘贴保存');
     else if(navigator.clipboard)navigator.clipboard.writeText(el.value)
-      .then(()=>Toast('已复制，可粘贴保存')).catch(()=>Toast('请长按文本手动复制'));
+      .then(function(){Toast('已复制，可粘贴保存');}).catch(function(){Toast('请长按文本手动复制');});
     else Toast('请长按文本手动复制');
   },
-  'exp-dl':()=>{
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([$('#expBox').value],{type:'application/json'}));
-    a.download=Store.state.langName+'-资料.json';a.click();URL.revokeObjectURL(a.href);
-    Toast('已开始下载');
+  'exp-dl':function(){
+    download(new Blob([$('#expBox').value],{type:'application/json'}),Store.state.langName+'-资料.json');
   },
-  import:()=>Modal.sheet(`<div class="sheet-head"><span class="sh-title">导入 JSON</span><span class="sh-close" data-action="sheet-close">✕</span></div>
-    <label class="f-label" style="margin-top:4px">支持 JSON 备份 / TXT / DOCX / 纯文本</label>
-    <textarea id="impBox" style="min-height:180px"></textarea>
-    <button class="btn primary big" data-action="imp-go">导入</button>
-    <button class="btn soft" data-action="imp-file">从文件选择</button>`),
-  'imp-go':()=>applyImport($('#impBox').value),
-  'imp-file':()=>$('#iFile').click()
+  import:function(){$('#iFile').click();}
 };
-document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-action]');if(!t)return;
-  const fn=Actions[t.dataset.action];
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-action]');if(!t)return;
+  var fn=Actions[t.getAttribute('data-action')];
   if(fn){try{fn(t.dataset,t,e);}catch(err){console.error(err);Toast('操作失败：'+err.message);}}
 });
-document.addEventListener('input',e=>{
+document.addEventListener('input',function(e){
   if(e.target.id==='resultSearch'){Search.q=e.target.value;Search.render();}
   if(e.target.id==='wRaw'&&!WordSheet.phoTouched){
-    const p=$('#wPho');if(p)p.value=genIPA(e.target.value);
+    var p=$('#wPho');if(p)p.value=genIPA(e.target.value);
   }
   if(e.target.id==='wPho'){WordSheet.phoTouched=e.target.value.trim()!=='';}
 });
-document.addEventListener('keydown',e=>{
+document.addEventListener('keydown',function(e){
   if(e.key==='Enter'&&e.target.id==='searchInput'){
     if(e.isComposing||e.keyCode===229)return;
     e.preventDefault();Search.go();
   }
 });
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Store.save();});
-document.addEventListener('change',e=>{
-  const el=e.target;
-  if(el.id!=='gFile'&&el.id!=='iFile')return;
-  const f=el.files[0];if(!f)return;
-  const name=(f.name||'').toLowerCase();
-  const fr=new FileReader();
-  fr.onload=async()=>{
-    try{
-      let text;
-      if(name.endsWith('.docx'))text=await readDocx(fr.result);
-      else if(name.endsWith('.doc'))text=readDoc(fr.result);
-      else text=String(fr.result);
-      if(el.id==='iFile')applyImport(text);else handleImportText(text);
-    }catch(err){Toast('无法解析该文件，请转为 txt 后重试');}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')Store.save();});
+document.addEventListener('change',function(e){
+  var el=e.target;
+  if(el.id!=='iFile')return;
+  var f=el.files[0];if(!f)return;
+  var name=(f.name||'').toLowerCase();
+  var fr=new FileReader();
+  fr.onload=function(){
+    if(name.endsWith('.docx')){
+      readDocxIn(fr.result).then(function(text){applyImport(text);}).catch(function(){Toast('无法解析该文件，请转为 txt 后重试');});
+    }else{
+      try{
+        var text=(name.endsWith('.doc'))?readDoc(fr.result):String(fr.result);
+        applyImport(text);
+      }catch(err){Toast('无法解析该文件，请转为 txt 后重试');}
+    }
     el.value='';
   };
   if(name.endsWith('.docx')||name.endsWith('.doc'))fr.readAsArrayBuffer(f);
@@ -904,18 +901,16 @@ document.addEventListener('plusready',function(){
 });
 
 /* ===== 启动 ===== */
-(async function boot(){
+(function boot(){
   try{
     Modal.init();
     Gesture.init();
     Persist.check();
-    await Store.load();
-    Router.show('words');
-    if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
-      window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
-    }
+    Store.load().then(function(){
+      Router.show('words');
+    }).catch(function(err){console.error(err);Toast('启动异常：'+err.message);});
   }catch(err){console.error(err);Toast('启动异常：'+err.message);}
 })();
 </script>
 </body>
-  </html>
+</html>
