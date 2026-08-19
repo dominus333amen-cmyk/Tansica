@@ -109,16 +109,14 @@ input,textarea{font:inherit;color:var(--text)}
 #tabbar .ico{font-size:17px;filter:grayscale(1);opacity:.8}
 #tabbar .tab.on{color:var(--text)}
 #tabbar .tab.on .ico{opacity:1}
-/* 提示气泡：顶部，与状态栏同行 */
 #toast{position:fixed;top:calc(env(safe-area-inset-top) + 6px);left:50%;transform:translate(-50%,-220%);opacity:0;
   background:rgba(24,24,26,.92);color:#fff;padding:9px 19px;border-radius:999px;font-size:13px;
-  transition:transform .35s cubic-bezier(.2,.9,.3,1.2),opacity .3s;z-index:99;max-width:80%;pointer-events:none}
+  transition:transform .35s cubic-bezier(.2,.9,.3,1.2),opacity .3s;z-index:99;max-width:92%;pointer-events:none}
 #toast.show{transform:translate(-50%,0);opacity:1}
 .sheet{position:fixed;inset:0;z-index:50}
 .sheet .mask{position:absolute;inset:0;background:rgba(0,0,0,.4)}
 .sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--card);
   border-radius:22px 22px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));max-height:86vh;overflow:auto;animation:slideUp .3s cubic-bezier(.2,.9,.3,1)}
-/* 确认弹窗：中靠上 */
 .sheet.center{display:flex;align-items:flex-start;justify-content:center;padding:18vh 16px 0}
 .dialog{position:relative;background:var(--card);border-radius:18px;padding:20px;width:100%;max-width:320px;box-shadow:var(--sh2);animation:scaleIn .2s ease}
 .d-title{font-size:16px;font-weight:700;margin-bottom:6px;text-align:center}
@@ -317,7 +315,7 @@ var Store={
   }
 };
 
-/* ===== 下载：APP 内走原生写文件，浏览器走 a[download] ===== */
+/* ===== 下载：APP 内写入 Download/Tansica（Android 10-16 免权限），浏览器走 a[download] ===== */
 function anchorDownload(blob,filename){
   try{
     var url=URL.createObjectURL(blob);
@@ -330,32 +328,58 @@ function anchorDownload(blob,filename){
     Toast('已触发下载');
   }catch(e){Toast('下载失败');}
 }
-function saveBlobPlus(blob,filename){
+function saveBlobPlus(blob,filename,mime){
   var reader=new FileReader();
   reader.onload=function(){
     try{
       var b64=String(reader.result).split(',')[1]||'';
-      var Environment=plus.android.importClass('android.os.Environment');
-      var File=plus.android.importClass('java.io.File');
-      var FileOutputStream=plus.android.importClass('java.io.FileOutputStream');
       var Base64=plus.android.importClass('android.util.Base64');
-      var dir=null;
-      try{dir=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);}catch(e){}
-      if(!dir){
-        var act=plus.android.runtimeMainActivity();
-        dir=act.getExternalFilesDir('Download')||act.getFilesDir();
-      }
-      if(dir&&dir.mkdirs)dir.mkdirs();
-      var f=new File(dir,filename);
-      var fos=new FileOutputStream(f);
-      fos.write(Base64.decode(b64,0));
-      fos.flush();fos.close();
+      var bytes=Base64.decode(b64,0);
+      var saved='';
+      /* 1) MediaStore（Android 10-16，无需权限）→ Download/Tansica/ */
       try{
-        var MSC=plus.android.importClass('android.media.MediaScannerConnection');
-        var ctx=plus.android.runtimeMainActivity();
-        MSC.scanFile(ctx,[f.getAbsolutePath()],null,null);
+        var main=plus.android.runtimeMainActivity();
+        plus.android.importClass('android.content.ContentResolver');
+        var ContentValues=plus.android.importClass('android.content.ContentValues');
+        var MSD=plus.android.importClass('android.provider.MediaStore$Downloads');
+        var resolver=main.getContentResolver();
+        var values=new ContentValues();
+        values.put('_display_name',filename);
+        values.put('mime_type',mime||'application/octet-stream');
+        values.put('relative_path','Download/Tansica/');
+        var uri=resolver.insert(MSD.EXTERNAL_CONTENT_URI,values);
+        if(uri){
+          var os=resolver.openOutputStream(uri);
+          os.write(bytes);os.flush();os.close();
+          saved='Download/Tansica/'+filename;
+        }
       }catch(e){}
-      Toast('已保存：'+f.getAbsolutePath());
+      /* 2) Java 直写（Android 9 及以下）→ Download/Tansica */
+      if(!saved){
+        try{
+          var Environment=plus.android.importClass('android.os.Environment');
+          var File=plus.android.importClass('java.io.File');
+          var FileOutputStream=plus.android.importClass('java.io.FileOutputStream');
+          var base=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+          var dir=new File(base,'Tansica');dir.mkdirs();
+          var f=new File(dir,filename);
+          var fos=new FileOutputStream(f);
+          fos.write(bytes);fos.flush();fos.close();
+          saved='Download/Tansica/'+filename;
+        }catch(e){}
+      }
+      /* 3) 应用外部目录兜底 */
+      if(!saved){
+        var act=plus.android.runtimeMainActivity();
+        var File2=plus.android.importClass('java.io.File');
+        var FileOutputStream2=plus.android.importClass('java.io.FileOutputStream');
+        var d2=act.getExternalFilesDir('Tansica')||act.getFilesDir();
+        var f2=new File2(d2,filename);
+        var fos2=new FileOutputStream2(f2);
+        fos2.write(bytes);fos2.flush();fos2.close();
+        saved=String(f2.getAbsolutePath());
+      }
+      Toast('已保存：'+saved);
     }catch(e){
       anchorDownload(blob,filename);
     }
@@ -363,8 +387,8 @@ function saveBlobPlus(blob,filename){
   reader.onerror=function(){anchorDownload(blob,filename);};
   reader.readAsDataURL(blob);
 }
-function download(blob,filename){
-  if(window.plus&&plus.android){saveBlobPlus(blob,filename);}
+function download(blob,filename,mime){
+  if(window.plus&&plus.android){saveBlobPlus(blob,filename,mime);}
   else{anchorDownload(blob,filename);}
 }
 function crc32(buf){
@@ -435,7 +459,7 @@ function exportWordsTXT(){
     lines.push(l);
     if(w.note)lines.push('　补充：'+w.note);
   });
-  download(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/plain;charset=utf-8'}),Store.state.langName+'-词库.txt');
+  download(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/plain;charset=utf-8'}),Store.state.langName+'-词库.txt','text/plain');
 }
 function exportWordsDocx(){
   var ws=sortedWords();
@@ -447,7 +471,7 @@ function exportWordsDocx(){
     if(w.note)paras.push({text:'补充：'+w.note,sz:22});
     paras.push({text:''});
   });
-  download(new Blob([makeDocx(paras)],{type:DOCX_TYPE}),Store.state.langName+'-词库.docx');
+  download(new Blob([makeDocx(paras)],{type:DOCX_TYPE}),Store.state.langName+'-词库.docx',DOCX_TYPE);
 }
 
 /* ===== 提示 & 弹窗 ===== */
@@ -900,7 +924,7 @@ var Actions={
     else Toast('请长按文本手动复制');
   },
   'exp-dl':function(){
-    download(new Blob([$('#expBox').value],{type:'application/json'}),Store.state.langName+'-资料.json');
+    download(new Blob([$('#expBox').value],{type:'application/json'}),Store.state.langName+'-资料.json','application/json');
   },
   import:function(){$('#iFile').click();}
 };
@@ -966,4 +990,4 @@ document.addEventListener('plusready',function(){
 })();
 </script>
 </body>
-  </html>
+</html>
