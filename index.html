@@ -33,15 +33,19 @@ input,textarea{font:inherit;color:var(--text)}
 @keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
 .page{display:none}.page.active{display:block;animation:fadeUp .3s ease}
 .page-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:2px 0 15px}
-.page-head h1{font-size:21px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
+.page-head h1{font-size:21px;font-weight:800;letter-spacing:.5px;white-space:nowrap;line-height:1.2}
 .head-l{display:flex;align-items:center;gap:8px}
 .back2{font-size:18px;color:var(--text2);padding:2px 8px}
-.count-chip{background:var(--prisoft);color:var(--accent);border-radius:999px;font-size:12px;font-weight:700;padding:3px 11px;flex:none}
+.count-chip{background:var(--prisoft);color:var(--accent);border-radius:999px;font-size:12px;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;line-height:1;height:24px;padding:0 11px;flex:none;
+  transform:translateY(2px)}
 .card{background:var(--card);border-radius:var(--r);padding:15px;margin:10px 0;box-shadow:var(--sh1);border:1px solid var(--line)}
 .card.tap{cursor:pointer;transition:transform .15s}
 .card.tap:active{transform:scale(.98)}
 .search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:7px 7px 7px 17px;box-shadow:var(--sh1);border:1px solid var(--line);margin-bottom:5px}
 .search-wrap input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:14px}
+.search-big{padding:13px 18px}
+.search-big input{font-size:15px}
 .s-go{flex:none;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:700;background:var(--btnbg);color:var(--btnfg);transition:transform .15s}
 .s-go:active{transform:scale(.94)}
 .btn{display:block;width:100%;border-radius:12px;padding:11px 15px;font-size:14px;font-weight:600;margin-top:8px;transition:transform .15s,opacity .15s}
@@ -95,7 +99,8 @@ input,textarea{font:inherit;color:var(--text)}
 .sheet textarea{min-height:100px;resize:vertical}
 #tabbar{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;display:flex;z-index:20;
   background:var(--tabbg);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
-  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);transition:transform .25s ease}
+#tabbar.kb-hide{transform:translateY(110%)}
 #tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:var(--tabh);color:var(--text3);font-size:11px;font-weight:600}
 #tabbar .ico{font-size:17px;filter:grayscale(1);opacity:.8}
 #tabbar .tab.on{color:var(--text)}
@@ -146,7 +151,7 @@ input,textarea{font:inherit;color:var(--text)}
     <div class="page-head">
       <div class="head-l"><button class="back2" data-action="search-back">←</button><h1>搜索结果</h1></div>
     </div>
-    <div class="search-wrap" style="padding:7px 17px"><input id="resultSearch" aria-label="搜索"></div>
+    <div class="search-wrap search-big"><input id="resultSearch" aria-label="搜索"></div>
     <div class="hint-line">点词编辑 · 长按复制 · 双击删除</div>
     <div id="searchList"></div>
   </section>
@@ -349,15 +354,53 @@ const Modal={
 /* ===== 路由 ===== */
 const Router={
   current:null,
-  go(p){
-    if(p===this.current)return;
+  show(p){
     this.current=p;
     $$('.page').forEach(x=>x.classList.toggle('active',x.dataset.page===p));
     $$('#tabbar .tab').forEach(t=>t.classList.toggle('on',t.dataset.page===p));
     if(Render[p])Render[p]();
     scrollTo({top:0});
+  },
+  go(p){
+    if(p===this.current)return;
+    try{history.pushState({p:p},'');}catch(e){}
+    this.show(p);
+  },
+  back(){
+    const cur=this.current;
+    let t='words';
+    if(cur==='word')t=WordPage.from==='search'?'search':'dict';
+    else if(cur==='search'||cur==='dict')t='words';
+    else if(cur!=='words')t='words';
+    this.show(t);
   }
 };
+window.addEventListener('popstate',()=>{Router.back();});
+
+/* ===== 键盘检测 ===== */
+(function(){
+  const bar=$('#tabbar');
+  const isField=t=>t&&/^(INPUT|TEXTAREA)$/.test(t.tagName);
+  let focused=false,baseH=window.innerHeight;
+  function kbOpen(){
+    const vv=window.visualViewport;
+    const layoutShrink=(baseH-window.innerHeight)>120;
+    if(vv)return (window.innerHeight-vv.height)>120||layoutShrink;
+    return layoutShrink;
+  }
+  function update(){
+    if(kbOpen()&&focused)bar.classList.add('kb-hide');
+    else bar.classList.remove('kb-hide');
+  }
+  document.addEventListener('focusin',e=>{if(isField(e.target)){focused=true;update();}});
+  document.addEventListener('focusout',e=>{if(isField(e.target))setTimeout(()=>{focused=isField(document.activeElement);update();},100);});
+  window.addEventListener('resize',()=>{baseH=Math.max(baseH,window.innerHeight);update();});
+  window.addEventListener('orientationchange',()=>{setTimeout(()=>{baseH=window.innerHeight;update();},300);});
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',update);
+    window.visualViewport.addEventListener('scroll',update);
+  }
+})();
 
 /* ===== 文档解析 ===== */
 async function readDocx(buf){
@@ -403,6 +446,16 @@ function isHead(l){
   if(!m)return false;
   return !/[a-zA-Z]/.test(l.slice(m[0].length));
 }
+/* 纯人造语段落 → 按标点切句 */
+function splitCon(l){
+  const out=[];let cur='';
+  for(const ch of l){
+    cur+=ch;
+    if('.!?。！？'.includes(ch)){const t=cur.trim();if(t&&/[A-Za-z]/.test(t))out.push(t);cur='';}
+  }
+  const t=cur.trim();if(t&&/[A-Za-z]/.test(t))out.push(t);
+  return out;
+}
 function classify(t){
   let pos='';
   const pm=t.match(/[（(]([^()（）]{1,12})[)）]/);
@@ -428,16 +481,34 @@ function classify(t){
   if(!raw)return null;
   return{kind:'w',raw,pos,meaning:cjk};
 }
+/* ===== 智能解析：词汇 / 对照句 / 纯人造语文章 ===== */
 function smartParse(text){
-  const res={words:[],sentences:[]},seen=new Set();
-  text.split(/\r?\n/).forEach(raw=>{
-    const line=raw.trim();if(!line||isHead(line))return;
-    const entry=classify(line.replace(/^\d+[、.．]\s*/,''));
-    if(!entry)return;
-    if(entry.kind==='w'){const k=entry.raw.toLowerCase();
-      if(!seen.has(k)){seen.add(k);res.words.push(entry);}}
-    else res.sentences.push({text:entry.text,meaning:entry.meaning});
-  });
+  const res={words:[],sentences:[]},seenW=new Set(),seenS=new Set();
+  const addS=(t,m)=>{const k=t.toLowerCase();if(t&&!seenS.has(k)){seenS.add(k);res.sentences.push({text:t,meaning:m||''});}};
+  const addW=e=>{const k=e.raw.toLowerCase();if(!seenW.has(k)){seenW.add(k);res.words.push(e);}};
+  const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l);
+  for(let i=0;i<lines.length;i++){
+    let line=lines[i];
+    if(isHead(line))continue;
+    line=line.replace(/^\d+[、.．]\s*/,'');
+    const hasL=/[A-Za-z]/.test(line),hasK=/[\u4e00-\u9fff]/.test(line);
+    if(hasL&&hasK){
+      const e=classify(line);
+      if(!e)continue;
+      if(e.kind==='w')addW(e);else addS(e.text,e.meaning);
+      continue;
+    }
+    if(hasL&&!hasK){
+      const nxt=(lines[i+1]||'').replace(/^\d+[、.．]\s*/,'');
+      if(nxt&&/[\u4e00-\u9fff]/.test(nxt)&&!/[A-Za-z]/.test(nxt)&&!isHead(nxt)){
+        addS(line,nxt);i++;
+      }else{
+        splitCon(line).forEach(s=>addS(s,''));
+      }
+      continue;
+    }
+    /* 纯中文行：作为译文行已被上一行配对消费，否则忽略 */
+  }
   return res;
 }
 function handleImportText(txt){
@@ -454,10 +525,10 @@ function handleImportText(txt){
       st.words.unshift(newWord(w));added++;});
     r.sentences.forEach(p=>st.sentences.unshift({id:uid(),type:'sentence',text:p.text,meaning:p.meaning}));
     Store.save();refreshWords();Sentences.render();
-    Toast(`已导入 ${added} 个词汇${dup?`（跳过重复 ${dup}）`:''}`);
+    Toast(`已导入 ${added} 个词汇、${r.sentences.length} 句${dup?`（跳过重复词 ${dup}）`:''}`);
   });
 }
-/* ===== 批量导入：兼容 逗号(全/半角) 斜杠 空格 Tab 竖线 分号 ===== */
+/* ===== 批量导入词汇 ===== */
 function parseCSV(text){
   const rows=[];let skip=0;const seen=new Set();
   text.split(/\r?\n/).forEach(l=>{
@@ -498,7 +569,7 @@ function refreshWords(){
 
 /* ===== 词卡详情 ===== */
 function detailHTML(w){
-  const ex=Store.state.sentences.filter(s=>s.type==='sentence'&&s.text.toLowerCase().includes(w.raw.toLowerCase())).slice(0,5);
+  const ex=Store.state.sentences.filter(s=>s.type==='sentence'&&s.text.toLowerCase().includes(w.raw.toLowerCase())&&(s.meaning||'')).slice(0,5);
   return `<div class="card">
     <span class="w-name act" data-wid="${w.id}">${esc(w.raw)}</span>
     ${w.phonetic?`<div class="w-pho">${esc(w.phonetic)}</div>`:''}
@@ -599,12 +670,12 @@ const SentenceSheet={
     const s=id?Store.state.sentences.find(x=>x.id===id):null;
     Modal.sheet(`<div class="sheet-head"><span class="sh-title">${s?'编辑句子':'新增句子'}</span><span class="sh-close" data-action="sheet-close">✕</span></div>
     <label class="f-label">原文 <i>*</i></label><input id="sText" value="${esc(s?.text??'')}">
-    <label class="f-label">释义 <i>*</i></label><input id="sMean" value="${esc(s?.meaning??'')}">
+    <label class="f-label">释义（可留空后补）</label><input id="sMean" value="${esc(s?.meaning??'')}">
     <button class="btn primary big" data-action="s-save">保存</button>`);
   },
   save(){
     const t=$('#sText').value.trim(),m=$('#sMean').value.trim();
-    if(!t||!m){Toast('请填写原文和释义');return;}
+    if(!t){Toast('请填写原文');return;}
     const st=Store.state;
     if(this.editId)Object.assign(st.sentences.find(x=>x.id===this.editId),{text:t,meaning:m});
     else st.sentences.unshift({id:uid(),type:'sentence',text:t,meaning:m});
@@ -618,7 +689,7 @@ const Sentences={
     const items=Store.state.sentences.filter(x=>x.type==='sentence');
     $('#sentCount').textContent=items.length;
     $('#sBody').innerHTML=items.map(s=>`<div class="card"><div class="w-name" style="font-size:15.5px">${esc(s.text)}</div>
-      <div class="w-mean-i" style="margin-top:6px">${esc(s.meaning)}</div>
+      <div class="w-mean-i" style="margin-top:6px">${s.meaning?esc(s.meaning):'<span style="color:var(--text3)">（暂无释义，点编辑补填）</span>'}</div>
       <div class="w-actions"><button class="chip edit" data-action="s-edit" data-id="${s.id}">编辑</button>
       <button class="chip del" data-action="s-del" data-id="${s.id}">删除</button></div></div>`).join('');
   }
@@ -715,14 +786,14 @@ const Render={
 const Actions={
   tab:d=>Router.go(d.page),
   'search-go':()=>Search.go(),
-  'search-back':()=>{Search.q='';const i=$('#searchInput');if(i)i.value='';Router.go('words');},
+  'search-back':()=>Router.back(),
+  'dict-back':()=>Router.back(),
+  'word-back':()=>Router.back(),
   'dict-open':()=>Router.go('dict'),
-  'dict-back':()=>Router.go('words'),
   'dict-mode':d=>{Dict.mode=d.mode;Dict.render();},
   'dict-fold':d=>{const fk=Dict.mode+':'+d.key;Dict.folded[fk]=!Dict.folded[fk];Dict.render();},
   'dict-jump':d=>Dict.jump(d.key),
   'word-open':d=>WordPage.open(d.id,'dict'),
-  'word-back':()=>Router.go(WordPage.from==='search'?'search':'dict'),
   'pos-pick':d=>{
     WordSheet.pos=WordSheet.pos===d.pos?'':d.pos;
     $$('#posGrid .pos-item').forEach(el=>el.classList.toggle('on',el.dataset.pos===WordSheet.pos));
@@ -827,8 +898,8 @@ document.addEventListener('change',e=>{
 document.addEventListener('plusready',function(){
   plus.key.addEventListener('backbutton',function(){
     if(document.querySelector('.sheet')){Modal.close();return;}
-    if(Router.current==='search'||Router.current==='word'||Router.current==='dict'){Router.go('words');return;}
-    plus.runtime.quit();
+    if(Router.current==='words'){plus.runtime.quit();return;}
+    Router.back();
   },false);
 });
 
@@ -839,7 +910,7 @@ document.addEventListener('plusready',function(){
     Gesture.init();
     Persist.check();
     await Store.load();
-    Router.go('words');
+    Router.show('words');
     if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
       window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
     }
