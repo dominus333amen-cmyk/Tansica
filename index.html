@@ -100,7 +100,7 @@ input,textarea{font:inherit;color:var(--text)}
 .f-label i{color:var(--danger);font-style:normal}
 .sheet input,.sheet textarea{width:100%;background:var(--card2);border:1.5px solid transparent;border-radius:var(--rs);padding:11px 13px;font-size:14px;outline:none;transition:.2s}
 .sheet input:focus,.sheet textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
-.sheet textarea{min-height:70px;resize:vertical}
+.sheet textarea{min-height:120px;resize:vertical}
 #tabbar{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;display:flex;z-index:20;
   background:var(--tabbg);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
   border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);transition:transform .25s ease}
@@ -109,17 +109,18 @@ input,textarea{font:inherit;color:var(--text)}
 #tabbar .ico{font-size:17px;filter:grayscale(1);opacity:.8}
 #tabbar .tab.on{color:var(--text)}
 #tabbar .tab.on .ico{opacity:1}
-#toast{position:fixed;top:20px;left:50%;transform:translate(-50%,-220%);opacity:0;
+/* 提示气泡：顶部，与状态栏同行 */
+#toast{position:fixed;top:calc(env(safe-area-inset-top) + 6px);left:50%;transform:translate(-50%,-220%);opacity:0;
   background:rgba(24,24,26,.92);color:#fff;padding:9px 19px;border-radius:999px;font-size:13px;
   transition:transform .35s cubic-bezier(.2,.9,.3,1.2),opacity .3s;z-index:99;max-width:80%;pointer-events:none}
-#toast.danger{background:var(--danger)}
 #toast.show{transform:translate(-50%,0);opacity:1}
 .sheet{position:fixed;inset:0;z-index:50}
 .sheet .mask{position:absolute;inset:0;background:rgba(0,0,0,.4)}
 .sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--card);
   border-radius:22px 22px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));max-height:86vh;overflow:auto;animation:slideUp .3s cubic-bezier(.2,.9,.3,1)}
-.sheet.center{display:flex;align-items:center;justify-content:center}
-.dialog{position:relative;background:var(--card);border-radius:18px;padding:20px;width:82%;max-width:320px;box-shadow:var(--sh2);animation:scaleIn .2s ease}
+/* 确认弹窗：中靠上 */
+.sheet.center{display:flex;align-items:flex-start;justify-content:center;padding:18vh 16px 0}
+.dialog{position:relative;background:var(--card);border-radius:18px;padding:20px;width:100%;max-width:320px;box-shadow:var(--sh2);animation:scaleIn .2s ease}
 .d-title{font-size:16px;font-weight:700;margin-bottom:6px;text-align:center}
 .d-content{font-size:13.5px;color:var(--text2);line-height:1.6;white-space:pre-wrap}
 .d-btns{display:flex;gap:8px;margin-top:16px}
@@ -215,7 +216,7 @@ var POS_RE=new RegExp('^('+POS_LIST.join('|')+')');
 function existsWord(raw,exceptId){return Store.state.words.some(function(w){return w.raw.toLowerCase()===raw.toLowerCase()&&w.id!==exceptId;});}
 var FOLD_SVG='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 3 L15 10 L6 17 Z"></path></svg>';
 
-/* ===== 音标自动生成（多词各自划音节、各自标重音） ===== */
+/* ===== 音标自动生成 ===== */
 var C_IPA={p:'p',b:'b',t:'t',d:'d',c:'k',g:'g',ch:'tʃ',j:'dʒ',f:'f',v:'v',s:'s',z:'z',sh:'ʃ',h:'h',m:'m',n:'n',r:'r',l:'l',y:'j',w:'w'};
 var V_IPA={a:'a',e:'e',i:'i',o:'o',u:'u',ai:'ai',ei:'ei',oi:'oi',au:'au',eu:'eu'};
 var CLUSTERS=['pl','pr','bl','br','tr','dr','cl','cr','gl','gr','fl','fr','sp','st','sc'];
@@ -316,8 +317,8 @@ var Store={
   }
 };
 
-/* ===== 下载 & DOCX/TXT 导出 ===== */
-function download(blob,filename){
+/* ===== 下载：APP 内走原生写文件，浏览器走 a[download] ===== */
+function anchorDownload(blob,filename){
   try{
     var url=URL.createObjectURL(blob);
     var a=document.createElement('a');
@@ -328,6 +329,43 @@ function download(blob,filename){
     setTimeout(function(){URL.revokeObjectURL(url);},3000);
     Toast('已触发下载');
   }catch(e){Toast('下载失败');}
+}
+function saveBlobPlus(blob,filename){
+  var reader=new FileReader();
+  reader.onload=function(){
+    try{
+      var b64=String(reader.result).split(',')[1]||'';
+      var Environment=plus.android.importClass('android.os.Environment');
+      var File=plus.android.importClass('java.io.File');
+      var FileOutputStream=plus.android.importClass('java.io.FileOutputStream');
+      var Base64=plus.android.importClass('android.util.Base64');
+      var dir=null;
+      try{dir=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);}catch(e){}
+      if(!dir){
+        var act=plus.android.runtimeMainActivity();
+        dir=act.getExternalFilesDir('Download')||act.getFilesDir();
+      }
+      if(dir&&dir.mkdirs)dir.mkdirs();
+      var f=new File(dir,filename);
+      var fos=new FileOutputStream(f);
+      fos.write(Base64.decode(b64,0));
+      fos.flush();fos.close();
+      try{
+        var MSC=plus.android.importClass('android.media.MediaScannerConnection');
+        var ctx=plus.android.runtimeMainActivity();
+        MSC.scanFile(ctx,[f.getAbsolutePath()],null,null);
+      }catch(e){}
+      Toast('已保存：'+f.getAbsolutePath());
+    }catch(e){
+      anchorDownload(blob,filename);
+    }
+  };
+  reader.onerror=function(){anchorDownload(blob,filename);};
+  reader.readAsDataURL(blob);
+}
+function download(blob,filename){
+  if(window.plus&&plus.android){saveBlobPlus(blob,filename);}
+  else{anchorDownload(blob,filename);}
 }
 function crc32(buf){
   var t=crc32.t;
@@ -498,7 +536,12 @@ window.addEventListener('popstate',function(){Router.back();});
   }
 })();
 
-/* ===== 智能识别：拉丁=原词，汉字=释义（前后皆可），固定词性词自动提取 ===== */
+/* ===== 文档解析 ===== */
+function cleanDocxXml(xml){
+  return xml.replace(/<w:tab[^>]*>/g,'\t').replace(/<w:br[^>]*>/g,'\n').replace(/<\/w:p>/g,'\n')
+    .replace(/<[^>]+>/g,'')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/\u00a0/g,' ');
+}
 function readDocxIn(buf){
   var dv=new DataView(buf),eocd=-1;
   for(var i=buf.byteLength-22;i>=0;i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;}}
@@ -516,10 +559,10 @@ function readDocxIn(buf){
   var e=ent['word/document.xml'];if(!e)return Promise.reject(0);
   var lnlen=dv.getUint16(e.lhdr+26,true),lelen=dv.getUint16(e.lhdr+28,true);
   var data=new Uint8Array(buf,e.lhdr+30+lnlen+lelen,e.csize);
-  if(e.method===0)return Promise.resolve(new TextDecoder().decode(data));
+  if(e.method===0)return Promise.resolve(cleanDocxXml(new TextDecoder().decode(data)));
   if(e.method===8&&'DecompressionStream' in window){
     var st=new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
-    return new Response(st).arrayBuffer().then(function(ab){return new TextDecoder().decode(ab);});
+    return new Response(st).arrayBuffer().then(function(ab){return cleanDocxXml(new TextDecoder().decode(ab));});
   }
   return Promise.reject(0);
 }
@@ -539,30 +582,41 @@ function isHead(l){
   if(!m)return false;
   return !/[a-zA-Z]/.test(l.slice(m[0].length));
 }
+function isGarbage(l){return /[<>{}]|xmlns|https?:\/\//i.test(l);}
 function classifyWord(t){
   t=String(t).replace(/^\ufeff/,'').trim();
-  if(!t)return null;
+  if(!t||isGarbage(t))return null;
   var pos='';
   var bm=t.match(/[（(]([^()（）]{1,12})[)）]/)||t.match(/\[([^\[\]]{1,12})\]/);
   if(bm&&POS_RE.test(bm[1]))pos=POS_RE.exec(bm[1])[0];
   var clean=t.replace(/\/[^/]*\//g,' ').replace(/\[[^\]]*\]/g,' ').replace(/[（(][^)）]*[)）]/g,' ');
   var latinRuns=clean.match(/[A-Za-z][A-Za-z'’\-]*(?:\s+[A-Za-z][A-Za-z'’\-]*)*/g);
-  var cjkRuns=clean.match(/[\u4e00-\u9fff]+/g);
-  if(!latinRuns||!cjkRuns)return null;
+  if(!latinRuns)return null;
+  var cjkRuns=clean.match(/[\u4e00-\u9fff][\u4e00-\u9fff，,。；;：:、！!？?—\-]*/g)||[];
+  var cands=[];
   for(var i=0;i<cjkRuns.length;i++){
-    if(!pos&&POS_LIST.indexOf(cjkRuns[i])>=0){pos=cjkRuns[i];}
+    var r=cjkRuns[i].replace(/[\s，,。；;：:、！!？?—\-]+$/,'');
+    if(!r)continue;
+    var skip=false;
+    for(var pi=0;pi<POS_LIST.length;pi++){
+      var p=POS_LIST[pi];
+      if(r===p){pos=pos||p;skip=true;break;}
+      if(r.indexOf(p)===0&&r.length>p.length&&/[，,。；;：:、]/.test(r.charAt(p.length))){pos=pos||p;r=r.slice(p.length+1);break;}
+    }
+    if(skip)continue;
+    if(r)cands.push(r);
   }
-  var cands=cjkRuns.filter(function(r){return POS_LIST.indexOf(r)<0;});
   if(!cands.length)return null;
   var latin=latinRuns.slice().sort(function(a,b){return b.length-a.length;})[0].replace(/[\s.,;:!?]+$/,'').trim();
-  var cjk=cands.slice().sort(function(a,b){return b.length-a.length;})[0];
+  var cjk=cands.join('');
   if(!latin||!cjk)return null;
   return {raw:latin,pos:pos,meaning:cjk};
 }
 function smartParse(text){
   var res=[],seen={};
   String(text).replace(/^\ufeff/,'').split(/\r?\n/).forEach(function(line0){
-    var line=line0.trim();if(!line||isHead(line))return;
+    var line=line0.trim();
+    if(!line||isHead(line)||isGarbage(line))return;
     line=line.replace(/^\d+[、.．]\s*/,'');
     var e=classifyWord(line);
     if(e){var k=e.raw.toLowerCase();if(!seen[k]){seen[k]=1;res.push(e);}}
@@ -817,7 +871,6 @@ var Actions={
   'word-add':function(){WordSheet.open();},
   'word-save':function(){WordSheet.save();},
   'csv-open':function(){Modal.sheet('<div class="sheet-head"><span class="sh-title">批量导入</span><span class="sh-close" data-action="sheet-close">✕</span></div>'+
-    '<label class="f-label" style="margin-top:4px">每行一个：拉丁字母为原词，汉字为释义，词性可写可不写。如：&#10;moga 狗&#10;Adona America,名词,南美洲&#10;重复自动跳过</label>'+
     '<textarea id="csvBox"></textarea>'+
     '<button class="btn primary big" data-action="csv-save">导入</button>');},
   'csv-save':function(){
@@ -913,4 +966,4 @@ document.addEventListener('plusready',function(){
 })();
 </script>
 </body>
-</html>
+  </html>
